@@ -1,12 +1,12 @@
 package pm12016g3.tln.univ.fr.vot.features.root;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,7 +33,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.validator.PasswordValidator;
  * https://github.com/YMonnier
  */
 
-@EActivity(R.layout.root_registration_activity)
+@EActivity(R.layout.root_login_activity)
 public class LoginActivity extends AppCompatActivity {
 
     private final static String TAG = LoginActivity.class.getSimpleName();
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
      * Input email used to authenticate the user.
      */
     @ViewById(R.id.input_email)
-    AutoCompleteTextView emailView;
+    EditText emailView;
 
     /**
      * Input password used to authenticate the user.
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Click(R.id.link_registration)
     void onClickOnSignupLink() {
-        //startActivity(new Intent(this, SignupActivity_.class));
+        startActivity(new Intent(this, RegistrationActivity_.class));
     }
 
     /**
@@ -149,7 +149,6 @@ public class LoginActivity extends AppCompatActivity {
             // perform the user login attempt.
 
             progressView.show();
-
             userLoginTask(email, password);
         }
     }
@@ -221,6 +220,5 @@ public class LoginActivity extends AppCompatActivity {
             e.getLocalizedMessage();
         }
         progressView.dismiss();
-
     }
 }
