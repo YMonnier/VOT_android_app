@@ -22,6 +22,7 @@ import org.androidannotations.annotations.ViewById;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.validator.EmailValidator;
+import pm12016g3.tln.univ.fr.vot.utilities.validator.PasswordValidator;
 
 /**
  * Project VOT.
@@ -32,15 +33,10 @@ import pm12016g3.tln.univ.fr.vot.utilities.validator.EmailValidator;
  * https://github.com/YMonnier
  */
 
-@EActivity(R.layout.root_activity_login)
+@EActivity(R.layout.root_registration_activity)
 public class LoginActivity extends AppCompatActivity {
 
     private final static String TAG = LoginActivity.class.getSimpleName();
-
-    /**
-     * Minimum password length
-     */
-    public static final int MIN_PASSWORD_LENGTH = 8;
 
     /**
      * Input email used to authenticate the user.
@@ -60,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
     @ViewById(R.id.btn_confirmation)
     Button loginConfirmation;
 
-
     /**
      * Progress Dialog
      */
@@ -68,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
-        Log.i(TAG, "Initialize Login Activity...");
+        Log.i(TAG, "Initialize Registration Activity...");
         progressView = new LoaderDialog(this, getString(R.string.login_progress_label));
     }
 
@@ -202,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return true if password length >= 8, otherwise, false
      */
     private boolean isPasswordValid(final String password) {
-        return password.length() >= MIN_PASSWORD_LENGTH;
+        return PasswordValidator.validate(password);
     }
 
     /**
