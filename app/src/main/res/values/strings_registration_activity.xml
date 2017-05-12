@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings related to login -->
+    <string name="registration_prompt_email">E-mail</string>
+    <string name="registration_prompt_password">Mot de passe</string>
+    <string name="registration_prompt_confirmation_password">Confirmation mot de passe</string>
+    <string name="registration_action_confirmation">Confirmation</string>
+    <string name="registration_error_invalid_email">L\'adresse e-mail n\'est pas valide</string>
+    <string name="registration_error_invalid_password">Le mot de passe est trop court</string>
+    <string name="registration_error_incorrect_password">Le mot de passe est incorrect</string>
+    <string name="registration_error_field_required">Champ requis</string>
+    <string name="registration_progress_label">En cours de traitement</string>
+    <string name="registration_error_not_matching_password">Le mot de passe n\'est pas le même</string>
+</resources>
