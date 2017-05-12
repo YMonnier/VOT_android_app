@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Loader" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/vot_white</item>
+        <item name="android:textColorPrimary">@color/vot_white</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>
