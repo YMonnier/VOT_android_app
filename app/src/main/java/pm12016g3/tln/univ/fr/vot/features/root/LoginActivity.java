@@ -218,5 +218,14 @@ public class LoginActivity extends AppCompatActivity {
     void userLoginTask(final String email, final String password) {
         updateLockUi(true);
         // TODO: Add HTTP Request to login...
+        progressView.show();
+        try {
+            Thread.sleep(3000);
+            // Do some stuff
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+        progressView.dismiss();
+
     }
 }
