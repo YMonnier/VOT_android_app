@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.utilities.Loader;
+package pm12016g3.tln.univ.fr.vot.utilities.loader;
 
 import android.app.ProgressDialog;
 import android.content.Context;
