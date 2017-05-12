@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#f46524</color>
+    <color name="colorPrimaryDark">#C3501C</color>
+    <color name="colorAccent">#C3501C</color>
+
+    <color name="vot_orange">#f46524</color>
+    <color name="vot_orange_dark">#C3501C</color>
+    <color name="vot_brown">#feb45f</color>
+    <color name="vot_white">#ffffff</color>
+    <color name="vot_purple">#A950DC</color>
 </resources>
