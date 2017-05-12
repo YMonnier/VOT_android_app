@@ -1,6 +1,7 @@
-package pm12016g3.tln.univ.fr.vot;
+package pm12016g3.tln.univ.fr.vot.features.root;
 
 
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
 
 
@@ -36,7 +38,7 @@ public class LoginTest {
 
     @Test
     public void loginWithSortPassword(){
-        onView(withId(R.id.input_password)).perform(typeText(shortPassword),closeSoftKeyboard());
+        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(shortPassword),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
         onView(withId(R.id.input_password)).check(matches(hasErrorText("Le mot de passe est trop court")));
     }
