@@ -2,6 +2,10 @@
 
 Git Repo containning the Android Application.
 
+## Installation
+
+Before to compile the application, please, [install Lombok plugin](https://projectlombok.org/setup/android.html).
+
 ## Coding Rules
  * Follow the below architecture
 
