@@ -1,7 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.shared.main.sidebar;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -9,7 +8,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.utilities.stylesheet.Stylesheet;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
 
 /**
  * Project android.
@@ -21,7 +20,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.stylesheet.Stylesheet;
  */
 
 @EViewGroup(R.layout.shared_sidebar_nav_item_view)
-public class NavItemView extends RelativeLayout {
+public class NavItemView extends RelativeLayout implements Bindable<NavItem> {
     private final String TAG = NavItemView.class.getSimpleName();
 
     @ViewById
@@ -29,14 +28,12 @@ public class NavItemView extends RelativeLayout {
 
     public NavItemView(Context context) {
         super(context);
-        title.setTypeface(Stylesheet.font(this.getContext(), Stylesheet.Font.DEFAULT));
+        //title.setTypeface(Stylesheet.font(this.getContext(), Stylesheet.Font.DEFAULT));
     }
 
 
-    public void bind(NavItem navItem) {
-        Log.d(TAG, "Bind: " + navItem);
-        title.setText(navItem.getTitle());
-
-        Log.d(TAG, "Bind: DONE");
+    @Override
+    public void bind(NavItem object) {
+        title.setText(object.getType().toString());
     }
 }

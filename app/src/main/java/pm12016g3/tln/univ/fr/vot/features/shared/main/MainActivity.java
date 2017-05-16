@@ -2,16 +2,16 @@ package pm12016g3.tln.univ.fr.vot.features.shared.main;
 
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -28,6 +28,8 @@ import pm12016g3.tln.univ.fr.vot.features.shared.main.sidebar.SidebarListAdapter
  */
 @EActivity(R.layout.shared_sidebar_main_activity)
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = MainActivity.class.getSimpleName();
+
     @ViewById(R.id.drawerLayout)
     DrawerLayout drawerLayout;
 
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout drawerPane;
 
     @ViewById(R.id.navList)
-    RecyclerView listView;
+    ListView listView;
 
     List<NavItem> items;
 
@@ -44,20 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
-        items = new ArrayList<>();
-        items.add(new NavItem("Consulter"));
-        items.add(new NavItem("Créer"));
-        items.add(new NavItem("Statistiques"));
-        items.add(new NavItem("Amis"));
-        items.add(new NavItem("Options"));
-        items.add(new NavItem("Déconnexion"));
-        items.add(new NavItem("À propos"));
-
         SidebarListAdapter sidebarListAdapter = new SidebarListAdapter();
-        sidebarListAdapter.setItems(items);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        listView.setLayoutManager(llm);
+        sidebarListAdapter
+                .add(new NavItem(NavItem.Type.CONSULT))
+                .add(new NavItem(NavItem.Type.CREATE))
+                .add(new NavItem(NavItem.Type.STATISTICS))
+                .add(new NavItem(NavItem.Type.NETWORK))
+                .add(new NavItem(NavItem.Type.OPTIONS))
+                .add(new NavItem(NavItem.Type.LOGOUT))
+                .add(new NavItem(NavItem.Type.ABOUT));
         listView.setAdapter(sidebarListAdapter);
+    }
+
+    @ItemClick
+    void navListItemClicked(NavItem navItem) {
+        Log.d(TAG, "Sidebar item clicked: " + navItem);
+        selectItemFromMenu(navItem.getType());
+    }
+
+    private void selectItemFromMenu(NavItem.Type type) {
+        
     }
 }

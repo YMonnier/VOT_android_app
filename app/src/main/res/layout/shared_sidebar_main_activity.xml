@@ -51,7 +51,7 @@
         </RelativeLayout>
 
         <!-- List of Actions (pages) -->
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/navList"
             android:layout_width="280dp"
             android:layout_height="match_parent"

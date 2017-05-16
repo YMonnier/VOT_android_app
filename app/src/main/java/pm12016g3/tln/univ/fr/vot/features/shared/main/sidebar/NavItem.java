@@ -13,12 +13,41 @@ import lombok.Data;
 
 @Data
 public class NavItem {
+    public enum Type {
+        CONSULT("Consulter"),
+        CREATE("Créer"),
+        STATISTICS("Statistiques"),
+        NETWORK("Amis"),
+        OPTIONS("Options"),
+        ABOUT("À propos"),
+        LOGOUT("Déconnexion");
+
+        private final String text;
+
+        /**
+         * Font text.
+         *
+         * @param text, font text
+         */
+        private Type(final String text) {
+            this.text = text;
+        }
+
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
     /**
      * Item title.
      */
-    private String title;
+    private Type type;
 
-    public NavItem(String title) {
-        this.title = title;
+    public NavItem(Type type) {
+        this.type = type;
     }
 }

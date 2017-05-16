@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
-import pm12016g3.tln.univ.fr.vot.utilities.views.RecyclerViewAdapterBase;
-import pm12016g3.tln.univ.fr.vot.utilities.views.ViewWrapper;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
+
 
 /**
  * Project android.
@@ -19,19 +19,12 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewWrapper;
  */
 
 @EBean
-public class SidebarListAdapter extends RecyclerViewAdapterBase<NavItem, NavItemView> {
-
+public class SidebarListAdapter extends ListViewAdapterBase<NavItem, NavItemView> {
     @RootContext
     Context context;
 
     @Override
-    protected NavItemView onCreateItemView(ViewGroup parent, int viewType) {
+    protected NavItemView onCreateItemView(ViewGroup parent) {
         return NavItemView_.build(parent.getContext());
-    }
-
-    @Override
-    public void onBindViewHolder(ViewWrapper<NavItemView> holder, int position) {
-        NavItemView view = holder.getView();
-        view.bind(items.get(position));
     }
 }
