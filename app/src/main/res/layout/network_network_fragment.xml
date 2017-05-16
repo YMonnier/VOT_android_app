@@ -1,7 +1,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -11,8 +10,7 @@
             android:id="@+id/network_input_research"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/network_action_research" />
-
+            android:hint="@string/network_action_research"/>
         <ListView
             android:id="@+id/network_friend_list"
             android:layout_width="match_parent"
