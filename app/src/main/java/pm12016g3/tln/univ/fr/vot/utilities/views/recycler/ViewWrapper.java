@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.utilities.views;
+package pm12016g3.tln.univ.fr.vot.utilities.views.recycler;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
