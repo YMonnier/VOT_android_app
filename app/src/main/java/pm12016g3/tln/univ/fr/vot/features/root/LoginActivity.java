@@ -20,6 +20,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.shared.main.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.validator.EmailValidator;
 import pm12016g3.tln.univ.fr.vot.utilities.validator.PasswordValidator;
@@ -88,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Click(R.id.btn_confirmation)
     void onClickOnSigninButton() {
-        attemptLogin();
+        goToHomeView();
+        //attemptLogin();
     }
 
     /**
@@ -200,6 +202,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Function allowing to navigate
+     * to the next view (`ConsultActivity`)
+     */
+    private void goToHomeView() {
+        startActivity(new Intent(this, MainActivity_.class));
+    }
+
+    /**
      * Background task which allows
      * to send credential data to the server.
      * If the connexion is succeed, we go to the sessions list.
@@ -213,9 +223,11 @@ public class LoginActivity extends AppCompatActivity {
         updateLockUi(true);
         // TODO: Add HTTP Request to login...
         progressView.show();
+
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             // Do some stuff
+
         } catch (Exception e) {
             e.getLocalizedMessage();
         }
