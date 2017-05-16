@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.shared.main;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.main.sidebar.NavItem;
 import pm12016g3.tln.univ.fr.vot.features.shared.main.sidebar.SidebarListAdapter;
 
@@ -65,6 +68,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectItemFromMenu(NavItem.Type type) {
-        
+        Fragment fragment = null;
+        switch (type) {
+            case NETWORK:
+                fragment = new NetworkFragment_();
+                break;
+        }
+
+        assert fragment == null;
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
+        //listView.setItemChecked(position, true);
+        setTitle(type.toString());
+
+        // Close the drawer
+        drawerLayout.closeDrawer(drawerPane);
     }
 }
