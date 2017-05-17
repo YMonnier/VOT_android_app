@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.network;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+
+import static android.R.attr.type;
 
 /**
  * Project android.
@@ -84,5 +88,15 @@ public class NetworkFragment extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Click(R.id.fabAdd)
+    public void fabClick(){
+        Fragment fragment = new NetworkResearchFragment_();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+        getActivity().setTitle("Recherche");
     }
 }
