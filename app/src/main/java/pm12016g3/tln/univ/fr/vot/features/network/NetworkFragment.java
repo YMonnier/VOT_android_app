@@ -95,5 +95,6 @@ public class NetworkFragment extends Fragment {
                 .replace(R.id.mainContent, fragment)
                 .commit();
         getActivity().setTitle("Recherche");
+        
     }
 }
