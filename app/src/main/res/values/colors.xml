@@ -3,7 +3,7 @@
     <color name="colorPrimary">#f46524</color>
     <color name="colorPrimaryDark">#C3501C</color>
     <color name="colorAccent">#C3501C</color>
-
+    <color name="vot_white_light">#fafafa</color>
     <color name="vot_orange">#f46524</color>
     <color name="vot_orange_dark">#C3501C</color>
     <color name="vot_brown">#feb45f</color>

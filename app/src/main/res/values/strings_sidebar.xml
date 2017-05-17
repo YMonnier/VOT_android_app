@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sidebar_consult">Consulter</string>
+    <string name="sidebar_create">Créer</string>
+    <string name="sidebar_statistics">Statistiques</string>
+    <string name="sidebar_friends">Amis</string>
+    <string name="sidebar_options">Options</string>
+    <string name="sidebar_logout">Déconnexion</string>
+    <string name="sidebar_about">À propos</string>
+    <string name="sidebar_others">Autres</string>
+
+    <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer le menu de navigation</string>
+</resources>

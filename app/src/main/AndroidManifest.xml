@@ -28,8 +28,8 @@
         <activity
             android:name=".features.root.RegistrationActivity_"
             android:parentActivityName=".features.root.LoginActivity_" />
-        <activity android:name=".features.consult.ConsultActivity_" />
-        <activity android:name=".features.shared.main.MainActivity_" />
+
+        <activity android:name=".features.MainActivity_" />
     </application>
 
 </manifest>
