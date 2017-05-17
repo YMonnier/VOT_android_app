@@ -44,9 +44,6 @@ public class NetworkFragment extends Fragment {
     List<String> filteredFriends = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
-    public NetworkFragment() {
-    }
-
     @AfterViews
     void init() {
         allFriends.add("Donut");

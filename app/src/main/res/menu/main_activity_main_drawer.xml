@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/sidebar_consult"
+            android:title="@string/sidebar_consult" />
+        <item
+            android:id="@+id/sidebar_create"
+            android:title="@string/sidebar_create" />
+        <item
+            android:id="@+id/sidebar_statistics"
+            android:title="@string/sidebar_statistics" />
+        <item
+            android:id="@+id/sidebar_friends"
+            android:title="@string/sidebar_friends" />
+    </group>
+
+    <item android:title="@string/sidebar_others">
+        <menu>
+            <item
+                android:id="@+id/sidebar_options"
+                android:title="@string/sidebar_options" />
+
+            <item
+                android:id="@+id/sidebar_logout"
+                android:title="@string/sidebar_logout" />
+            <item
+                android:id="@+id/sidebar_about"
+                android:title="@string/sidebar_about" />
+        </menu>
+    </item>
+</menu>
