@@ -30,6 +30,7 @@
             android:parentActivityName=".features.root.LoginActivity_" />
 
         <activity android:name=".features.MainActivity_" />
+        <activity android:name=".features.network.research.NetworkResearchActivity_" />
     </application>
 
 </manifest>

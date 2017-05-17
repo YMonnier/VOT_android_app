@@ -1,14 +1,14 @@
-package pm12016g3.tln.univ.fr.vot.features.network;
+package pm12016g3.tln.univ.fr.vot.features.network.research;
 
-import android.app.Fragment;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.TextChange;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ import pm12016g3.tln.univ.fr.vot.R;
  * https://github.com/YMonnier
  */
 
-@EFragment(R.layout.network_network_research_fragment)
-public class NetworkResearchFragment extends Fragment {
-    private final String TAG = NetworkResearchFragment.class.getSimpleName();
+@EActivity(R.layout.network_network_research_activity)
+public class NetworkResearchActivity extends AppCompatActivity {
+    private final String TAG = NetworkResearchActivity.class.getSimpleName();
 
     @ViewById(R.id.network_research_input_research)
     EditText research;
@@ -35,30 +35,37 @@ public class NetworkResearchFragment extends Fragment {
     @ViewById(R.id.network_research_persons_list)
     ListView personsListView;
 
+    @Bean
+    NetworkResearchListAdapter adapter;
 
     List<String> allPersons = new ArrayList<>();
     List<String> filteredPersons = new ArrayList<>();
-    ArrayAdapter<String> adapter;
-
-    public NetworkResearchFragment() {
-    }
 
     @AfterViews
     void init() {
-        allPersons.add("Dark");
-        allPersons.add("Green");
-        allPersons.add("Light");
-        allPersons.add("Chacha");
 
+        adapter
+                .add(new NetworkResearchItem("John"))
+                .add(new NetworkResearchItem("Paul"))
+                .add(new NetworkResearchItem("Jack"));
 
-        filteredPersons.addAll(allPersons);
+        personsListView.setAdapter(adapter);
+        //filteredPersons.addAll(allPersons);
 
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+        /*adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
                 R.layout.network_friend_list_item,
                 filteredPersons);
-        personsListView.setAdapter(adapter);
+        personsListView.setAdapter(adapter);*/
     }
 
+
+    @ItemClick(R.id.network_research_persons_list)
+    void personListItemClicked(NetworkResearchItem item) {
+        Log.d(TAG, "Item clicked... " + item.toString());
+        item.setSelected(!item.isSelected());
+        adapter.notifyDataSetChanged();
+    }
+/*
     @TextChange(R.id.network_input_research)
     void onTextChangesOnHelloTextView(CharSequence text,
                                       TextView hello,
@@ -78,6 +85,6 @@ public class NetworkResearchFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
     }
-
+*/
 
 }
