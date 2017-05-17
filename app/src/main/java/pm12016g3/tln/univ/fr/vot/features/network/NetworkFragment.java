@@ -49,6 +49,12 @@ public class NetworkFragment extends Fragment {
         allFriends.add("Donut");
         allFriends.add("Eclair");
         allFriends.add("Lollipop");
+        allFriends.add("Cat");
+        allFriends.add("Count");
+        allFriends.add("Claire");
+        allFriends.add("Cliare Man");
+        allFriends.add("Clairee");
+
         filteredFriends.addAll(allFriends);
 
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
@@ -63,16 +69,17 @@ public class NetworkFragment extends Fragment {
                                       int before,
                                       int start,
                                       int count) {
-        filteredFriends.clear();
-        for (String name : allFriends) {
-            if (text.length() != 0 && name.startsWith(text.toString())) {
-                filteredFriends.add(name);
-                Log.i(TAG, name);
+        if(text.length() == 0){
+            filteredFriends.clear();
+            filteredFriends.addAll(allFriends);
+        }else if(text.length() !=0){
+            filteredFriends.clear();
+            for (String name : allFriends) {
+                if (name.startsWith(text.toString())) {
+                    filteredFriends.add(name);
+                }
             }
-
-            Log.i(TAG, filteredFriends.toString());
         }
-        // Log.i("TAG",filteredNames.toString());
         adapter.notifyDataSetChanged();
     }
 }
