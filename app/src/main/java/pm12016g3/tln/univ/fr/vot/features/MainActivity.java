@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -8,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -89,24 +91,41 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Log.d(TAG, item.toString());
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        Fragment fragment = null;
 
-        } else if (id == R.id.nav_slideshow) {
+        switch (item.getItemId()) {
+            case R.id.sidebar_consult:
 
-        } else if (id == R.id.nav_manage) {
+                break;
+            case R.id.sidebar_create:
 
-        } else if (id == R.id.nav_share) {
+                break;
+            case R.id.sidebar_statistics:
 
-        } else if (id == R.id.nav_send) {
+                break;
+            case R.id.sidebar_friends:
+                fragment = new NetworkFragment_();
+                break;
+            case R.id.sidebar_options:
 
-        }*/
+                break;
+            case R.id.sidebar_logout:
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                break;
+            case R.id.sidebar_about:
+
+                break;
+        }
+        assert fragment == null;
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
+
+
+        setTitle(item.getTitle());
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
