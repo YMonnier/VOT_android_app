@@ -92,6 +92,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
     @Override
     public void onClick(View view, int position) {
         Log.d(TAG, "onClick...");
+
     }
 
     @Override

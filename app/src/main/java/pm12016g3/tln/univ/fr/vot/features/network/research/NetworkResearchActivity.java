@@ -1,12 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.network.research;
 
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
  * Project android.
@@ -67,11 +63,13 @@ public class NetworkResearchActivity extends AppCompatActivity {
 
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
 
     @OptionsItem(R.id.network_research_action_check)
     public void onClickCheckmark(){
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
 
