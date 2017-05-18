@@ -203,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Function allowing to navigate
-     * to the next view (`ConsultActivity`)
+     * to the next view (`ConsultFragment`)
      */
     private void goToHomeView() {
         startActivity(new Intent(this, MainActivity_.class));

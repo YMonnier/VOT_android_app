@@ -1,10 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,13 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 
 @EActivity(R.layout.main_activity_main)
@@ -34,11 +31,10 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
-
-
     @AfterViews
     void init() {
         setSupportActionBar(toolbar);
+        setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -108,16 +104,21 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         assert fragment == null;
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.mainContent, fragment)
-                .commit();
-
-
-
-        setTitle(item.getTitle());
-
+        setFragment(fragment, item.getTitle().toString());
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Change the content view with a specific fragment.
+     * @param fragment fragment to replace.
+     * @param title fragment title.
+     */
+    private void setFragment(Fragment fragment, String title) {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+        setTitle(title);
     }
 }
