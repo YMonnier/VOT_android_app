@@ -3,12 +3,16 @@ package pm12016g3.tln.univ.fr.vot.features.network;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
+
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.TextChange;
@@ -16,6 +20,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchActivity_;
@@ -42,43 +47,35 @@ public class NetworkFragment extends Fragment {
     @ViewById(R.id.fabAdd)
     FloatingActionButton fabAdd;
 
-    List<String> allFriends = new ArrayList<>();
-    List<String> filteredFriends = new ArrayList<>();
-    ArrayAdapter<String> adapter;
+    @Bean
+    NetworkFragmentListAdapter adapter;
+
+    List<NetWorkFragmentItem> allFriends = new ArrayList<>();
 
     @AfterViews
     void init() {
-        allFriends.add("Donut");
-        allFriends.add("Eclair");
-        allFriends.add("Lollipop");
-        allFriends.add("Cat");
-        allFriends.add("Count");
-        allFriends.add("Claire");
-        allFriends.add("Cliare Man");
-        allFriends.add("Clairee");
-
-        filteredFriends.addAll(allFriends);
-
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                R.layout.network_friend_list_item,
-                filteredFriends);
+        allFriends.add(new NetWorkFragmentItem("Donut"));
+        allFriends.add(new NetWorkFragmentItem("Eclair"));
+        allFriends.add(new NetWorkFragmentItem("Lollipop"));
+        allFriends.add(new NetWorkFragmentItem("Count"));
+        allFriends.add(new NetWorkFragmentItem("Coucou"));
+        adapter.addAll(allFriends);
         friendListView.setAdapter(adapter);
     }
 
     @TextChange(R.id.network_input_research)
-    void onTextChangesOnHelloTextView(CharSequence text,
+    void onTextChangesOnHelloTextView(final CharSequence text,
                                       TextView hello,
                                       int before,
                                       int start,
                                       int count) {
-        if(text.length() == 0){
-            filteredFriends.clear();
-            filteredFriends.addAll(allFriends);
-        }else if(text.length() !=0){
-            filteredFriends.clear();
-            for (String name : allFriends) {
-                if (name.startsWith(text.toString())) {
-                    filteredFriends.add(name);
+        adapter.clear();
+        if (text.length() == 0) {
+            adapter.addAll(allFriends);
+        } else if (text.length() != 0) {
+            for (NetWorkFragmentItem friend : allFriends) {
+                if (friend.getTitle().startsWith(text.toString())) {
+                    adapter.add(friend);
                 }
             }
         }
@@ -86,9 +83,9 @@ public class NetworkFragment extends Fragment {
     }
 
     @Click(R.id.fabAdd)
-    public void fabClick(){
-
+    public void fabClick() {
         getActivity()
                 .startActivity(new Intent(getActivity(), NetworkResearchActivity_.class));
+
     }
 }
