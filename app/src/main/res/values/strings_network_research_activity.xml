@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="network_research_action_research">Recherche</string>
+    <string name="network_research_bar_title">Recherche</string>
 </resources>

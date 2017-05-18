@@ -36,6 +36,10 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
     }
+    compileOptions {
+        targetCompatibility 1.7
+        sourceCompatibility 1.7
+    }
 }
 
 buildscript {
@@ -93,6 +97,9 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     // Gson use to Rest part AA
     compile 'com.google.code.gson:gson:2.4'
+
+    // Stream API from Java 8 rewritten on iterators for Java 7 and below
+    compile 'com.annimon:stream:1.1.7'
 
     // Firebase
     compile 'com.google.firebase:firebase-messaging:10.0.1'
