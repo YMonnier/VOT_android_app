@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -16,6 +16,8 @@ import pm12016g3.tln.univ.fr.vot.features.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.cardview.ConsultCardViewAdapter;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
+import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
+import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
 
 /**
  * Project android.
@@ -27,8 +29,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
  */
 
 @EFragment(R.layout.consult_consult_fragment)
-public class ConsultFragment extends Fragment
-        implements RecyclerView.OnItemTouchListener {
+public class ConsultFragment extends Fragment implements ClickListener {
     private final static String TAG = ConsultFragment.class.getSimpleName();
 
     /**
@@ -48,6 +49,9 @@ public class ConsultFragment extends Fragment
     @ViewById
     RecyclerView recyclerView;
 
+    /**
+     * Progress view
+     */
     LoaderDialog progressView;
 
     @AfterViews
@@ -78,23 +82,20 @@ public class ConsultFragment extends Fragment
                 .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
                 .add(new ConsultCardItem(SocialChoice.Type.MAJORITY_JUGMENT, "Super Title..."));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
+                recyclerView,
+                this));
 
         progressView.dismiss();
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d(TAG, "onInterceptTouchEvent");
-        return false;
+    public void onClick(View view, int position) {
+        Log.d(TAG, "onClick...");
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d(TAG, "onTouchEvent");
-    }
-
-    @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        Log.d(TAG, "onRequestDisallowInterceptTouchEvent");
+    public void onLongClick(View view, int position) {
+        Log.d(TAG, "onLongClick...");
     }
 }
