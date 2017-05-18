@@ -1,8 +1,12 @@
 package pm12016g3.tln.univ.fr.vot.features.network.research;
 
+import android.support.v4.app.NavUtils;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,6 +15,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.ViewById;
 
@@ -29,6 +35,7 @@ import pm12016g3.tln.univ.fr.vot.R;
  */
 
 @EActivity(R.layout.network_network_research_activity)
+@OptionsMenu(R.menu.network_research_activity_bar)
 public class NetworkResearchActivity extends AppCompatActivity {
     private final String TAG = NetworkResearchActivity.class.getSimpleName();
 
@@ -46,6 +53,10 @@ public class NetworkResearchActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         allPersons.add(new NetworkResearchItem("John"));
         allPersons.add(new NetworkResearchItem("Paul"));
         allPersons.add(new NetworkResearchItem("Jack"));
@@ -54,6 +65,15 @@ public class NetworkResearchActivity extends AppCompatActivity {
 
     }
 
+    @OptionsItem(android.R.id.home)
+    public void onClickUpArrow(){
+        finish();
+    }
+
+    @OptionsItem(R.id.network_research_action_check)
+    public void onClickCheckmark(){
+        finish();
+    }
 
     @ItemClick(R.id.network_research_persons_list)
     void personListItemClicked(NetworkResearchItem item) {

@@ -2,4 +2,6 @@
 <resources>
     <string name="network_research_action_research">Recherche</string>
     <string name="network_research_bar_title">Recherche</string>
+    <string name="network_research_label">Recherche</string>
+    <string name="network_research_action_check">check</string>
 </resources>
