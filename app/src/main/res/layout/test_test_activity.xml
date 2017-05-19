@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vot_purple"
+    android:orientation="vertical">
+
+    <pm12016g3.tln.univ.fr.vot.utilities.views.custom.LifelineView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/lifelineView"
+        app:stepRadius="30dp"
+        app:steps="4"
+        app:stepDefaultColor="@color/vot_brown"
+        app:stepSelectedColor="@color/vot_white"
+        app:lineColor="@color/vot_white"
+        app:lineThickness="5"/>
+
+</LinearLayout>
