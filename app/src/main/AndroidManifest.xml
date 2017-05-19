@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--
-            *** MAIN ACTIVITY ***
+            *** FIRST ACTIVITY ***
         -->
+            <!-- android:name=".features.test.TestActivity_" -->
         <activity
             android:name=".features.root.LoginActivity_"
             android:label="@string/app_name"
@@ -26,18 +27,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+            *** ROOT PACKAGE ***
+        -->
         <activity
             android:name=".features.root.RegistrationActivity_"
             android:parentActivityName=".features.root.LoginActivity_"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--
+            *** MAIN ACTIVITY ***
+        -->
         <activity
             android:name=".features.MainActivity_"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--
+            *** NETWORK PACKAGE ***
+        -->
         <activity
             android:name=".features.network.research.NetworkResearchActivity_"
             android:label="@string/network_research_label"/>
+        <activity android:name=".features.test.TestActivity" />
+
+
+        <!--
+            *** DO NOT TOUCH! ***
+            Activity for testing (UI + ACTIONS)
+        -->
+        <activity
+            android:name=".features.test.TestActivity_"/>
     </application>
 
 </manifest>

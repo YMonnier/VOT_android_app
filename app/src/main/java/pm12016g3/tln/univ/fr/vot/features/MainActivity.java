@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import org.androidannotations.annotations.AfterViews;
@@ -15,7 +14,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.consult.ConsultFragment_;
+import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 
 @EActivity(R.layout.main_activity_main)
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.sidebar_create:
-
+                fragment = new CreateFragment_();
                 break;
             case R.id.sidebar_statistics:
 

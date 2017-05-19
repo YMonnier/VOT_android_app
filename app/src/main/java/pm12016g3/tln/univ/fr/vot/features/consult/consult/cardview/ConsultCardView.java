@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.cardview;
+package pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview;
 
 import android.content.Context;
 import android.widget.ImageView;
@@ -13,7 +13,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
 
 /**
  * Project android.
- * Package pm12016g3.tln.univ.fr.vot.features.consult.cardview.
+ * Package pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.
  * File ConsultCardView.java.
  * Created by Ysee on 18/05/2017 - 11:22.
  * www.yseemonnier.com

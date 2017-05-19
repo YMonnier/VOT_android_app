@@ -8,6 +8,5 @@
         <attr name="stepDefaultColor" format="color" />
         <attr name="stepSelectedColor" format="color" />
         <attr name="lineThickness" format="integer" />
-
     </declare-styleable>
 </resources>

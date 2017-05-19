@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.cardview;
+package pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview;
 
 import lombok.Data;
 import pm12016g3.tln.univ.fr.vot.R;
@@ -6,7 +6,7 @@ import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 
 /**
  * Project android.
- * Package pm12016g3.tln.univ.fr.vot.features.consult.cardview.
+ * Package pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.
  * File ConsultCardItem.java.
  * Created by Ysee on 18/05/2017 - 11:29.
  * www.yseemonnier.com
