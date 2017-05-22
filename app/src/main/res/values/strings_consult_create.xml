@@ -6,4 +6,6 @@
     <string name="fragment_title_algorithmes">Algorithmes</string>
     <string name="fragment_title_invitation">Invitation</string>
     <string name="fragment_title_confirm">Confirmation</string>
+    <string name="confidentiality">Confidentiality</string>
+    <string name="menu_item_next_arrow">Next</string>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Indicatif numbers array -->
+    <string-array name="algorithms">
+        <item>Type</item>
+        <item>Vote Simple</item>
+        <item>Kemeny-Young</item>
+        <item>STV</item>
+        <item>Jugement-Majoritaire</item>
+    </string-array>
+</resources>
