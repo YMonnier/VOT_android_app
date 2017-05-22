@@ -77,10 +77,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="19sp"
-                    android:text="@string/confidentiality"/>
+                    android:text="@string/tidy"/>
 
                 <Switch
-                    android:id="@+id/confidentiality"
+                    android:id="@+id/tidy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

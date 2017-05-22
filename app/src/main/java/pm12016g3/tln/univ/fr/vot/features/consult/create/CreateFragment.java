@@ -4,8 +4,10 @@ import android.app.Fragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import lombok.Getter;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.custom.LifelineView;
@@ -19,11 +21,13 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.custom.LifelineView;
  * https://github.com/YMonnier
  */
 
+
 @EFragment(R.layout.consult_create_fragment)
 public class CreateFragment extends Fragment {
+    @Getter
+    private SocialChoice socialChoice = new SocialChoice();
 
-    protected SocialChoice socialChoice = new SocialChoice();
-    protected int lifelineViewIndex = 1;
+    private int lifelineViewIndex = 1;
 
     @ViewById(R.id.lifelineView)
     LifelineView lifelineView;
@@ -48,12 +52,23 @@ public class CreateFragment extends Fragment {
      * @param fragment fragment to replace.
      * @param title fragment title.
      */
-    private void setFragment(Fragment fragment, String title) {
-        getFragmentManager()
+    public void setFragment(Fragment fragment, String title) {
+        getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainCreateContent, fragment)
                 .commit();
         getActivity().setTitle(title);
     }
 
+    @UiThread
+    public void nextStep() {
+        lifelineViewIndex += 1;
+        lifelineView.setSelected(lifelineViewIndex);
+    }
+
+    @UiThread
+    public void previousStep() {
+        lifelineViewIndex -= 1;
+        lifelineView.setSelected(lifelineViewIndex);
+    }
 }
