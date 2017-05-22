@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_titre">Titre</string>
+    <string name="prompt_description">Description</string>
+    <string name="fragment_title_settings">Paramètres</string>
+    <string name="fragment_title_algorithmes">Algorithmes</string>
+    <string name="fragment_title_invitation">Invitation</string>
+    <string name="fragment_title_confirm">Confirmation</string>
+</resources>

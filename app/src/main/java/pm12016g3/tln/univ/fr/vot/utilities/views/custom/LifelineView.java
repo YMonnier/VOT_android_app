@@ -30,7 +30,7 @@ public class LifelineView extends View {
     private int steps;
 
     /**
-     * Step selected range.
+     * Selection rank
      */
     private int selected;
 

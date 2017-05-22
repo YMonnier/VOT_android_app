@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import lombok.Data;
+
 /**
  * Project android.
  * Package pm12016g3.tln.univ.fr.vot.models.
@@ -9,8 +11,14 @@ package pm12016g3.tln.univ.fr.vot.models;
  * https://github.com/YMonnier
  */
 
+@Data
 public class SocialChoice {
     public enum Type {
         SIMPLE_TRANSFARABLE_VOTE, MAJORITY_JUGMENT, SIMPLE, KEMENY_YOUNG
     }
+
+    private String title;
+    private String description;
+    private Type type;
+
 }
