@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,9 +15,12 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment;
+import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
+import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -76,10 +80,10 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.sidebar_logout:
-
+                startActivity(new Intent(this, LoginActivity_.class));
                 break;
             case R.id.sidebar_about:
-
+                fragment = new AboutUsFragment_();
                 break;
         }
         assert fragment == null;
