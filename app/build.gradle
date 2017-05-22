@@ -81,7 +81,17 @@ dependencies {
         exclude module: 'design'
     }
     //  Lombok (@data)
+<<<<<<< HEAD
     
+=======
+    provided "org.projectlombok:lombok:1.12.6"
+
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.android.support:cardview-v7:22.1.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.google.android.gms:play-services:10.0.1'
+>>>>>>> e0f8502657404194c626c2ae3430eafbbe271720
 
     // Android Annotation (AA)
     apt "org.androidannotations:androidannotations:$AAVersion"
