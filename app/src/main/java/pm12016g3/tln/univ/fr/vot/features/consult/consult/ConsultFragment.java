@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,8 @@ import org.androidannotations.annotations.ViewById;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
@@ -92,7 +95,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
     @Override
     public void onClick(View view, int position) {
         Log.d(TAG, "onClick...");
-
+        startActivity(new Intent(getActivity().getApplicationContext(), ParticipationActivity_.class));
     }
 
     @Override

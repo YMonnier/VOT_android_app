@@ -47,14 +47,7 @@ public class ParticipationActivity extends AppCompatActivity {
         adapter.setItems(choices);
         choiceListView.setAdapter(adapter);
     }
-
-
-    @CheckedChange(R.id.participation_checkbox)
-    void checkBoxChecked(CompoundButton compoundButton, boolean isChecked){
-        Toast.makeText(getApplicationContext(),"change to "+isChecked,Toast.LENGTH_LONG).show();
-        Log.i(TAG,"change to "+isChecked);
-    }
-
+    
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
