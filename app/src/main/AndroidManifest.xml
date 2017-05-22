@@ -13,10 +13,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--
-            *** FIRST ACTIVITY ***
-        -->
-            <!-- android:name=".features.test.TestActivity_" -->
+
+        <!--             *** FIRST ACTIVITY *** -->
+        <!-- android:name=".features.test.TestActivity_" -->
         <activity
             android:name=".features.root.LoginActivity_"
             android:label="@string/app_name"
@@ -28,36 +27,40 @@
             </intent-filter>
         </activity>
 
-        <!--
-            *** ROOT PACKAGE ***
-        -->
+        <!--             *** ROOT PACKAGE *** -->
         <activity
             android:name=".features.root.RegistrationActivity_"
             android:parentActivityName=".features.root.LoginActivity_"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--
-            *** MAIN ACTIVITY ***
-        -->
+        <!--             *** MAIN ACTIVITY *** -->
         <activity
             android:name=".features.MainActivity_"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--
-            *** NETWORK PACKAGE ***
-        -->
+        <!--             *** NETWORK PACKAGE *** -->
         <activity
             android:name=".features.network.research.NetworkResearchActivity_"
-            android:label="@string/network_research_label"/>
+            android:label="@string/network_research_label" />
         <activity android:name=".features.test.TestActivity" />
 
+        <!--             *** CONSULT PACKAGE *** -->
+        <activity
+            android:name=".features.consult.participation.stv.ParticipationActivity_"
+            android:label="@string/consult_particiation_participation_label">
+<!--            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
 
         <!--
             *** DO NOT TOUCH! ***
             Activity for testing (UI + ACTIONS)
         -->
-        <activity
-            android:name=".features.test.TestActivity_"/>
+        <activity android:name=".features.test.TestActivity_" />
+        <activity android:name=".features.consult.participation.stv.ParticipationActivity"></activity>
     </application>
 
 </manifest>
