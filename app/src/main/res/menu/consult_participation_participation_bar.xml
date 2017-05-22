@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/participation_action_check"
+        android:icon="@drawable/ic_done_white_24px"
+        android:title="@string/network_research_action_check"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="100"/>
+</menu>

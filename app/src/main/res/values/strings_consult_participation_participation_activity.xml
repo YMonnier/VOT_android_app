@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consult_particiation_participation_label">Titre Choix Social</string>
+    <string name="consult_particiation_participation_vote_description">Super Description...</string>
+    <string name="consult_particiation_participation_choice_order">Votre ordre de préférence :</string>
+</resources>

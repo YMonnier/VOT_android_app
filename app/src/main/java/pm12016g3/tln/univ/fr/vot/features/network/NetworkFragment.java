@@ -74,7 +74,7 @@ public class NetworkFragment extends Fragment {
             adapter.addAll(allFriends);
         } else if (text.length() != 0) {
             for (NetWorkFragmentItem friend : allFriends) {
-                if (friend.getTitle().startsWith(text.toString())) {
+                if (friend.getTitle().toLowerCase().startsWith(text.toString().toLowerCase())) {
                     adapter.add(friend);
                 }
             }

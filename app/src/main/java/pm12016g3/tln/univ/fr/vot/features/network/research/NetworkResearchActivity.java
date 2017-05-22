@@ -91,7 +91,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
             adapter.addAll(allPersons);
         }else if(text.length() !=0){
             for (NetworkResearchItem person : allPersons) {
-                if (person.getTitle().startsWith(text.toString())) {
+                if (person.getTitle().toLowerCase().startsWith(text.toString().toLowerCase())) {
                     adapter.add(person);
                 }
             }
