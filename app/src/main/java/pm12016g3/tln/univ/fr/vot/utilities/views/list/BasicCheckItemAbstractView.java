@@ -19,28 +19,14 @@ import pm12016g3.tln.univ.fr.vot.R;
  * https://github.com/YMonnier
  */
 @EViewGroup
-public abstract class BasicItemAbstractView<T> extends BaseItemView<T> {
+public abstract class BasicCheckItemAbstractView<T> extends BaseItemView<T> {
     @ViewById(R.id.shared_list_basic_text_item)
     protected TextView title;
 
     @ViewById(R.id.shared_list_basic_selection_item)
     protected ImageView selecting;
 
-    public BasicItemAbstractView(Context context) {
+    public BasicCheckItemAbstractView(Context context) {
         super(context);
-        System.out.println("Test....");
-        //title = (TextView) findViewById(R.id.shared_list_basic_text_item);
-        //selecting = (ImageView) findViewById(R.id.shared_list_basic_selection_item);
     }
-
-/*
-    @Override
-    public void bind(BasicItem object) {
-        title.setText(object.getTitle());
-        if (object.isSelected())
-            selecting.setVisibility(VISIBLE);
-        else
-            selecting.setVisibility(INVISIBLE);
-    }
-    */
 }

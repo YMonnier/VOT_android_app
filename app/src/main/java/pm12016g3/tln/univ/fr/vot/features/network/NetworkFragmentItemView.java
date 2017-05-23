@@ -6,7 +6,7 @@ import org.androidannotations.annotations.EViewGroup;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItemAbstractView;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicCheckItemAbstractView;
 
 /**
  * Created by wenlixing on 17/05/2017.
@@ -14,7 +14,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItemAbstractView;
 
 @EViewGroup(R.layout.shared_listview_basic_item_view)
 public class NetworkFragmentItemView
-        extends BasicItemAbstractView<BasicItem> {
+        extends BasicCheckItemAbstractView<BasicItem> {
 
     public NetworkFragmentItemView(Context context) {
         super(context);

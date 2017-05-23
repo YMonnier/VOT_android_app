@@ -20,6 +20,6 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 public class NetworkResearchListAdapter extends ListViewAdapterBase<BasicItem, NetworkResearchItemView> {
     @Override
     protected NetworkResearchItemView onCreateItemView(ViewGroup parent) {
-        return new NetworkResearchItemView(parent.getContext());
+        return NetworkResearchItemView_.build(parent.getContext());
     }
 }

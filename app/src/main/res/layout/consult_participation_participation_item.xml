@@ -18,5 +18,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/participation_checkbox" />
+        android:id="@+id/participation_checkbox"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 </LinearLayout>

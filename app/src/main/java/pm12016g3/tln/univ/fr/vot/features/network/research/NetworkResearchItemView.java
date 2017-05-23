@@ -2,8 +2,11 @@ package pm12016g3.tln.univ.fr.vot.features.network.research;
 
 import android.content.Context;
 
+import org.androidannotations.annotations.EViewGroup;
+
+import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItemAbstractView;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicCheckItemAbstractView;
 
 /**
  * Project android.
@@ -14,8 +17,9 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItemAbstractView;
  * https://github.com/YMonnier
  */
 
+@EViewGroup(R.layout.shared_listview_basic_item_view)
 public class NetworkResearchItemView
-        extends BasicItemAbstractView<BasicItem> {
+        extends BasicCheckItemAbstractView<BasicItem> {
     public NetworkResearchItemView(Context context) {
         super(context);
     }
