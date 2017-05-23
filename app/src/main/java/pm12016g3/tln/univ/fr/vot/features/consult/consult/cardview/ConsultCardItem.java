@@ -32,7 +32,7 @@ public class ConsultCardItem {
             case MAJORITY_JUGMENT:
                 res = R.drawable.type_two;
                 break;
-            case SIMPLE:
+            case MAJORITY_BALLOT:
                 res = R.drawable.type_three;
                 break;
             case KEMENY_YOUNG:

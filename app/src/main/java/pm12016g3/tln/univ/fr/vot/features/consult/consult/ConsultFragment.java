@@ -73,7 +73,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         progressView.show();
 
         adapter
-                .add(new ConsultCardItem(SocialChoice.Type.SIMPLE, "Super Title..."))
+                .add(new ConsultCardItem(SocialChoice.Type.MAJORITY_BALLOT, "Super Title..."))
                 .add(new ConsultCardItem(SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE, "Super Title..."))
                 .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
                 .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))

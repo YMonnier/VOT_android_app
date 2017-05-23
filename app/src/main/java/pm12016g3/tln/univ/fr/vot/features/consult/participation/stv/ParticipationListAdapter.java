@@ -3,9 +3,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
 import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.EViewGroup;
 
-import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchItemView_;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 
 /**
