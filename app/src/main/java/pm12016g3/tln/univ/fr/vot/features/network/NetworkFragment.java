@@ -61,6 +61,7 @@ public class NetworkFragment extends Fragment {
         allFriends.add(new NetWorkFragmentItem("Coucou"));
         adapter.addAll(allFriends);
         friendListView.setAdapter(adapter);
+        friendListView.setTextFilterEnabled(true);
     }
 
     @TextChange(R.id.network_input_research)
@@ -69,7 +70,7 @@ public class NetworkFragment extends Fragment {
                                       int before,
                                       int start,
                                       int count) {
-        adapter.clear();
+       adapter.clear();
         if (text.length() == 0) {
             adapter.addAll(allFriends);
         } else if (text.length() != 0) {
@@ -80,6 +81,8 @@ public class NetworkFragment extends Fragment {
             }
         }
         adapter.notifyDataSetChanged();
+
+
     }
 
     @Click(R.id.fabAdd)
