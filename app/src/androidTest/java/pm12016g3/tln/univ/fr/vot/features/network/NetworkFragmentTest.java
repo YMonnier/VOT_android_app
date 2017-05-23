@@ -19,6 +19,7 @@ import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -75,6 +76,6 @@ public class NetworkFragmentTest {
         showFragment();
         onView(withId(R.id.network_input_research))
                 .perform(typeText(INPUT_TEXT));
-        onData(allOf(is(instanceOf(NetWorkFragmentItem.class)),withText(INPUT_TEXT)));
+        onData(allOf(is(instanceOf(BasicItem.class)),withText(INPUT_TEXT)));
     }
 }

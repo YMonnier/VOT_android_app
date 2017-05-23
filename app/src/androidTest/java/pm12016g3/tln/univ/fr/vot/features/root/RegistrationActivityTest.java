@@ -41,7 +41,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_field_required))));
+        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_field_required))));
     }
 
     /**
@@ -53,7 +53,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(EMPTY_VALUE),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_field_required))));
+        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_field_required))));
     }
 
     /**
@@ -65,7 +65,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_EMAIL),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(EMPTY_VALUE),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_confirmation_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_field_required))));
+        onView(withId(R.id.input_confirmation_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_field_required))));
     }
     /**
      * Check if EmailValidator is valid
@@ -76,7 +76,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_invalid_email))));
+        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_invalid_email))));
     }
 
     /**
@@ -88,7 +88,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(NOT_VALID_PASSWORD),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(NOT_VALID_PASSWORD),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_invalid_password))));
+        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_invalid_password))));
     }
 
     /**
@@ -100,7 +100,7 @@ public class RegistrationActivityTest {
         onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.input_confirmation_password)).perform(typeText(NOT_VALID_PASSWORD),closeSoftKeyboard());
         onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_confirmation_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.registration_error_not_matching_password))));
+        onView(withId(R.id.input_confirmation_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_not_matching_password))));
     }
 
     @Test

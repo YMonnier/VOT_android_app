@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.network.NetWorkFragmentItem;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -48,6 +48,6 @@ public class NetworkResearchActivityTest {
     public void friendsListViewFilterTest(){
         onView(withId(R.id.network_research_input_research))
                 .perform(typeText(INPUT_TEXT));
-        onData(allOf(is(instanceOf(NetworkResearchItem.class)),withText(INPUT_TEXT)));
+        onData(allOf(is(instanceOf(BasicItem.class)),withText(INPUT_TEXT)));
     }
 }
