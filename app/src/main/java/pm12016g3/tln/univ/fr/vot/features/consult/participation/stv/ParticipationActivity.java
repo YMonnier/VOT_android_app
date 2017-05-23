@@ -43,7 +43,7 @@ public class ParticipationActivity extends AppCompatActivity {
         adapter.setItems(choices);
         choiceListView.setAdapter(adapter);
     }
-    
+
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
