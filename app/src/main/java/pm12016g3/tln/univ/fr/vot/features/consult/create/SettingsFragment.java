@@ -3,21 +3,26 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create;
 import android.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.SimpleVoteFragment_;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
+import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
  * Project android.
@@ -83,8 +88,27 @@ public class SettingsFragment extends Fragment
     void next() {
         Log.d(TAG, "Next button");
         if (validate()) {
+            ViewUtils.closeKeyboard(getActivity(),
+                    getActivity().getCurrentFocus());
             parent.nextStep();
             parent.setFragment(new SimpleVoteFragment_(), "Vote Simple");
+        }
+    }
+
+    /**
+     * Check all input data when user
+     * press on next button edit text.
+     *
+     * @param textView action source
+     * @param actionId type of action(IME_ID)
+     * @param keyEvent event
+     */
+    @EditorAction({R.id.input_title})
+    void onNextActionsEditText(TextView textView,
+                               int actionId,
+                               KeyEvent keyEvent) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            validate();
         }
     }
 
@@ -173,6 +197,18 @@ public class SettingsFragment extends Fragment
         title.setEnabled(!status);
         description.setEnabled(!status);
         algorithms.setEnabled(!status);
+    }
+
+    /**
+     * Handler when user
+     * clicks on input description to hide
+     * keyboard if necessary.
+     */
+    @Click(R.id.input_desc)
+    void clickOnInputDescription() {
+        Log.d(TAG, "clickOnInputDescription");
+        ViewUtils.closeKeyboard(getActivity(),
+                getActivity().getCurrentFocus());
     }
 
     @Click(R.id.algorithms_help)

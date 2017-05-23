@@ -11,5 +11,7 @@
     <string name="menu_item_next_arrow">Next</string>
     <string name="menu_item_back_arrow">Previous</string>
     <string name="error_">Previous</string>
+    <string name="candidate">Candidate</string>
+    <string name="add_candidate">Ajouter</string>
 
 </resources>
