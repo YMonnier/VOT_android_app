@@ -9,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:id="@+id/network_friend_research_list_title"/>
+        android:id="@+id/shared_list_basic_text_item"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/network_friend_research_list_selecting"
+        android:id="@+id/shared_list_basic_selection_item"
         android:src="@drawable/ic_done_black"/>
 </LinearLayout>

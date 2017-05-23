@@ -1,15 +1,12 @@
 package pm12016g3.tln.univ.fr.vot.features.network.research;
 
 import android.content.Context;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicCheckItemAbstractView;
 
 /**
  * Project android.
@@ -20,23 +17,16 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
  * https://github.com/YMonnier
  */
 
-@EViewGroup(R.layout.network_friend_research_list_item)
-public class NetworkResearchItemView extends LinearLayout
-        implements Bindable<NetworkResearchItem> {
-
-    @ViewById(R.id.network_friend_research_list_title)
-    TextView title;
-
-    @ViewById(R.id.network_friend_research_list_selecting)
-    ImageView selecting;
-
+@EViewGroup(R.layout.shared_listview_basic_item_view)
+public class NetworkResearchItemView
+        extends BasicCheckItemAbstractView<BasicItem> {
     public NetworkResearchItemView(Context context) {
         super(context);
     }
 
     @Override
-    public void bind(NetworkResearchItem object) {
-        title.setText(object.getTitle());
+    public void bind(BasicItem object) {
+        this.title.setText(object.getTitle());
         if (object.isSelected())
             selecting.setVisibility(VISIBLE);
         else

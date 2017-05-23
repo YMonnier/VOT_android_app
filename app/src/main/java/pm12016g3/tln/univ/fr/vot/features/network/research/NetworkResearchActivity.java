@@ -20,6 +20,7 @@ import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -45,7 +46,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
     @Bean
     NetworkResearchListAdapter adapter;
 
-    List<NetworkResearchItem> allPersons = new ArrayList<>();
+    List<BasicItem> allPersons = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -53,9 +54,9 @@ public class NetworkResearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        allPersons.add(new NetworkResearchItem("John"));
-        allPersons.add(new NetworkResearchItem("Paul"));
-        allPersons.add(new NetworkResearchItem("Jack"));
+        allPersons.add(new BasicItem("John"));
+        allPersons.add(new BasicItem("Paul"));
+        allPersons.add(new BasicItem("Jack"));
         adapter.addAll(allPersons);
         personsListView.setAdapter(adapter);
 
@@ -74,7 +75,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
     }
 
     @ItemClick(R.id.network_research_persons_list)
-    void personListItemClicked(NetworkResearchItem item) {
+    void personListItemClicked(BasicItem item) {
         Log.d(TAG, "Item clicked... " + item.toString());
         item.setSelected(!item.isSelected());
         adapter.notifyDataSetChanged();
@@ -90,7 +91,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
         if(text.length() == 0){
             adapter.addAll(allPersons);
         }else if(text.length() !=0){
-            for (NetworkResearchItem person : allPersons) {
+            for (BasicItem person : allPersons) {
                 if (person.getTitle().toLowerCase().startsWith(text.toString().toLowerCase())) {
                     adapter.add(person);
                 }

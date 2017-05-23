@@ -1,32 +1,31 @@
 package pm12016g3.tln.univ.fr.vot.features.network;
 
 import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchItem;
-import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicCheckItemAbstractView;
 
 /**
  * Created by wenlixing on 17/05/2017.
  */
-@EViewGroup(R.layout.network_friend_list_item)
-public class NetworkFragmentItemView extends LinearLayout
-        implements Bindable<NetWorkFragmentItem> {
 
-    @ViewById(R.id.network_friend_list_title)
-    TextView title;
+@EViewGroup(R.layout.shared_listview_basic_item_view)
+public class NetworkFragmentItemView
+        extends BasicCheckItemAbstractView<BasicItem> {
 
     public NetworkFragmentItemView(Context context) {
         super(context);
     }
 
     @Override
-    public void bind(NetWorkFragmentItem object) {
+    public void bind(BasicItem object) {
         title.setText(object.getTitle());
+        if (object.isSelected())
+            selecting.setVisibility(VISIBLE);
+        else
+            selecting.setVisibility(INVISIBLE);
     }
 }

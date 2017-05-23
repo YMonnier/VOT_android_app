@@ -1,7 +1,9 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
 import android.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -31,9 +33,17 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.SimpleVoteFr
 public class SettingsFragment extends Fragment
         implements Validable {
     private static final String TAG = SettingsFragment.class.getSimpleName();
+
+    /**
+     * Default spinner value
+     * That attribute should not be selected.
+     */
+    private final String DEFAULT_ALGORITHM = "Type";
+
     /**
      * Confidentiality boolean.
-     * The user can swift on/off the confidentiality.
+     * The user can swift on/off
+     * the confidentiality parameter.
      */
     @ViewById(R.id.confidentiality)
     Switch confidentiality;
@@ -44,6 +54,9 @@ public class SettingsFragment extends Fragment
     @ViewById(R.id.algorithms)
     Spinner algorithms;
 
+    /**
+     * Social Choice Title.
+     */
     @ViewById(R.id.input_title)
     EditText title;
 
@@ -77,7 +90,58 @@ public class SettingsFragment extends Fragment
 
     @Override
     public boolean validate() {
-        return false;
+        updateResetErrorUi();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        Object selectedItem = algorithms.getSelectedItem();
+        String title = this.title.getText().toString();
+        String description = this.description.getText().toString();
+
+        assert selectedItem != null;
+        if (TextUtils.isEmpty(title)) {
+            updateErrorUi(this.title, getString(R.string.error_field_required));
+            if (focusView == null)
+                focusView = this.title;
+            cancel = true;
+        } else if (TextUtils.isEmpty(description)) {
+            updateErrorUi(this.description, getString(R.string.error_field_required));
+            if (focusView == null)
+                focusView = this.description;
+            cancel = true;
+        } else if (selectedItem != null) {
+            String algorithm = selectedItem.toString();
+            Log.d(TAG, algorithm);
+            if (algorithm.equals(DEFAULT_ALGORITHM)) {
+                cancel = true;
+                if (focusView == null)
+                    focusView = algorithms;
+            }
+        }
+
+        Log.d(TAG, String.valueOf(cancel));
+        if (cancel) {
+            // There was an error; don't attempt, focus on the first
+            // form field with an error.
+            assert focusView != null;
+            if (focusView != null)
+                focusView.requestFocus();
+        }
+
+
+        return !cancel;
+    }
+
+    /**
+     * Reset all error input views.
+     */
+    @UiThread
+    void updateResetErrorUi() {
+        // Reset errors.
+        title.setError(null);
+        description.setError(null);
+        confidentiality.setError(null);
     }
 
 
@@ -93,6 +157,11 @@ public class SettingsFragment extends Fragment
         view.setError(error);
     }
 
+    @UiThread
+    void updateErrorUi(final Switch view, final String error) {
+        view.setError(error);
+    }
+
     /**
      * Update clickable button depending on a status
      *
@@ -101,9 +170,9 @@ public class SettingsFragment extends Fragment
      */
     @UiThread
     void updateLockUi(boolean status) {
-        //passwordView.setEnabled(!status);
-        //emailView.setEnabled(!status);
-        //loginConfirmation.setEnabled(!status);
+        title.setEnabled(!status);
+        description.setEnabled(!status);
+        algorithms.setEnabled(!status);
     }
 
     @Click(R.id.algorithms_help)

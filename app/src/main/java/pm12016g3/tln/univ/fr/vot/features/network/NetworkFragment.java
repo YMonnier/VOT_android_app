@@ -3,13 +3,9 @@ package pm12016g3.tln.univ.fr.vot.features.network;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.annimon.stream.Stream;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -20,10 +16,10 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchActivity_;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -50,15 +46,15 @@ public class NetworkFragment extends Fragment {
     @Bean
     NetworkFragmentListAdapter adapter;
 
-    List<NetWorkFragmentItem> allFriends = new ArrayList<>();
+    List<BasicItem> allFriends = new ArrayList<>();
 
     @AfterViews
     void init() {
-        allFriends.add(new NetWorkFragmentItem("Donut"));
-        allFriends.add(new NetWorkFragmentItem("Eclair"));
-        allFriends.add(new NetWorkFragmentItem("Lollipop"));
-        allFriends.add(new NetWorkFragmentItem("Count"));
-        allFriends.add(new NetWorkFragmentItem("Coucou"));
+        allFriends.add(new BasicItem("Donut"));
+        allFriends.add(new BasicItem("Eclair"));
+        allFriends.add(new BasicItem("Lollipop"));
+        allFriends.add(new BasicItem("Count"));
+        allFriends.add(new BasicItem("Coucou"));
         adapter.addAll(allFriends);
         friendListView.setAdapter(adapter);
         friendListView.setTextFilterEnabled(true);
@@ -74,7 +70,7 @@ public class NetworkFragment extends Fragment {
         if (text.length() == 0) {
             adapter.addAll(allFriends);
         } else if (text.length() != 0) {
-            for (NetWorkFragmentItem friend : allFriends) {
+            for (BasicItem friend : allFriends) {
                 if (friend.getTitle().toLowerCase().startsWith(text.toString().toLowerCase())) {
                     adapter.add(friend);
                 }
