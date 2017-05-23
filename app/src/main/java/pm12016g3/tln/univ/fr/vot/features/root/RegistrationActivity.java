@@ -111,34 +111,34 @@ public class RegistrationActivity extends AppCompatActivity {
         View focusView = null;
 
         if (TextUtils.isEmpty(email)) {
-            updateErrorUi(emailView, getString(R.string.registration_error_field_required));
+            updateErrorUi(emailView, getString(R.string.error_field_required));
             if (focusView == null)
                 focusView = emailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            updateErrorUi(emailView, getString(R.string.login_error_invalid_email));
+            updateErrorUi(emailView, getString(R.string.error_invalid_email));
             if (focusView == null)
                 focusView = emailView;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(password)) {
-            updateErrorUi(passwordView, getString(R.string.registration_error_field_required));
+            updateErrorUi(passwordView, getString(R.string.error_field_required));
             if (focusView == null)
                 focusView = passwordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
-            updateErrorUi(passwordView, getString(R.string.registration_error_invalid_password));
+            updateErrorUi(passwordView, getString(R.string.error_invalid_password));
             if (focusView == null)
                 focusView = passwordView;
             cancel = true;
         }else if(TextUtils.isEmpty(confirmPassword)) {
-            updateErrorUi(passwordConfirmationView, getString(R.string.registration_error_field_required));
+            updateErrorUi(passwordConfirmationView, getString(R.string.error_field_required));
             if (focusView == null)
                 focusView = passwordConfirmationView;
             cancel = true;
         }else if (!isPasswordValid(password, confirmPassword)) {
-            updateErrorUi(passwordConfirmationView, getString(R.string.registration_error_not_matching_password));
+            updateErrorUi(passwordConfirmationView, getString(R.string.error_not_matching_password));
             if (focusView == null)
                 focusView = passwordConfirmationView;
             cancel = true;

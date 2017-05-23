@@ -120,22 +120,22 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            updateErrorUi(passwordView, getString(R.string.login_error_field_required));
+            updateErrorUi(passwordView, getString(R.string.error_field_required));
             focusView = passwordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
-            updateErrorUi(passwordView, getString(R.string.login_error_invalid_password));
+            updateErrorUi(passwordView, getString(R.string.error_invalid_password));
             focusView = passwordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            updateErrorUi(emailView, getString(R.string.login_error_field_required));
+            updateErrorUi(emailView, getString(R.string.error_field_required));
             focusView = emailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            updateErrorUi(emailView, getString(R.string.login_error_invalid_email));
+            updateErrorUi(emailView, getString(R.string.error_invalid_email));
             focusView = emailView;
             cancel = true;
         }
