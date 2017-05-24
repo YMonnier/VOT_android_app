@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
+package pm12016g3.tln.univ.fr.vot.features.shared;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,13 +16,13 @@ import org.androidannotations.annotations.EView;
  */
 
 @EView
-public class AddButton extends android.support.v7.widget.AppCompatButton {
+public class AnimatedButton extends android.support.v7.widget.AppCompatButton {
 
-    public AddButton(Context context, AttributeSet attrs) {
+    public AnimatedButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AddButton(Context context) {
+    public AnimatedButton(Context context) {
         super(context);
     }
 

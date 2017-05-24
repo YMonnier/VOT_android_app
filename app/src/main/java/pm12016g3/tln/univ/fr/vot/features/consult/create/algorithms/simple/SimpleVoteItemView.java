@@ -28,5 +28,10 @@ public class SimpleVoteItemView
     @Override
     public void bind(BasicItem object) {
         title.setText(object.getTitle());
+        this.title.setText(object.getTitle());
+        if (object.isSelected())
+            selecting.setVisibility(VISIBLE);
+        else
+            selecting.setVisibility(INVISIBLE);
     }
 }
