@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
+package pm12016g3.tln.univ.fr.vot.features.shared;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,21 +16,21 @@ import org.androidannotations.annotations.EView;
  */
 
 @EView
-public class AddButton extends android.support.v7.widget.AppCompatButton {
+public class AnimatedButton extends android.support.v7.widget.AppCompatButton {
 
-    public AddButton(Context context, AttributeSet attrs) {
+    public AnimatedButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AddButton(Context context) {
+    public AnimatedButton(Context context) {
         super(context);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        ScaleAnimation anim = new ScaleAnimation(0,1,0,1);
-        anim.setDuration(500);
+        ScaleAnimation anim = new ScaleAnimation(0, 1, 0, 1);
+        anim.setDuration(200);
         anim.setFillAfter(true);
         this.startAnimation(anim);
     }
