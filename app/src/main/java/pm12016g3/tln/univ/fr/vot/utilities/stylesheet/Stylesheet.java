@@ -23,7 +23,7 @@ public class Stylesheet {
          *
          * @param text, font text
          */
-        private Font(final String text) {
+        Font(final String text) {
             this.text = text;
         }
 

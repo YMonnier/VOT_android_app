@@ -4,20 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/network_fragment">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/network_input_research"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/network_action_research"/>
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/network_input_research"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/network_action_research"/>
+        </android.support.design.widget.TextInputLayout>
+
         <ListView
             android:id="@+id/network_friend_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/network_input_research"/>
-    </RelativeLayout>
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"

@@ -4,12 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="4dp"
     android:id="@+id/network_research_activity">
-    <EditText
-        android:id="@+id/network_research_input_research"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/network_research_action_research" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/network_research_input_research"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/network_research_action_research" />
+    </android.support.design.widget.TextInputLayout>
     <ListView
         android:id="@+id/network_research_persons_list"
         android:layout_width="match_parent"
