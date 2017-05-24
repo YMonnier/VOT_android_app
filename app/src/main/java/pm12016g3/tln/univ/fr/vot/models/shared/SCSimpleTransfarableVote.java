@@ -15,7 +15,7 @@ public class SCSimpleTransfarableVote implements SCData {
         OCCURENCE("Occurence");
         private String value;
 
-        private Elimination(String value) {
+        Elimination(String value) {
             this.value = value;
         }
 
