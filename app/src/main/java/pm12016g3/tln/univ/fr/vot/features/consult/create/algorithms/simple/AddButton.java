@@ -29,8 +29,8 @@ public class AddButton extends android.support.v7.widget.AppCompatButton {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        ScaleAnimation anim = new ScaleAnimation(0,1,0,1);
-        anim.setDuration(500);
+        ScaleAnimation anim = new ScaleAnimation(0, 1, 0, 1);
+        anim.setDuration(200);
         anim.setFillAfter(true);
         this.startAnimation(anim);
     }
