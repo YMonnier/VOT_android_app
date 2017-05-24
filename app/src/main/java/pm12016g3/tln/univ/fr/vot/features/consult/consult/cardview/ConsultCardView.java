@@ -30,6 +30,9 @@ implements Bindable<ConsultCardItem> {
     @ViewById(R.id.text)
     TextView title;
 
+    @ViewById(R.id.is_closed_tv)
+    TextView closed;
+
     public ConsultCardView(Context context) {
         super(context);
     }
@@ -38,5 +41,10 @@ implements Bindable<ConsultCardItem> {
     public void bind(ConsultCardItem object) {
         imageView.setImageResource(object.getDrawableImage());
         title.setText(object.getTitle());
+        if(object.isClosed()){
+            closed.setVisibility(VISIBLE);
+        }else{
+            closed.setVisibility(INVISIBLE);
+        }
     }
 }

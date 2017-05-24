@@ -17,10 +17,12 @@ import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 public class ConsultCardItem {
     private SocialChoice.Type type;
     private String title;
+    private boolean closed;
 
-    public ConsultCardItem(SocialChoice.Type type, String title) {
+    public ConsultCardItem(SocialChoice.Type type, String title, boolean closed ) {
         this.type = type;
         this.title = title;
+        this.closed = closed;
     }
 
     public int getDrawableImage() {
