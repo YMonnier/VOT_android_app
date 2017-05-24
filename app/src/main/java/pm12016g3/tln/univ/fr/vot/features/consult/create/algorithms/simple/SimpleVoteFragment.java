@@ -1,6 +1,8 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
 
 import android.app.Fragment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +27,7 @@ import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
@@ -44,6 +47,9 @@ public class SimpleVoteFragment extends Fragment
     private static final String TAG = SimpleVoteFragment.class.getSimpleName();
     private final int ADD_BUTTON_TAG = 143;
     private final int TRASH_BUTTON_TAG = 243;
+
+    @ViewById(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
     @ViewById(R.id.input_candidat)
     EditText inputCandidat;
@@ -118,6 +124,7 @@ public class SimpleVoteFragment extends Fragment
     /**
      * Handle when user does a long tap on the list view.
      * Delete the item selected.
+     *
      * @param item item selected.
      */
     @ItemLongClick(R.id.listView)
@@ -202,9 +209,13 @@ public class SimpleVoteFragment extends Fragment
     void updateList(String string) {
         Log.d(TAG, "Add candidat... " + string);
         ViewUtils.closeKeyboard(getActivity(), getActivity().getCurrentFocus());
-        adapter.add(new BasicItem(string));
-        adapter.notifyDataSetChanged();
-        inputCandidat.setText(null);
+        BasicItem item = new BasicItem(string);
+        if (!adapter.getItems().contains(item)) {
+            adapter.add(item);
+            adapter.notifyDataSetChanged();
+            inputCandidat.setText(null);
+        } else
+            Snack.showFailureMessage(coordinatorLayout, "Candidat déjà existant!", Snackbar.LENGTH_LONG);
     }
 
     /**
