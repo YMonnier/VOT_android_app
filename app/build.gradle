@@ -112,6 +112,9 @@ dependencies {
     // A simple material design app intro with cool animations and a fluent API.
     //compile 'com.heinrichreimersoftware:material-intro:1.6.2'
 
+    // Face SDK for OAuth
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+
     testCompile 'junit:junit:4.12'
 
     //UI test Google maps
