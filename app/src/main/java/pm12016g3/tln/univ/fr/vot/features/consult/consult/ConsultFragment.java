@@ -2,24 +2,35 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.support.transition.Visibility;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
 import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 /**
  * Project android.
@@ -56,6 +67,16 @@ public class ConsultFragment extends Fragment implements ClickListener {
      */
     LoaderDialog progressView;
 
+    /**
+     * Social choices
+     */
+    List<SocialChoice> socialChoiceList = new ArrayList<>();
+
+    /**
+     * Consult Card Items
+     */
+    List<ConsultCardItem> consultCardItemList = new ArrayList<>();
+
     @AfterViews
     void init() {
         Log.d(TAG, "Init fragment...");
@@ -73,16 +94,22 @@ public class ConsultFragment extends Fragment implements ClickListener {
     void loadData() {
         // TODO: Background task + API Request
         progressView.show();
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.KEMENY_YOUNG,true,true));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.MAJORITY_JUGMENT,true,false));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE,true,false));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.KEMENY_YOUNG,true,false));
 
-        adapter
-                .add(new ConsultCardItem(SocialChoice.Type.MAJORITY_BALLOT, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.KEMENY_YOUNG, "Super Title..."))
-                .add(new ConsultCardItem(SocialChoice.Type.MAJORITY_JUGMENT, "Super Title..."));
+        for(SocialChoice sc : socialChoiceList){
+            consultCardItemList
+                    .add(new ConsultCardItem(sc.getType(),sc.getTitle(),sc.isClosed()));
+        }
+
+        adapter.addAll(consultCardItemList);
+
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
                 recyclerView,
@@ -93,8 +120,13 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
     @Override
     public void onClick(View view, int position) {
-        Log.d(TAG, "onClick...");
-        startActivity(new Intent(getActivity().getApplicationContext(), ParticipationActivity_.class));
+
+       int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
+        if(visibility==VISIBLE){
+            startActivity(new Intent(getActivity().getApplicationContext(),ResultActivity_.class));
+        }else {
+            startActivity(new Intent(getActivity().getApplicationContext(),ParticipationActivity_.class));
+        }
     }
 
     @Override

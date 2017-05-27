@@ -37,14 +37,16 @@ public class SocialChoice<T extends SCData> {
     private Type type;
     private boolean confidentiality;
     private T data;
+    private boolean closed;
 
     public SocialChoice() {
     }
 
-    public SocialChoice(String title, String description, Type type, boolean confidentiality) {
+    public SocialChoice(String title, String description, Type type, boolean confidentiality,boolean closed) {
         this.title = title;
         this.description = description;
         this.type = type;
         this.confidentiality = confidentiality;
+        this.closed = closed;
     }
 }

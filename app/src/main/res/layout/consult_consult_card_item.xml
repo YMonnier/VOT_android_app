@@ -15,6 +15,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/is_closed_tv"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/vote_closed"
+            android:gravity="center"/>
+
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
