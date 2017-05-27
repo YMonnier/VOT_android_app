@@ -1,7 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
 
 import android.app.Fragment;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,11 +47,11 @@ public class SimpleVoteFragment extends Fragment
     private final int ADD_BUTTON_TAG = 143;
     private final int TRASH_BUTTON_TAG = 243;
 
-    @ViewById(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
-
     @ViewById(R.id.input_candidat)
     EditText inputCandidat;
+
+    @ViewById(R.id.input_nb_choices)
+    EditText inputNbChoice;
 
     @ViewById(R.id.listView)
     ListView listView;
@@ -163,13 +162,20 @@ public class SimpleVoteFragment extends Fragment
      */
     private void attempt() {
         String candidat = inputCandidat.getText().toString();
-        inputCandidat.setError(null);
+        String nbChoice = inputNbChoice.getText().toString();
+        resetErrorUi();
+
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(candidat)) {
             focusView = inputCandidat;
             updateErrorUi(inputCandidat, getString(R.string.error_field_required));
+            cancel = true;
+        } else if (TextUtils.isEmpty(nbChoice)) {
+            if (focusView == null)
+                focusView = inputNbChoice;
+            updateErrorUi(inputNbChoice, getString(R.string.error_field_required));
             cancel = true;
         }
 
@@ -215,7 +221,7 @@ public class SimpleVoteFragment extends Fragment
             adapter.notifyDataSetChanged();
             inputCandidat.setText(null);
         } else
-            Snack.showFailureMessage(coordinatorLayout, "Candidat déjà existant!", Snackbar.LENGTH_LONG);
+            Snack.showFailureMessage(getView(), "Candidat déjà existant!", Snackbar.LENGTH_LONG);
     }
 
     /**
@@ -228,6 +234,15 @@ public class SimpleVoteFragment extends Fragment
     @UiThread
     void updateErrorUi(final EditText view, final String error) {
         view.setError(error);
+    }
+
+    /**
+     * Reset all error input view
+     */
+    @UiThread
+    void resetErrorUi() {
+        inputCandidat.setError(null);
+        inputNbChoice.setError(null);
     }
 
     /**

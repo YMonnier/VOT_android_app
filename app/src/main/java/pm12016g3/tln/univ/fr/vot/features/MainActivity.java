@@ -15,12 +15,11 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment;
 import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
-import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
+import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.sidebar_logout:
-                startActivity(new Intent(this, LoginActivity_.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.sidebar_about:
                 fragment = new AboutUsFragment_();
