@@ -1,6 +1,8 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
 
 import android.app.Fragment;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.annimon.stream.Stream;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -137,6 +141,7 @@ public class SimpleVoteFragment extends Fragment
      *
      * @param view button clicked
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
         AnimatedButton button = (AnimatedButton) view;
@@ -144,12 +149,13 @@ public class SimpleVoteFragment extends Fragment
             if (button.getTag().equals(ADD_BUTTON_TAG)) {
                 attempt();
             } else if (button.getTag().equals(TRASH_BUTTON_TAG)) {
-                for (BasicItem item : adapter.getItems()) {
-                    if (item.isSelected()) {
-                        Log.d(TAG, "Delete this item... " + item);
-                        adapter.getItems().remove(item);
-                    }
-                }
+
+                adapter.getItems()
+                        .removeAll(
+                                Stream.of(adapter.getItems())
+                                        .filter(BasicItem::isSelected)
+                                        .toList());
+
                 adapter.notifyDataSetChanged();
                 removeTrashButton();
             }

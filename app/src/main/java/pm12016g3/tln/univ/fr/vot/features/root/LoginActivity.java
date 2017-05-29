@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -30,9 +31,9 @@ import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
  * https://github.com/YMonnier
  */
 
-//@EActivity(R.layout.root_login_activity)
 public class LoginActivity extends AppCompatActivity
-        implements FacebookCallback<LoginResult>, View.OnClickListener {
+        implements FacebookCallback<LoginResult>,
+        View.OnClickListener {
 
     private final static String TAG = LoginActivity.class.getSimpleName();
 
@@ -71,6 +72,10 @@ public class LoginActivity extends AppCompatActivity
         loginConfirmation.setOnClickListener(this);
 
         checkAuthentication();
+
+
+        Button test = (Button) findViewById(R.id.test_button);
+        test.setOnClickListener(this);
     }
 
     private void checkAuthentication() {
@@ -98,7 +103,10 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        LoginManager.getInstance().registerCallback(callbackManager, this);
+        if (view.getId() == R.id.test_button)
+            goToHomeView();
+        else
+            LoginManager.getInstance().registerCallback(callbackManager, this);
     }
 
     @Override
