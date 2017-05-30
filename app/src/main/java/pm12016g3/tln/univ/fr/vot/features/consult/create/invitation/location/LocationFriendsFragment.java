@@ -5,6 +5,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.UiThread;
@@ -51,11 +52,20 @@ public class LocationFriendsFragment extends Fragment {
      */
     private int currentRadius = MIN_RADIUS;
 
+    /**
+     * Creating facade for
+     * the map navigation manipulation.
+     */
+    @Bean(MapNavigation.class)
+    MapNavigation mapNavigation;
+
     @AfterViews
     void init() {
         seekBar.setMax((MAX_RADIUS - MIN_RADIUS) / STEP_RADIUS);
         seekBar.setProgress(MIN_RADIUS);
         radiusLabel.setText(String.valueOf(currentRadius));
+
+        //mapNavigation.init();
     }
 
     @SeekBarProgressChange(R.id.seekBar)

@@ -134,7 +134,6 @@ dependencies {
 }
 
 // Stay at the bottom
-//apply plugin: 'com.google.gms.google-services'
-
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application' //or apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'

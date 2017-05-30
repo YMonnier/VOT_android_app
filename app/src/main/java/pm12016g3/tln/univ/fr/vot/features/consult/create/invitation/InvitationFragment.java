@@ -6,6 +6,7 @@ import android.widget.Switch;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -63,16 +64,13 @@ public class InvitationFragment extends Fragment
 
     /**
      * Change the content view with a specific fragment.
-     *
      * @param fragment fragment to replace.
      */
-    public void setFragment(Fragment fragment) {
+    @UiThread
+    void setFragment(Fragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainCreateContent, fragment)
                 .commit();
     }
-
-
-
 }
