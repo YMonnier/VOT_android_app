@@ -101,6 +101,7 @@ public class SimpleVoteFragment extends Fragment
     void next() {
         Log.d(TAG, "Next button");
         parent.setFragment(new InvitationFragment_(), "Invitation");
+        parent.nextStep();
     }
 
     /**

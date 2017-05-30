@@ -2,13 +2,16 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create.invitation;
 
 import android.app.Fragment;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.friends.InvitationFriendsFragment_;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.location.LocationFriendsFragment_;
 
 /**
  * Project android.
@@ -23,6 +26,14 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.friends.Invi
 public class InvitationFragment extends Fragment
         implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = InvitationFragment.class.getSimpleName();
+
+    /**
+     * Switch to choose friend invitation
+     * or location invitation.
+     */
+    @ViewById(R.id.around_me)
+    Switch around_me;
+
     /**
      * Parent fragment.
      * This variable is used to send and
@@ -34,16 +45,20 @@ public class InvitationFragment extends Fragment
     void init() {
         parent = (CreateFragment) getParentFragment();
         setDefaultFragment();
+        around_me.setOnCheckedChangeListener(this);
     }
 
     private void setDefaultFragment() {
         setFragment(new InvitationFriendsFragment_());
-        parent.nextStep();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+        if (b) {
+            setFragment(new LocationFriendsFragment_());
+        } else {
+            setDefaultFragment();
+        }
     }
 
     /**
