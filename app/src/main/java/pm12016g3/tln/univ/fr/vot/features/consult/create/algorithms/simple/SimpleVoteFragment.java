@@ -19,6 +19,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemLongClick;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
@@ -93,6 +95,12 @@ public class SimpleVoteFragment extends Fragment
         Log.d(TAG, "Init");
         parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
+    }
+
+    @OptionsItem(R.id.menu_item_next_arrow)
+    void next() {
+        Log.d(TAG, "Next button");
+        parent.setFragment(new InvitationFragment_(), "Invitation");
     }
 
     /**

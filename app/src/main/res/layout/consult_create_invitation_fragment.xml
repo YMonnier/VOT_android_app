@@ -7,7 +7,7 @@
     <ScrollView
         android:id="@+id/create_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -49,6 +49,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="pm12016g3.tln.univ.fr.vot.features.MainActivity_"
-        tools:showIn="@layout/main_app_bar_main"/>
+        tools:showIn="@layout/main_app_bar_main" />
 
 </LinearLayout>

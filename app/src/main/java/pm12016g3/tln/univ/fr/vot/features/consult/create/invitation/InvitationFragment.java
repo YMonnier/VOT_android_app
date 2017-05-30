@@ -22,7 +22,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.friends.Invi
 @EFragment(R.layout.consult_create_invitation_fragment)
 public class InvitationFragment extends Fragment
         implements CompoundButton.OnCheckedChangeListener {
-
+    private static final String TAG = InvitationFragment.class.getSimpleName();
     /**
      * Parent fragment.
      * This variable is used to send and
@@ -38,6 +38,7 @@ public class InvitationFragment extends Fragment
 
     private void setDefaultFragment() {
         setFragment(new InvitationFriendsFragment_());
+        parent.nextStep();
     }
 
     @Override
@@ -56,4 +57,7 @@ public class InvitationFragment extends Fragment
                 .replace(R.id.mainCreateContent, fragment)
                 .commit();
     }
+
+
+
 }
