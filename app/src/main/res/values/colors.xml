@@ -10,4 +10,5 @@
     <color name="vot_white">#ffffff</color>
     <color name="vot_purple">#A950DC</color>
     <color name="vot_gray">#979797</color>
+    <color name="list_item_background">#AACCCCCC</color>
 </resources>

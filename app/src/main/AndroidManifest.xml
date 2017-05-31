@@ -22,11 +22,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+<!--            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <!--             *** ROOT PACKAGE *** -->
@@ -56,6 +56,11 @@
         <activity
             android:name=".features.consult.participation.stv.ParticipationActivity_"
             android:label="@string/consult_particiation_participation_label">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".features.consult.result.ResultActivity_"

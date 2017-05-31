@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/participation_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/list_item_background">
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/participation_choice_id"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"/>
-    <TextView
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:id="@+id/participation_item_choice">
+        <TextView
+            android:id="@+id/participation_choice_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/participation_choice_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginLeft="16dp" />
+    </LinearLayout>
+    <CheckedTextView
+        android:id="@+id/participation_choice_check_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:id="@+id/participation_choice_title"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/participation_checkbox"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:layout_alignParentRight="true"/>
+        android:checkMark="?android:listChoiceIndicatorMultiple"
+        android:focusableInTouchMode="false" />
 </LinearLayout>
+
