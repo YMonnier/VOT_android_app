@@ -2,10 +2,10 @@
 <resources>
     <!-- Indicatif numbers array -->
     <string-array name="algorithms">
-        <item>Type</item>
-        <item>Vote Simple</item>
-        <item>Kemeny-Young</item>
-        <item>STV</item>
-        <item>Jugement-Majoritaire</item>
+        <item>@string/algo_none</item>
+        <item>@string/algo_ms</item>
+        <item>@string/algo_ky</item>
+        <item>@string/algo_stv</item>
+        <item>@string/algo_jm</item>
     </string-array>
 </resources>

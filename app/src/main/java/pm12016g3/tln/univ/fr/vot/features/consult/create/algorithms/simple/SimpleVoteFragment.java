@@ -1,7 +1,8 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
 
 import android.app.Fragment;
-import android.support.design.widget.CoordinatorLayout;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,11 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemLongClick;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
@@ -25,6 +29,7 @@ import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
@@ -48,11 +53,11 @@ public class SimpleVoteFragment extends Fragment
     private final int ADD_BUTTON_TAG = 143;
     private final int TRASH_BUTTON_TAG = 243;
 
-    @ViewById(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
-
     @ViewById(R.id.input_candidat)
     EditText inputCandidat;
+
+    @ViewById(R.id.input_nb_choices)
+    EditText inputNbChoice;
 
     @ViewById(R.id.listView)
     ListView listView;
@@ -90,6 +95,14 @@ public class SimpleVoteFragment extends Fragment
         Log.d(TAG, "Init");
         parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
+    }
+
+    @OptionsItem(R.id.menu_item_next_arrow)
+    void next() {
+        Log.d(TAG, "Next button");
+
+        parent.setFragment(new InvitationFragment_(), "Invitation");
+        parent.nextStep();
     }
 
     /**
@@ -138,6 +151,7 @@ public class SimpleVoteFragment extends Fragment
      *
      * @param view button clicked
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
         AnimatedButton button = (AnimatedButton) view;
@@ -145,12 +159,13 @@ public class SimpleVoteFragment extends Fragment
             if (button.getTag().equals(ADD_BUTTON_TAG)) {
                 attempt();
             } else if (button.getTag().equals(TRASH_BUTTON_TAG)) {
-                for (BasicItem item : adapter.getItems()) {
-                    if (item.isSelected()) {
-                        Log.d(TAG, "Delete this item... " + item);
-                        adapter.getItems().remove(item);
-                    }
-                }
+
+                adapter.getItems()
+                        .removeAll(
+                                Stream.of(adapter.getItems())
+                                        .filter(BasicItem::isSelected)
+                                        .toList());
+
                 adapter.notifyDataSetChanged();
                 removeTrashButton();
             }
@@ -163,13 +178,20 @@ public class SimpleVoteFragment extends Fragment
      */
     private void attempt() {
         String candidat = inputCandidat.getText().toString();
-        inputCandidat.setError(null);
+        String nbChoice = inputNbChoice.getText().toString();
+        resetErrorUi();
+
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(candidat)) {
             focusView = inputCandidat;
             updateErrorUi(inputCandidat, getString(R.string.error_field_required));
+            cancel = true;
+        } else if (TextUtils.isEmpty(nbChoice)) {
+            if (focusView == null)
+                focusView = inputNbChoice;
+            updateErrorUi(inputNbChoice, getString(R.string.error_field_required));
             cancel = true;
         }
 
@@ -215,7 +237,7 @@ public class SimpleVoteFragment extends Fragment
             adapter.notifyDataSetChanged();
             inputCandidat.setText(null);
         } else
-            Snack.showFailureMessage(coordinatorLayout, "Candidat déjà existant!", Snackbar.LENGTH_LONG);
+            Snack.showFailureMessage(getView(), "Candidat déjà existant!", Snackbar.LENGTH_LONG);
     }
 
     /**
@@ -228,6 +250,15 @@ public class SimpleVoteFragment extends Fragment
     @UiThread
     void updateErrorUi(final EditText view, final String error) {
         view.setError(error);
+    }
+
+    /**
+     * Reset all error input view
+     */
+    @UiThread
+    void resetErrorUi() {
+        inputCandidat.setError(null);
+        inputNbChoice.setError(null);
     }
 
     /**

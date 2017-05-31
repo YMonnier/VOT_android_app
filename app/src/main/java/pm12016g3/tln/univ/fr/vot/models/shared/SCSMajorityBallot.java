@@ -1,8 +1,5 @@
 package pm12016g3.tln.univ.fr.vot.models.shared;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Data;
 
 /**
@@ -16,10 +13,6 @@ import lombok.Data;
 
 @Data
 public class SCSMajorityBallot implements SCData {
-    private List<String> labels = new ArrayList<>();
-
-    public SCSMajorityBallot add(String label) {
-        labels.add(label);
-        return this;
-    }
+    private boolean ordered;
+    private int nbChoice;
 }
