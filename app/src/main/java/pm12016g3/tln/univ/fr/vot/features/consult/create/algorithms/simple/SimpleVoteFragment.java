@@ -100,6 +100,7 @@ public class SimpleVoteFragment extends Fragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
+
         parent.setFragment(new InvitationFragment_(), "Invitation");
         parent.nextStep();
     }

@@ -20,8 +20,11 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Arrays;
+
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -88,6 +91,7 @@ public class SettingsFragment extends Fragment
     void next() {
         Log.d(TAG, "Next button");
         if (validate()) {
+            setData();
             ViewUtils.closeKeyboard(getActivity(),
                     getActivity().getCurrentFocus());
             parent.nextStep();
@@ -155,6 +159,30 @@ public class SettingsFragment extends Fragment
 
 
         return !cancel;
+    }
+
+    private void setData() {
+        String typeStr = (String) algorithms.getSelectedItem();
+        String title = this.title.getText().toString();
+        String description = this.description.getText().toString();
+        SocialChoice.Type type = null;
+        if (typeStr.equals(getString(R.string.algo_ms))) {
+            type = SocialChoice.Type.MAJORITY_BALLOT;
+        } else if (typeStr.equals(getString(R.string.algo_ky))) {
+            type = SocialChoice.Type.KEMENY_YOUNG;
+        } else if (typeStr.equals(getString(R.string.algo_jm))) {
+            type = SocialChoice.Type.MAJORITY_JUGMENT;
+        } else if (typeStr.equals(getString(R.string.algo_stv))) {
+            type = SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE;
+        }
+
+        System.out.println(Arrays.toString(SocialChoice.Type.values()));
+
+        parent.getSocialChoice().setTitle(title);
+        parent.getSocialChoice().setDescription(description);
+        parent.getSocialChoice().setConfidentiality(confidentiality.isChecked());
+        if (type != null)
+            parent.getSocialChoice().setType(type);
     }
 
     /**

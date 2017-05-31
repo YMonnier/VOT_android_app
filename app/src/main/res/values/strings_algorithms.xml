@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="algo_none">Type</string>
+    <string name="algo_ms">Vote Simple</string>
+    <string name="algo_ky">Kemeny-Young</string>
+    <string name="algo_stv">STV</string>
+    <string name="algo_jm">Jugement-Majoritaire</string>
+</resources>

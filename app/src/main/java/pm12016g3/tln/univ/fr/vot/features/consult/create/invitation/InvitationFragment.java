@@ -1,16 +1,20 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.invitation;
 
 import android.app.Fragment;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.RecapFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.friends.InvitationFriendsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.location.LocationFriendsFragment_;
 
@@ -24,6 +28,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.location.Loc
  */
 
 @EFragment(R.layout.consult_create_invitation_fragment)
+@OptionsMenu(R.menu.consult_create_menu_two_arrows)
 public class InvitationFragment extends Fragment
         implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = InvitationFragment.class.getSimpleName();
@@ -47,6 +52,13 @@ public class InvitationFragment extends Fragment
         parent = (CreateFragment) getParentFragment();
         setDefaultFragment();
         around_me.setOnCheckedChangeListener(this);
+    }
+
+    @OptionsItem(R.id.menu_item_next_arrow)
+    void next() {
+        Log.d(TAG, "Next button");
+        parent.setFragment(new RecapFragment_(), "Récapitulatif");
+        parent.nextStep();
     }
 
     private void setDefaultFragment() {
