@@ -48,18 +48,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-<<<<<<< HEAD
-<!--            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-=======
 
-            <intent-filter>
+          <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
->>>>>>> 45202f74385d1c22ea6d84908c5add9d85414f00
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -93,11 +86,6 @@
         <activity
             android:name=".features.consult.participation.stv.ParticipationActivity_"
             android:label="@string/consult_particiation_participation_label">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".features.consult.result.ResultActivity_"
