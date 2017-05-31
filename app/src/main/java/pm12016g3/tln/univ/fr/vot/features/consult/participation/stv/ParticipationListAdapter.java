@@ -22,12 +22,13 @@ import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.Participatio
  */
 
 public class ParticipationListAdapter
-        extends  DragItemAdapter<ParticipationItem, ViewHolder>{
+        extends  DragItemAdapter<ParticipationItem,ParticipationListAdapter.ViewHolder>{
+
     private final static String TAG = ParticipationListAdapter.class.getSimpleName();
     private int mLayoutId;
     private int mGrabHandleId;
     private boolean mDragOnLongPress;
-    ParticipationItem item;
+
     public ParticipationListAdapter(List<ParticipationItem> list, int layoutId,
                                     int grabHandleId, boolean dragOnLongPress) {
         this.mLayoutId = layoutId;
@@ -45,7 +46,7 @@ public class ParticipationListAdapter
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return mItemList.get(position).getId();
     }
 
     @Override
@@ -75,35 +76,22 @@ public class ParticipationListAdapter
 
         @Override
         public void onItemClicked(View view) {
-            ParticipationItem clickedItem;
-            ParticipationItem clone = null;
-            clickedItem = mItemList.get(getAdapterPosition());
-            Log.d("Click",clickedItem.toString());
-            try {
-                clone = (ParticipationItem) clickedItem.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
 
-            if(check.isChecked()==false){
-                check.setChecked(true);
+
+            Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+            check.setChecked(!check.isChecked());
+            ParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+            if(check.isChecked()){
                 clickedItem.setChecked(true);
-                choice_id.setText(String.valueOf(getItemId()+1));
-
-            } else{
-                check.setChecked(false);
+                choice_id.setText(String.valueOf(getAdapterPosition()+1));
+            }else {
                 clickedItem.setChecked(false);
                 choice_id.setText(" ");
                 changeItemPosition(getAdapterPosition(),getItemCount()-1);
                 Log.d("TAG",mItemList.toString());
                 notifyDataSetChanged();
-
             }
 
-
-            clickedItem.setChecked(check.isChecked());
-
-            Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
         }
 
         @Override

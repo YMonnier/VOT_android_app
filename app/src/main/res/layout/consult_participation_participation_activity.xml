@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/participation_choix_description"
@@ -23,13 +24,11 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.woxthebox.draglistview.DragListView
             android:id="@+id/participation_draglistview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </com.woxthebox.draglistview.DragListView>
-
     </FrameLayout>
 
 </LinearLayout>

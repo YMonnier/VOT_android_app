@@ -61,24 +61,8 @@ public class ParticipationActivity extends AppCompatActivity {
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
-        choiceListView.setDragListListener(new DragListView.DragListListenerAdapter() {
-            @Override
-            public void onItemDragStarted(int position) {
-
-                Toast.makeText(choiceListView.getContext(), "Start - position: " + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onItemDragEnded(int fromPosition, int toPosition) {
-
-                if (fromPosition != toPosition) {
-                    Toast.makeText(choiceListView.getContext(), "End - position: " + toPosition, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
-        ParticipationListAdapter listAdapter = new ParticipationListAdapter(choices, R.layout.consult_participation_participation_item, R.id.participation_item_choice, false);
+        listAdapter = new ParticipationListAdapter(choices, R.layout.consult_participation_participation_item, R.id.participation_item_choice, false);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
         choiceListView.setCustomDragItem(new MyDragItem(this, R.layout.consult_participation_participation_item));
