@@ -70,8 +70,14 @@ public class ParticipationActivity extends AppCompatActivity {
     }
 
 
-    @OptionsItem(R.id.network_research_action_check)
+    @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark(){
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
+        Log.d(TAG,listAdapter.getItemList().toString());
+        finish();
+    }
+    @OptionsItem(android.R.id.home)
+    public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }

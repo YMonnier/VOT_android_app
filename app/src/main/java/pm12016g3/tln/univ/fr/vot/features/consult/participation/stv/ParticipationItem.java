@@ -15,15 +15,11 @@ import pm12016g3.tln.univ.fr.vot.R;
 @Data
 public class ParticipationItem {
 
-    private int id;
     private String choice_title;
     private boolean checked;
-    private static int count = 1;
 
     public ParticipationItem(String choice_title) {
-        this.id = count;
         this.choice_title = choice_title;
         this.checked = true;
-        count++;
     }
 }

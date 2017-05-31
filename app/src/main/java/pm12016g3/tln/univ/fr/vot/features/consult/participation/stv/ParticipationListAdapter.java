@@ -46,7 +46,7 @@ public class ParticipationListAdapter
 
     @Override
     public long getItemId(int position) {
-        return mItemList.get(position).getId();
+        return mItemList.get(position).getChoice_title().hashCode();
     }
 
     @Override
