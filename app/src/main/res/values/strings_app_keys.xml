@@ -3,4 +3,5 @@
     <string name="google_maps_key">AIzaSyCTKil3Ad_kblSCryiptL32P6APmkOM9eU</string>
     <string name="facebook_app_id">977148689094870</string>
     <string name="fb_login_protocol_scheme">fb977148689094870</string>
+    <string name="server_client_id">724893624567-5sqc20ld9e4j1srjrcr1tng6ov2at4jm.apps.googleusercontent.com</string>
 </resources>

@@ -119,6 +119,9 @@ dependencies {
     // Face SDK for OAuth
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
 
+    // Google OAUTH
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+
     // Stream API from Java 8 rewritten on iterators for Java 7 and below
     compile 'com.annimon:stream:1.1.7'
 
