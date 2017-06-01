@@ -27,10 +27,20 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 @EActivity(R.layout.consult_result_activity)
 public class ResultActivity extends AppCompatActivity {
     final String TAG = ResultActivity.class.getSimpleName();
-
+    /**
+     * The pie chart
+     */
     @ViewById(R.id.pie_chart)
     PieChart pieChart;
+
+    /**
+     * List of data for pie chart
+     */
     ArrayList<PieEntry> entries = new ArrayList<>();
+
+    /**
+     * Initialisation after the views binding has happened
+     */
     @AfterViews
     void init() {
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -30,19 +30,32 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 @OptionsMenu(R.menu.network_research_activity_bar)
 public class NetworkResearchActivity extends AppCompatActivity {
     private final String TAG = NetworkResearchActivity.class.getSimpleName();
-
+    /**
+     * EditText to Research Persons
+     */
     @ViewById(R.id.network_research_input_research)
     EditText research;
 
+    /**
+     * ListView to show Researched Persons
+     */
     @ViewById(R.id.network_research_persons_list)
     ListView personsListView;
 
-
+    /**
+     * Adapter for ListView
+     */
     @Bean
     NetworkResearchListAdapter adapter;
 
+    /**
+     * List of persons
+     */
     List<BasicItem> allPersons = new ArrayList<>();
 
+    /**
+     * Initialisation after the views binding has happened
+     */
     @AfterViews
     void init() {
 
@@ -57,18 +70,29 @@ public class NetworkResearchActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Go back when click go back button
+     */
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
 
+    /**
+     * Listen to the click of the check button on the menu bar
+     */
     @OptionsItem(R.id.network_research_action_check)
     public void onClickCheckmark(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
 
+    /**
+     * Listen to Person Item click in the ListView
+     * @param item
+     */
     @ItemClick(R.id.network_research_persons_list)
     void personListItemClicked(BasicItem item) {
         Log.d(TAG, "Item clicked... " + item.toString());
@@ -76,8 +100,16 @@ public class NetworkResearchActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Listen to research EditText text change then update ListView display
+     * @param text
+     * @param hello
+     * @param before
+     * @param start
+     * @param count
+     */
     @TextChange(R.id.network_research_input_research)
-    void onTextChangesOnHelloTextView(CharSequence text,
+    void onTextChanges(CharSequence text,
                                       TextView hello,
                                       int before,
                                       int start,
