@@ -15,10 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-<<<<<<< HEAD
--keep class com.woxthebox.draglistview.** { *; }
-=======
 
+-keep class com.woxthebox.draglistview.** { *; }
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
->>>>>>> 45202f74385d1c22ea6d84908c5add9d85414f00
+
