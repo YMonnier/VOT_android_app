@@ -2,30 +2,27 @@ package pm12016g3.tln.univ.fr.vot.features.consult.result;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ListView;
+
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationItem;
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationListAdapter;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
+
+/**
+ * Created by wenlixing on 22/05/2017.
+ */
 
 @EActivity(R.layout.consult_result_activity)
 public class ResultActivity extends AppCompatActivity {
@@ -69,17 +66,14 @@ public class ResultActivity extends AppCompatActivity {
         //Adding Animations
         pieChart.animateXY(1400, 1400);
     }
+
+    /**
+     * Go back when you click the go back button
+     */
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
-
-    @OptionsItem(R.id.network_research_action_check)
-    public void onClickCheckmark(){
-        ViewUtils.closeKeyboard(this, getCurrentFocus());
-        finish();
-    }
-
 
 }
