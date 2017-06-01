@@ -92,7 +92,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:22.1.1'
     compile 'com.android.support:design:25.0.1'
     compile 'com.google.android.gms:play-services:10.0.1'
-
+    //DragListView github library
+    compile 'com.github.woxthebox:draglistview:1.4.4'
     // MPAndroidChart
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     // Android Annotation (AA)
