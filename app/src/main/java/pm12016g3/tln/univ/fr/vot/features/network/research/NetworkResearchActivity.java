@@ -23,12 +23,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
- * Project android.
- * Package pm12016g3.tln.univ.fr.vot.features.network.
- * File NetworkActivity.java.
- * Created by Ysee on 15/05/2017 - 09:41.
- * www.yseemonnier.com
- * https://github.com/YMonnier
+ * Created by wenlixing on 17/05/2017.
  */
 
 @EActivity(R.layout.network_network_research_activity)

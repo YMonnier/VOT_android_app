@@ -1,28 +1,18 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CheckedTextView;
-import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.woxthebox.draglistview.DragItem;
-import com.woxthebox.draglistview.DragItemAdapter;
 import com.woxthebox.draglistview.DragListView;
-import com.woxthebox.draglistview.swipe.ListSwipeHelper;
-import com.woxthebox.draglistview.swipe.ListSwipeItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
@@ -34,20 +24,36 @@ import java.util.List;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
+/**
+ * Created by wenlixing on 22/05/2017.
+ */
+
 @EActivity(R.layout.consult_participation_participation_activity)
 @OptionsMenu(R.menu.consult_participation_participation_bar)
 public class ParticipationActivity extends AppCompatActivity {
 
     final String TAG = ParticipationActivity.class.getSimpleName();
 
-
+    /**
+     * DragListView that contains the choices
+     */
     @ViewById(R.id.participation_draglistview)
     DragListView choiceListView;
 
+    /**
+     * Adapter for DragListView
+     */
+
     ParticipationListAdapter listAdapter;
 
+    /**
+     * A list of Participation Item object
+     */
     List<ParticipationItem> choices;
 
+    /**
+     * Initialisation after the views binding has happened
+     */
     @AfterViews
     void init() {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -69,19 +75,28 @@ public class ParticipationActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Action when click the check button on the menu bar
+     */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         Log.d(TAG,listAdapter.getItemList().toString());
         finish();
     }
+
+    /**
+     * Go back when click go back button
+     */
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
 
+    /**
+     * A custom drag item provided to change the visual appearance of the dragging item.
+     */
     private static class MyDragItem extends DragItem {
 
         MyDragItem(Context context, int layoutId) {

@@ -9,12 +9,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicCheckItemAbstractView;
 
 /**
- * Project android.
- * Package pm12016g3.tln.univ.fr.vot.features.network.research.
- * File NetworkResearchItem.java.
- * Created by Ysee on 17/05/2017 - 15:17.
- * www.yseemonnier.com
- * https://github.com/YMonnier
+ * Created by wenlixing on 17/05/2017.
  */
 
 @EViewGroup(R.layout.shared_listview_basic_item_view)
