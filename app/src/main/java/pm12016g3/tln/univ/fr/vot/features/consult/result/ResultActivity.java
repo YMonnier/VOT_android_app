@@ -1,7 +1,10 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.result;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -11,6 +14,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
@@ -18,6 +22,9 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity_;
+import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchActivity_;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -28,10 +35,19 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 public class ResultActivity extends AppCompatActivity {
     final String TAG = ResultActivity.class.getSimpleName();
     /**
+     * Vote is secret or not
+     * If the vote is secret not show the details
+     */
+    boolean vote_secret = false;
+
+    /**
      * The pie chart
      */
     @ViewById(R.id.pie_chart)
     PieChart pieChart;
+
+    @ViewById(R.id.fab_details)
+    FloatingActionButton fabDetails;
 
     /**
      * List of data for pie chart
@@ -45,8 +61,10 @@ public class ResultActivity extends AppCompatActivity {
     void init() {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         showPieChart();
+        if(vote_secret){
+            fabDetails.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
@@ -86,4 +104,11 @@ public class ResultActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Click floating action button to show details of the result
+     */
+    @Click(R.id.fab_details)
+    public void onClickFabDetails(){
+        startActivity(new Intent(this, ResultDetailActivity_.class));
+    }
 }

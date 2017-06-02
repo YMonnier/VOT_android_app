@@ -50,7 +50,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
-          <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -92,7 +92,10 @@
             android:name=".features.consult.result.ResultActivity_"
             android:label="@string/consult_result">
         </activity>
-
+        <activity
+            android:name=".features.consult.result.detail.ResultDetailActivity_"
+            android:label="@string/consult_result_detail">
+        </activity>
         <!--
             *** DO NOT TOUCH! ***
             Activity for testing (UI + ACTIONS)

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consult_result_detail">Résultats</string>
+    <string name="result_detail_research_action">Recherche...</string>
+</resources>
