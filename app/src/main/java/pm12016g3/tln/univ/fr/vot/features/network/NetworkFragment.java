@@ -28,21 +28,38 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 @EFragment(R.layout.network_network_fragment)
 public class NetworkFragment extends Fragment {
     private final String TAG = NetworkFragment.class.getSimpleName();
-
+    /**
+     * EditText to Research friends
+     */
     @ViewById(R.id.network_input_research)
     EditText research;
 
+    /**
+     * ListView to show the friends
+     */
     @ViewById(R.id.network_friend_list)
     ListView friendListView;
 
+    /**
+     * Floating action button to add friend
+     */
     @ViewById(R.id.fabAdd)
     FloatingActionButton fabAdd;
 
+    /**
+     * ListAdapter for friends ListView
+     */
     @Bean
     NetworkFragmentListAdapter adapter;
 
+    /**
+     * List of friends
+     */
     List<BasicItem> allFriends = new ArrayList<>();
 
+    /**
+     * Initialisation after the views binding has happened
+     */
     @AfterViews
     void init() {
         allFriends.add(new BasicItem("Donut"));
@@ -55,8 +72,16 @@ public class NetworkFragment extends Fragment {
         friendListView.setTextFilterEnabled(true);
     }
 
+    /**
+     * Listen to research EditText text change then update ListView display
+     * @param text
+     * @param hello
+     * @param before
+     * @param start
+     * @param count
+     */
     @TextChange(R.id.network_input_research)
-    void onTextChangesOnHelloTextView(final CharSequence text,
+    void onTextChanges(final CharSequence text,
                                       TextView hello,
                                       int before,
                                       int start,
@@ -76,6 +101,9 @@ public class NetworkFragment extends Fragment {
 
     }
 
+    /**
+     * Listen to floating action button click then jump to researching friends page
+     */
     @Click(R.id.fabAdd)
     public void fabClick() {
         getActivity()

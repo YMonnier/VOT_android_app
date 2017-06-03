@@ -76,7 +76,7 @@ public class ParticipationActivity extends AppCompatActivity {
     }
 
     /**
-     * Action when click the check button on the menu bar
+     * Listen to the click of the check button on the menu bar
      */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark(){
