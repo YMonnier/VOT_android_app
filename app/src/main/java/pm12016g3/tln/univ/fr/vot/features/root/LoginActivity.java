@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -112,6 +113,10 @@ public class LoginActivity extends AppCompatActivity
 
         Button test = (Button) findViewById(R.id.test_button);
         test.setOnClickListener(this);
+
+
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        Log.i(TAG, "Device token: " + deviceToken);
     }
 
     /**
@@ -291,8 +296,9 @@ public class LoginActivity extends AppCompatActivity
             Log.i(TAG, response.toString());
 
             if (response.getStatusCode().is2xxSuccessful()) {
-                goToHomeView();
                 Settings.currentUser = response.getBody().getData();
+                Settings.currentUser.setAccessToken(TMP_ACCESS_TOKEN);
+                goToHomeView();
             } else {
                 showNicknameAlert(googleSignInAccount);
             }

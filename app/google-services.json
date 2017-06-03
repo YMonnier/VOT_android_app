@@ -1,33 +1,27 @@
 {
   "project_info": {
-    "project_number": "724893624567",
-    "project_id": "m1vot-1496148579287"
+    "project_number": "748540617730",
+    "firebase_url": "https://vot-59f2c.firebaseio.com",
+    "project_id": "vot-59f2c",
+    "storage_bucket": "vot-59f2c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:724893624567:android:4486a5e5e732ca9e",
+        "mobilesdk_app_id": "1:748540617730:android:4486a5e5e732ca9e",
         "android_client_info": {
           "package_name": "pm12016g3.tln.univ.fr.vot"
         }
       },
       "oauth_client": [
         {
-          "client_id": "724893624567-rcp8pdt49ganacqc03arpgh6o92hf5r2.apps.googleusercontent.com",
+          "client_id": "748540617730-7j7h7ugveifjstfj96hhvt6s03d421to.apps.googleusercontent.com",
           "client_type": 3
-        },
-        {
-          "client_id": "724893624567-5sqc20ld9e4j1srjrcr1tng6ov2at4jm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "pm12016g3.tln.univ.fr.vot",
-            "certificate_hash": "1c68828ab5eb951c3c9f1398dce643c3b7170e2d"
-          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCOhvsDn2y-xuDBdgTzKCF0eW-a0QC9qG8"
+          "current_key": "AIzaSyBzM6Xm-4_2C1yExzVfehMDqnzzep5MR0U"
         }
       ],
       "services": {
@@ -39,7 +33,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
