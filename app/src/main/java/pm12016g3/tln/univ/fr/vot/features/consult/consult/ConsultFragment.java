@@ -2,48 +2,37 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
-<<<<<<< HEAD
-=======
+
 import android.os.Build;
 import android.support.annotation.RequiresApi;
->>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
+
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
-=======
+
 
 import com.google.gson.JsonObject;
->>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
-import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
-<<<<<<< HEAD
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.example.ParticipationActivity_;
-=======
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
->>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
+
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
-import pm12016g3.tln.univ.fr.vot.models.network.ResList;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
@@ -167,7 +156,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         if (visibility == VISIBLE) {
             startActivity(new Intent(getActivity().getApplicationContext(), ResultActivity_.class));
         } else {
-            startActivity(new Intent(getActivity().getApplicationContext(), ParticipationActivity_.class));
+            startActivity(new Intent(getActivity().getApplicationContext(), SimpleVoteWithOrderParticipationActivity_.class));
         }
     }
 

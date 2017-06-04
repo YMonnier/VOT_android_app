@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.participation.simple;
+package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -27,28 +27,28 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
  * Created by wenlixing on 22/05/2017.
  */
 
-@EActivity(R.layout.consult_participation_simple_vote_with_order_participation_activity)
+@EActivity(R.layout.consult_participation_stv_participation_activity)
 @OptionsMenu(R.menu.consult_participation_participation_bar)
-public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity {
+public class STVParticipationActivity extends AppCompatActivity {
 
-    final String TAG = SimpleVoteWithOrderParticipationActivity.class.getSimpleName();
+    final String TAG = STVParticipationActivity.class.getSimpleName();
 
     /**
      * DragListView that contains the choices
      */
-    @ViewById(R.id.sv_participation_draglistview)
+    @ViewById(R.id.stv_participation_draglistview)
     DragListView choiceListView;
 
     /**
      * Adapter for DragListView
      */
 
-    SimpleVoteWithOrderParticipationListAdapter listAdapter;
+    STVParticipationListAdapter listAdapter;
 
     /**
      * A list of Participation Item object
      */
-    List<SimpleVoteWithOrderParticipationItem> choices;
+    List<STVParticipationItem> choices;
 
     /**
      * Initialisation after the views binding has happened
@@ -59,20 +59,22 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
-        choices.add(new SimpleVoteWithOrderParticipationItem("jon"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("helo"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("cuda"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("dada"));
+        choices.add(new STVParticipationItem("jon"));
+        choices.add(new STVParticipationItem("helo"));
+        choices.add(new STVParticipationItem("cuda"));
+        choices.add(new STVParticipationItem("dada"));
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
-        listAdapter = new SimpleVoteWithOrderParticipationListAdapter(choices,
-                R.layout.consult_participation_simple_vote_with_order_participation_item, R.id.participation_item_choice, false);
+        listAdapter = new STVParticipationListAdapter(choices,
+                R.layout.consult_participation_stv_participation_item,
+                R.id.stv_participation_item,
+                false);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
         choiceListView.setCustomDragItem(new MyDragItem(this,
-                R.layout.consult_participation_simple_vote_with_order_participation_item));
+                R.layout.consult_participation_stv_participation_item));
 
     }
 
@@ -106,13 +108,11 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
 
         @Override
         public void onBindDragView(View clickedView, View dragView) {
-           /* CharSequence id = ((TextView) clickedView.findViewById(R.id.participation_choice_id)).getText();
-            ((TextView) dragView.findViewById(R.id.participation_choice_id)).setText(id);*/
-            CharSequence title = ((TextView) clickedView.findViewById(R.id.participation_choice_title)).getText();
-            ((TextView) dragView.findViewById(R.id.participation_choice_title)).setText(title);
-            boolean check = ((CheckedTextView) clickedView.findViewById(R.id.participation_choice_check_tv)).isChecked();
-            ((CheckedTextView)dragView.findViewById(R.id.participation_choice_check_tv)).setChecked(check);
-            dragView.findViewById(R.id.participation_item).setBackgroundColor(dragView.getResources().getColor(R.color.vot_brown));
+            CharSequence title = ((TextView) clickedView.
+                    findViewById(R.id.stv_participation_choice_title))
+                    .getText();
+            ((TextView) dragView.findViewById(R.id.stv_participation_choice_title)).setText(title);
+            dragView.findViewById(R.id.stv_participation_item).setBackgroundColor(dragView.getResources().getColor(R.color.vot_brown));
         }
     }
 }

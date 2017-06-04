@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.participation.simple;
+package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder;
 
 import lombok.Data;
 
