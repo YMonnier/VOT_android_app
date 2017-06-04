@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
+package pm12016g3.tln.univ.fr.vot.features.consult.participation.simple;
 
 
 import android.util.Log;
@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.woxthebox.draglistview.DragItemAdapter;
-
-import org.androidannotations.annotations.EBean;
 
 import java.util.List;
 
@@ -21,10 +18,10 @@ import pm12016g3.tln.univ.fr.vot.R;
  * Created by wenlixing on 22/05/2017.
  */
 
-public class ParticipationListAdapter
-        extends DragItemAdapter<ParticipationItem, ParticipationListAdapter.ViewHolder> {
+public class SimpleVoteWithOrderParticipationListAdapter
+        extends DragItemAdapter<SimpleVoteWithOrderParticipationItem, SimpleVoteWithOrderParticipationListAdapter.ViewHolder> {
 
-    private final static String TAG = ParticipationListAdapter.class.getSimpleName();
+    private final static String TAG = SimpleVoteWithOrderParticipationListAdapter.class.getSimpleName();
 
     /**
      * Id of the item view to be inflated
@@ -41,8 +38,8 @@ public class ParticipationListAdapter
      */
     private boolean mDragOnLongPress;
 
-    public ParticipationListAdapter(List<ParticipationItem> list, int layoutId,
-                                    int grabHandleId, boolean dragOnLongPress) {
+    public SimpleVoteWithOrderParticipationListAdapter(List<SimpleVoteWithOrderParticipationItem> list, int layoutId,
+                                                       int grabHandleId, boolean dragOnLongPress) {
         this.mLayoutId = layoutId;
         this.mGrabHandleId = grabHandleId;
         this.mDragOnLongPress = dragOnLongPress;
@@ -64,7 +61,7 @@ public class ParticipationListAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        ParticipationItem item = mItemList.get(position);
+        SimpleVoteWithOrderParticipationItem item = mItemList.get(position);
         if (item.isChecked())
             holder.choice_id.setText(String.valueOf(position + 1));
         else
@@ -96,7 +93,7 @@ public class ParticipationListAdapter
 
             //Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
             check.setChecked(!check.isChecked());
-            ParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+            SimpleVoteWithOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
             if (check.isChecked()) {
                 clickedItem.setChecked(true);
                 choice_id.setText(String.valueOf(getAdapterPosition() + 1));

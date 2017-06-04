@@ -2,13 +2,10 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.support.transition.Visibility;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -21,15 +18,13 @@ import java.util.List;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
-import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.example.ParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
 import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
 
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 /**

@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
+package pm12016g3.tln.univ.fr.vot.features.consult.participation.simple;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +12,6 @@ import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
@@ -28,28 +27,28 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
  * Created by wenlixing on 22/05/2017.
  */
 
-@EActivity(R.layout.consult_participation_participation_activity)
+@EActivity(R.layout.consult_participation_simple_vote_with_order_participation_activity)
 @OptionsMenu(R.menu.consult_participation_participation_bar)
-public class ParticipationActivity extends AppCompatActivity {
+public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity {
 
-    final String TAG = ParticipationActivity.class.getSimpleName();
+    final String TAG = SimpleVoteWithOrderParticipationActivity.class.getSimpleName();
 
     /**
      * DragListView that contains the choices
      */
-    @ViewById(R.id.participation_draglistview)
+    @ViewById(R.id.sv_participation_draglistview)
     DragListView choiceListView;
 
     /**
      * Adapter for DragListView
      */
 
-    ParticipationListAdapter listAdapter;
+    SimpleVoteWithOrderParticipationListAdapter listAdapter;
 
     /**
      * A list of Participation Item object
      */
-    List<ParticipationItem> choices;
+    List<SimpleVoteWithOrderParticipationItem> choices;
 
     /**
      * Initialisation after the views binding has happened
@@ -60,18 +59,20 @@ public class ParticipationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
-        choices.add(new ParticipationItem("jon"));
-        choices.add(new ParticipationItem("helo"));
-        choices.add(new ParticipationItem("cuda"));
-        choices.add(new ParticipationItem("dada"));
+        choices.add(new SimpleVoteWithOrderParticipationItem("jon"));
+        choices.add(new SimpleVoteWithOrderParticipationItem("helo"));
+        choices.add(new SimpleVoteWithOrderParticipationItem("cuda"));
+        choices.add(new SimpleVoteWithOrderParticipationItem("dada"));
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
-        listAdapter = new ParticipationListAdapter(choices, R.layout.consult_participation_participation_item, R.id.participation_item_choice, false);
+        listAdapter = new SimpleVoteWithOrderParticipationListAdapter(choices,
+                R.layout.consult_participation_simple_vote_with_order_participation_item, R.id.participation_item_choice, false);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
-        choiceListView.setCustomDragItem(new MyDragItem(this, R.layout.consult_participation_participation_item));
+        choiceListView.setCustomDragItem(new MyDragItem(this,
+                R.layout.consult_participation_simple_vote_with_order_participation_item));
 
     }
 
