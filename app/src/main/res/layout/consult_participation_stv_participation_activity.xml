@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <TextView
+        android:id="@+id/vote_description"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="4dp"
+        android:text="@string/consult_particiation_participation_vote_description" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="4dp"
+        android:background="@color/vot_gray"
+        android:text="@string/consult_particiation_participation_choice_order" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.woxthebox.draglistview.DragListView
+            android:id="@+id/stv_participation_draglistview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.woxthebox.draglistview.DragListView>
+    </FrameLayout>
+
+</LinearLayout>

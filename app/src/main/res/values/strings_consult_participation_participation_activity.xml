@@ -2,5 +2,5 @@
 <resources>
     <string name="consult_particiation_participation_label">Titre Choix Social</string>
     <string name="consult_particiation_participation_vote_description">Super Description...</string>
-    <string name="consult_particiation_participation_choice_order">Votre ordre de préférence :</string>
+    <string name="consult_particiation_participation_choice_order">Votre choix :</string>
 </resources>

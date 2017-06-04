@@ -26,7 +26,7 @@ import java.util.List;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
@@ -174,7 +174,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         if (visibility == VISIBLE) {
             startActivity(new Intent(getActivity().getApplicationContext(), ResultActivity_.class));
         } else {
-            startActivity(new Intent(getActivity().getApplicationContext(), ParticipationActivity_.class));
+            startActivity(new Intent(getActivity().getApplicationContext(), SimpleVoteWithOrderParticipationActivity_.class));
         }
     }
 
