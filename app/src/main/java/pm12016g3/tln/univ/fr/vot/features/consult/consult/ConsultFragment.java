@@ -21,12 +21,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder.SimpleVoteWithoutOrderParticipationItem;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
@@ -34,6 +40,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTServiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
+import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
 
 import static android.view.View.VISIBLE;
 
@@ -96,7 +103,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
      */
     @Background
     void loadData() {
-        try {
+        /*try {
             Log.d(TAG, String.valueOf(Settings.currentUser));
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
@@ -121,7 +128,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
             } else {
 
-            }
+            }*/
 
 
             /*Log.d(TAG, Arrays.toString(response.getBody().getData().toArray()));
@@ -130,19 +137,20 @@ public class ConsultFragment extends Fragment implements ClickListener {
                 System.out.println(jsonObject);
             }*/
 
-        } catch (RestClientException e) {
+       /* } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
+*/
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.KY,true,true));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.JM,true,false));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.SM,true,false));
+        socialChoiceList
+                .add(new SocialChoice("super title","description",SocialChoice.Type.STV,true,false));
 
-        /*socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.KEMENY_YOUNG,true,true));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.MAJORITY_JUGMENT,true,false));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE,true,false));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.KEMENY_YOUNG,true,false));
-
+        List<ConsultCardItem> consultCardItemList = new ArrayList<>();
         for(SocialChoice sc : socialChoiceList){
             consultCardItemList
                     .add(new ConsultCardItem(sc.getType(),sc.getTitle(),sc.isClosed()));
@@ -154,7 +162,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
                 recyclerView,
                 this));
-        */
+
         //progressView.dismiss();
     }
 
@@ -169,11 +177,34 @@ public class ConsultFragment extends Fragment implements ClickListener {
     @Override
     public void onClick(View view, int position) {
 
+        SocialChoice.Type type =  adapter.getItems().get(position).getType();
+
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
+
         if (visibility == VISIBLE) {
             startActivity(new Intent(getActivity().getApplicationContext(), ResultActivity_.class));
         } else {
-            startActivity(new Intent(getActivity().getApplicationContext(), SimpleVoteWithOrderParticipationActivity_.class));
+            switch (type) {
+                case STV:
+                    startActivity(
+                            new Intent(getActivity().
+                                    getApplicationContext(),
+                                    STVParticipationActivity_.class));
+                    break;
+                case JM:
+
+                    break;
+                case SM:
+                    startActivity(
+                            new Intent(getActivity().
+                                    getApplicationContext(),
+                                    SimpleVoteWithOrderParticipationActivity_.class));
+                    break;
+                case KY:
+                    
+                    break;
+            }
+
         }
     }
 
