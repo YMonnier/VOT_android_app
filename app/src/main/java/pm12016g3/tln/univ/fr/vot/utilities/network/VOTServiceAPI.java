@@ -1,7 +1,10 @@
 package pm12016g3.tln.univ.fr.vot.utilities.network;
 
+import com.google.gson.JsonObject;
+
 import org.androidannotations.rest.spring.annotations.Accept;
 import org.androidannotations.rest.spring.annotations.Get;
+import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -9,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
 /**
  * Project android.
@@ -31,5 +34,20 @@ public interface VOTServiceAPI {
      */
     @Get("/social_choices")
     @RequiresHeader("Authorization")
-    ResponseEntity<List<SocialChoice>> getSocialChoices();
+    ResponseEntity<Response<List<JsonObject>>> getSocialChoices();
+
+
+    @Get("/social_choices/{id}")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<JsonObject>> getSocialChoice(@Path Long id);
+
+    /**
+     * Set a specific header to the HTTP request.
+     *
+     * @param name  header name
+     * @param value header value
+     */
+    void setHeader(String name, String value);
+
+    String getHeader(String name);
 }

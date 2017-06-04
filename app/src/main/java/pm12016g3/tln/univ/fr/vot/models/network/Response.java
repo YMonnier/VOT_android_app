@@ -11,7 +11,7 @@ import lombok.Data;
  * https://github.com/YMonnier
  */
 @Data
-public class Response<T extends Requestable>  {
+public class Response<T>  {
     private int httpErrorCode;
     private String errorMessage;
     private boolean success;

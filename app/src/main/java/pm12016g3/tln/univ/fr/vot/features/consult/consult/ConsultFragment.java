@@ -2,28 +2,53 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+>>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+<<<<<<< HEAD
+=======
+
+import com.google.gson.JsonObject;
+>>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
+<<<<<<< HEAD
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.example.ParticipationActivity_;
+=======
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.ParticipationActivity_;
+>>>>>>> a9fff0e2dc1d8dd764ddbb9472d8113da2920da1
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.network.ResList;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTServiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
-import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
 
 import static android.view.View.VISIBLE;
 
@@ -57,6 +82,9 @@ public class ConsultFragment extends Fragment implements ClickListener {
     @ViewById
     RecyclerView recyclerView;
 
+    @RestService
+    VOTServiceAPI serviceAPI;
+
     /**
      * Progress view
      */
@@ -86,10 +114,29 @@ public class ConsultFragment extends Fragment implements ClickListener {
      * <p>
      * This task is done into the background thread.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Background
     void loadData() {
         // TODO: Background task + API Request
-        progressView.show();
-        socialChoiceList
+        //progressView.show();
+
+
+        try {
+            Log.d(TAG, String.valueOf(Settings.currentUser));
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
+            Log.d(TAG, response.toString());
+            /*Log.d(TAG, Arrays.toString(response.getBody().getData().toArray()));
+
+            for (JSONObject jsonObject: response.getBody().getData()) {
+                System.out.println(jsonObject);
+            }*/
+
+        } catch (RestClientException e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+
+        /*socialChoiceList
                 .add(new SocialChoice("super title","description",SocialChoice.Type.KEMENY_YOUNG,true,true));
         socialChoiceList
                 .add(new SocialChoice("super title","description",SocialChoice.Type.MAJORITY_JUGMENT,true,false));
@@ -109,18 +156,18 @@ public class ConsultFragment extends Fragment implements ClickListener {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
                 recyclerView,
                 this));
-
-        progressView.dismiss();
+        */
+        //progressView.dismiss();
     }
 
     @Override
     public void onClick(View view, int position) {
 
-       int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
-        if(visibility==VISIBLE){
-            startActivity(new Intent(getActivity().getApplicationContext(),ResultActivity_.class));
-        }else {
-            startActivity(new Intent(getActivity().getApplicationContext(),ParticipationActivity_.class));
+        int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
+        if (visibility == VISIBLE) {
+            startActivity(new Intent(getActivity().getApplicationContext(), ResultActivity_.class));
+        } else {
+            startActivity(new Intent(getActivity().getApplicationContext(), ParticipationActivity_.class));
         }
     }
 

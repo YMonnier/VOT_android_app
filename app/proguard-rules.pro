@@ -19,4 +19,3 @@
 -keep class com.woxthebox.draglistview.** { *; }
 -dontwarn java.lang.invoke.*
 -dontwarn **$$Lambda$*
-

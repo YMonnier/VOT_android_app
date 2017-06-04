@@ -1,7 +1,9 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import java.util.List;
+
 import lombok.Data;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCData;
+import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
 
 /**
  * Project android.
@@ -13,7 +15,8 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCData;
  */
 
 @Data
-public class SocialChoice<T extends SCData> {
+public class SocialChoice
+        implements Requestable {
     public enum Type {
         SIMPLE_TRANSFARABLE_VOTE("STV"),
         MAJORITY_JUGMENT("JM"),
@@ -32,17 +35,19 @@ public class SocialChoice<T extends SCData> {
         }
     }
 
+    private Long id;
     private String title;
     private String description;
     private Type type;
     private boolean confidentiality;
-    private T data;
     private boolean closed;
+    private List<User> voted;
+    //private List<User> participants;
 
     public SocialChoice() {
     }
 
-    public SocialChoice(String title, String description, Type type, boolean confidentiality,boolean closed) {
+    public SocialChoice(String title, String description, Type type, boolean confidentiality, boolean closed) {
         this.title = title;
         this.description = description;
         this.type = type;
