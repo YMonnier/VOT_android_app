@@ -17,6 +17,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.RecapFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.friends.InvitationFriendsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.location.LocationFriendsFragment_;
+import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 
 /**
  * Project android.
@@ -29,7 +30,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.location.Loc
 
 @EFragment(R.layout.consult_create_invitation_fragment)
 @OptionsMenu(R.menu.consult_create_menu_two_arrows)
-public class InvitationFragment extends Fragment
+public class InvitationFragment extends AppFragment
         implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = InvitationFragment.class.getSimpleName();
 
@@ -49,6 +50,7 @@ public class InvitationFragment extends Fragment
 
     @AfterViews
     void init() {
+        fragmentTitle = getString(R.string.fragment_title_invitation);
         parent = (CreateFragment) getParentFragment();
         setDefaultFragment();
         around_me.setOnCheckedChangeListener(this);
@@ -57,8 +59,13 @@ public class InvitationFragment extends Fragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
-        parent.setFragment(new RecapFragment_(), "Récapitulatif");
-        parent.nextStep();
+        parent.nextStep(this, new RecapFragment_());
+    }
+
+    @OptionsItem(R.id.menu_item_back_arrow)
+    void previous() {
+        Log.d(TAG, "Back button");
+        parent.previousStep();
     }
 
     private void setDefaultFragment() {

@@ -1,13 +1,16 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
-import android.app.Fragment;
+import android.util.Log;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 
 /**
  * Project android.
@@ -19,7 +22,9 @@ import pm12016g3.tln.univ.fr.vot.R;
  */
 
 @EFragment(R.layout.consult_create_recap_fragment)
-public class RecapFragment extends Fragment {
+@OptionsMenu(R.menu.consult_create_menu_back_arrow)
+public class RecapFragment extends AppFragment {
+    private static final String TAG = RecapFragment.class.getSimpleName();
 
     @ViewById(R.id.recap_view)
     TextView recapView;
@@ -33,7 +38,14 @@ public class RecapFragment extends Fragment {
 
     @AfterViews
     void init() {
+        fragmentTitle = getString(R.string.fragment_title_recap);
         parent = (CreateFragment) getParentFragment();
         recapView.setText(parent.getSocialChoice().toString());
+    }
+
+    @OptionsItem(R.id.menu_item_back_arrow)
+    void previous() {
+        Log.d(TAG, "Back button");
+        parent.previousStep();
     }
 }

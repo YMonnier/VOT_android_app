@@ -1,6 +1,5 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
 
-import android.app.Fragment;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -34,6 +33,7 @@ import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
+import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
@@ -47,7 +47,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 @EFragment(R.layout.consult_create_algo_simple_vote_fragment)
 @OptionsMenu(R.menu.consult_create_menu_two_arrows)
-public class SimpleVoteFragment extends Fragment
+public class SimpleVoteFragment extends AppFragment
         implements View.OnClickListener {
     private static final String TAG = SimpleVoteFragment.class.getSimpleName();
     private final int ADD_BUTTON_TAG = 143;
@@ -93,6 +93,7 @@ public class SimpleVoteFragment extends Fragment
     @AfterViews
     void init() {
         Log.d(TAG, "Init");
+        fragmentTitle = getString(R.string.fragment_title_sm);
         parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
     }
@@ -100,9 +101,13 @@ public class SimpleVoteFragment extends Fragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
+        parent.nextStep(this, new InvitationFragment_());
+    }
 
-        parent.setFragment(new InvitationFragment_(), "Invitation");
-        parent.nextStep();
+    @OptionsItem(R.id.menu_item_back_arrow)
+    void previous() {
+        Log.d(TAG, "Back button");
+        parent.previousStep();
     }
 
     /**
