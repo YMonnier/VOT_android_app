@@ -235,7 +235,6 @@ public class LoginActivity extends AppCompatActivity
      * Google Sign in
      */
     private void googleSignIn() {
-
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -289,6 +288,7 @@ public class LoginActivity extends AppCompatActivity
         final User user = new User.Builder()
                 .setEmail(email)
                 .setAccessToken(TMP_ACCESS_TOKEN)
+                .setDeviceToken(FirebaseInstanceId.getInstance().getToken())
                 .build();
 
         try {

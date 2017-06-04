@@ -167,13 +167,13 @@ public class SettingsFragment extends Fragment
         String description = this.description.getText().toString();
         SocialChoice.Type type = null;
         if (typeStr.equals(getString(R.string.algo_ms))) {
-            type = SocialChoice.Type.MAJORITY_BALLOT;
+            type = SocialChoice.Type.SM;
         } else if (typeStr.equals(getString(R.string.algo_ky))) {
-            type = SocialChoice.Type.KEMENY_YOUNG;
+            type = SocialChoice.Type.KY;
         } else if (typeStr.equals(getString(R.string.algo_jm))) {
-            type = SocialChoice.Type.MAJORITY_JUGMENT;
+            type = SocialChoice.Type.JM;
         } else if (typeStr.equals(getString(R.string.algo_stv))) {
-            type = SocialChoice.Type.SIMPLE_TRANSFARABLE_VOTE;
+            type = SocialChoice.Type.STV;
         }
 
         System.out.println(Arrays.toString(SocialChoice.Type.values()));

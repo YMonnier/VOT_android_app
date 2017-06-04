@@ -26,11 +26,15 @@ public class User implements Requestable {
     @SerializedName(value = "access_token")
     private String accessToken;
 
+    @SerializedName(value = "device_token")
+    private String deviceToken;
+
     private User(Builder builder) {
         this.email = builder.email;
         this.pseudo = builder.pseudo;
         this.picture = builder.picture;
         this.accessToken = builder.accessToken;
+        this.deviceToken = builder.deviceToken;
         this.longitude = builder.longitude;
         this.latitude = builder.latitude;
     }
@@ -40,11 +44,17 @@ public class User implements Requestable {
         private String pseudo;
         private String picture;
         private String accessToken;
+        private String deviceToken;
         private double longitude;
         private double latitude;
 
         public User build() {
             return new User(this);
+        }
+
+        public Builder setDeviceToken(String deviceToken) {
+            this.deviceToken = deviceToken;
+            return this;
         }
 
         public Builder setEmail(String email) {

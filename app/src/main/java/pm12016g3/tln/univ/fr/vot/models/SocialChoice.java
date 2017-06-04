@@ -4,6 +4,7 @@ import java.util.List;
 
 import lombok.Data;
 import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCData;
 
 /**
  * Project android.
@@ -15,13 +16,13 @@ import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
  */
 
 @Data
-public class SocialChoice
+public class SocialChoice<T extends SCData>
         implements Requestable {
     public enum Type {
-        SIMPLE_TRANSFARABLE_VOTE("STV"),
-        MAJORITY_JUGMENT("JM"),
-        MAJORITY_BALLOT("SM"),
-        KEMENY_YOUNG("KY");
+        STV("STV"),
+        JM("JM"),
+        SM("SM"),
+        KY("KY");
 
         private String value;
 
@@ -42,7 +43,8 @@ public class SocialChoice
     private boolean confidentiality;
     private boolean closed;
     private List<User> voted;
-    //private List<User> participants;
+    private List<User> participants;
+    private T data;
 
     public SocialChoice() {
     }

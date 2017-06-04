@@ -28,16 +28,16 @@ public class ConsultCardItem {
     public int getDrawableImage() {
         int res = 0;
         switch (type) {
-            case SIMPLE_TRANSFARABLE_VOTE:
+            case STV:
                 res = R.drawable.type_one;
                 break;
-            case MAJORITY_JUGMENT:
+            case JM:
                 res = R.drawable.type_two;
                 break;
-            case MAJORITY_BALLOT:
+            case SM:
                 res = R.drawable.type_three;
                 break;
-            case KEMENY_YOUNG:
+            case KY:
                 res = R.drawable.type_four;
                 break;
         }
