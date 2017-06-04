@@ -30,7 +30,6 @@ import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withO
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTServiceAPI;
@@ -114,8 +113,8 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
                         Log.d(TAG, type.toString());
                         if(type == SocialChoice.Type.SM) {
-                            SocialChoice<SCSMajorityBallot> scmb = deserialize(socialChoiceJson, SocialChoice.class);
-                            Log.d(TAG, scmb.toString());
+                            //SocialChoice<SCSMajorityBallot> scmb = deserialize(socialChoiceJson, SocialChoice.class);
+                            //Log.d(TAG, scmb.toString());
                         }
                     }
                 }
