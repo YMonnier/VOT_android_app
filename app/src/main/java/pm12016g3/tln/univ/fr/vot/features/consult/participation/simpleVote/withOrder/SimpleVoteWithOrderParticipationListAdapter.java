@@ -91,18 +91,25 @@ public class SimpleVoteWithOrderParticipationListAdapter
         @Override
         public void onItemClicked(View view) {
 
-            //Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+            int currentPosition = getAdapterPosition();
+            int lastPosition = getItemCount()-1;
+
             check.setChecked(!check.isChecked());
             SimpleVoteWithOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
             if (check.isChecked()) {
                 clickedItem.setChecked(true);
                 choice_id.setText(String.valueOf(getAdapterPosition() + 1));
+                if(currentPosition != 0){
+                    changeItemPosition(currentPosition, 0);
+                    notifyDataSetChanged();
+                }
             } else {
                 clickedItem.setChecked(false);
                 choice_id.setText(" ");
-                changeItemPosition(getAdapterPosition(), getItemCount() - 1);
-                Log.d("TAG", mItemList.toString());
-                notifyDataSetChanged();
+                if(currentPosition != lastPosition){
+                    changeItemPosition(currentPosition, lastPosition);
+                    notifyDataSetChanged();
+                }
             }
         }
     }

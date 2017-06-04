@@ -38,6 +38,8 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
      */
     private boolean mDragOnLongPress;
 
+    static int  countFalse = 0;
+
     public SimpleVoteWithoutOrderParticipationListAdapter(List<SimpleVoteWithoutOrderParticipationItem> list, int layoutId,
                                                           int grabHandleId, boolean dragOnLongPress) {
         this.mLayoutId = layoutId;
@@ -77,6 +79,7 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
             check = (CheckedTextView) itemView.findViewById(R.id.sv_participation_choice_check_tv);
         }
 
+
         /**
          * Respond to clicks events on the item View root layout
          *
@@ -84,18 +87,25 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
          */
         @Override
         public void onItemClicked(View view) {
-
-            //Toast.makeText(view.getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+            int currentPosition = getAdapterPosition();
+            int lastPosition = getItemCount()-1;
             check.setChecked(!check.isChecked());
             SimpleVoteWithoutOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
             if (check.isChecked()) {
                 clickedItem.setChecked(true);
+                if(currentPosition != 0){
+                    changeItemPosition(currentPosition, 0);
+                    notifyDataSetChanged();
+                }
             } else {
                 clickedItem.setChecked(false);
-                changeItemPosition(getAdapterPosition(), getItemCount() - 1);
-                Log.d("TAG", mItemList.toString());
-                notifyDataSetChanged();
+                if(currentPosition != lastPosition){
+                    changeItemPosition(currentPosition, lastPosition);
+                    notifyDataSetChanged();
+                }
             }
+
+
         }
     }
 
