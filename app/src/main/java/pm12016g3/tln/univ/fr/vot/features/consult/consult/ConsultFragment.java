@@ -2,17 +2,15 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
-
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -27,9 +25,7 @@ import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
-import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardItem;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
-
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
@@ -84,11 +80,6 @@ public class ConsultFragment extends Fragment implements ClickListener {
      */
     List<SocialChoice> socialChoiceList = new ArrayList<>();
 
-    /**
-     * Consult Card Items
-     */
-    List<ConsultCardItem> consultCardItemList = new ArrayList<>();
-
     @AfterViews
     void init() {
         Log.d(TAG, "Init fragment...");
@@ -103,18 +94,36 @@ public class ConsultFragment extends Fragment implements ClickListener {
      * <p>
      * This task is done into the background thread.
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Background
     void loadData() {
-        // TODO: Background task + API Request
-        //progressView.show();
-
-
         try {
             Log.d(TAG, String.valueOf(Settings.currentUser));
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
             Log.d(TAG, response.toString());
+            if (response.getStatusCode().is2xxSuccessful()) {
+
+
+                List<JsonObject> socialChoices = response.getBody().getData();
+                if (socialChoices != null) {
+                    for (JsonObject socialChoiceJson : socialChoices) {
+                        String stype = socialChoiceJson.get(JsonKeys.TYPE).getAsString();
+                        Log.d(TAG, stype);
+                        SocialChoice.Type type = SocialChoice.Type.valueOf(stype);
+
+                        Log.d(TAG, type.toString());
+                        if(type == SocialChoice.Type.SM) {
+                            //SocialChoice<SCSMajorityBallot> scmb = deserialize(socialChoiceJson, SocialChoice.class);
+                            //Log.d(TAG, scmb.toString());
+                        }
+                    }
+                }
+
+            } else {
+
+            }
+
+
             /*Log.d(TAG, Arrays.toString(response.getBody().getData().toArray()));
 
             for (JSONObject jsonObject: response.getBody().getData()) {
@@ -147,6 +156,14 @@ public class ConsultFragment extends Fragment implements ClickListener {
                 this));
         */
         //progressView.dismiss();
+    }
+
+    public <T> T deserialize(JsonObject json, Class<T> clazz) {
+        GsonBuilder builder = new GsonBuilder();
+
+        Gson gson = builder.create();
+
+        return gson.fromJson(json, clazz);
     }
 
     @Override
