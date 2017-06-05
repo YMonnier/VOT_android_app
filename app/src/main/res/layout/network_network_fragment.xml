@@ -34,5 +34,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/vot_purple"/>
+        app:backgroundTint="@color/vot_purple"
+        android:tint="@color/vot_white"/>
 </android.support.design.widget.CoordinatorLayout>
