@@ -1,6 +1,5 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
-import android.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +25,7 @@ import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
+import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 
 /**
  * Project android.
@@ -37,8 +37,8 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
  */
 
 @EFragment(R.layout.consult_create_settings_fragment)
-@OptionsMenu(R.menu.consult_create_menu_one_arrow)
-public class SettingsFragment extends Fragment
+@OptionsMenu(R.menu.consult_create_menu_next_arrow)
+public class SettingsFragment extends AppFragment
         implements Validable {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
@@ -84,6 +84,7 @@ public class SettingsFragment extends Fragment
 
     @AfterViews
     void init() {
+        fragmentTitle = getString(R.string.fragment_title_settings);
         parent = (CreateFragment) getParentFragment();
     }
 
@@ -91,11 +92,35 @@ public class SettingsFragment extends Fragment
     void next() {
         Log.d(TAG, "Next button");
         if (validate()) {
-            setData();
+            setData(); // Set current data to parent.socialChoice.
             ViewUtils.closeKeyboard(getActivity(),
                     getActivity().getCurrentFocus());
-            parent.nextStep();
-            parent.setFragment(new SimpleVoteFragment_(), "Vote Simple");
+
+            boolean newFragment = false;
+            SocialChoice.Type type = parent.getSocialChoice().getType();
+            SocialChoice.Type typeAlgoView = parent.algorithmTypeFragment();
+            if (typeAlgoView != null) {
+                if (type != typeAlgoView) {
+                    newFragment = true;
+                    // Delete old fragment.
+                    for (int i = 1; i < parent.getFragments().size(); i++) {
+                        parent.getFragments().remove(i);
+                    }
+                }
+            } else
+                newFragment = true;
+
+
+            if (newFragment) {
+                // Insert new fragment
+                switch (type) {
+                    case SM:
+                        parent.nextStep(this, new SimpleVoteFragment_());
+                        break;
+                }
+            } else // Go the existing next view.
+                parent.nextStep();
+
         }
     }
 
@@ -161,7 +186,8 @@ public class SettingsFragment extends Fragment
         return !cancel;
     }
 
-    private void setData() {
+    @Override
+    public void setData() {
         String typeStr = (String) algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();

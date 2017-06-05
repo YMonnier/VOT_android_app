@@ -1,7 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.root;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +27,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
-    private static final String TMP_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODE4OTA4NDIsInN1YiI6NH0.H3WUro_qfBBU1BLvB-nQdSahSiEZ454MoKeYhvwYgr0";
+    //private static final String TMP_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODE4OTA4NDIsInN1YiI6NH0.H3WUro_qfBBU1BLvB-nQdSahSiEZ454MoKeYhvwYgr0";
     /**
      * Button action to login to the API.
      */
@@ -250,23 +251,32 @@ public class LoginActivity extends AppCompatActivity
 
     private void handleGoogleSignInResult(final GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             //updateUI(true);
-            System.out.println(acct.getId());
-            System.out.println(acct.getIdToken());
-            Log.d(TAG, acct.toString());
-            Log.d(TAG, acct.getDisplayName());
-            Log.d(TAG, acct.getEmail());
-            Log.d(TAG, acct.getGivenName());
-            Log.d(TAG, String.valueOf(acct.getGrantedScopes()));
-            Log.d(TAG, acct.getAccount().toString());
 
-            System.out.println("ça se lance !");
-            loginAction(acct);
+            if (acct != null) {
+                Log.d(TAG, acct.toString());
+                if (acct.getId() != null)
+                    System.out.println(acct.getId());
+                if (acct.getIdToken() != null)
+                    System.out.println(acct.getIdToken());
+                if (acct.getDisplayName() != null)
+                    Log.d(TAG, acct.getDisplayName());
+                if (acct.getEmail() != null)
+                    Log.d(TAG, acct.getEmail());
+                if (acct.getGivenName() != null)
+                    Log.d(TAG, acct.getGivenName());
 
+                Log.d(TAG, String.valueOf(acct.getGrantedScopes()));
+                if (acct.getAccount() != null)
+                    Log.d(TAG, acct.getAccount().toString());
+
+                loginAction(acct);
+            }
         } else {
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -295,10 +305,11 @@ public class LoginActivity extends AppCompatActivity
     @Background
     void loginAction(final GoogleSignInAccount googleSignInAccount) {
         final String email = googleSignInAccount.getEmail();
+        final String token = FirebaseInstanceId.getInstance().getToken();
         final User user = new User.Builder()
                 .setEmail(email)
-                .setAccessToken(TMP_ACCESS_TOKEN)
-                .setDeviceToken(FirebaseInstanceId.getInstance().getToken())
+                .setAccessToken(token) // tmp solution...
+                .setDeviceToken(token)
                 .build();
 
         try {
@@ -307,22 +318,22 @@ public class LoginActivity extends AppCompatActivity
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 Settings.currentUser = response.getBody().getData();
-                Settings.currentUser.setAccessToken(TMP_ACCESS_TOKEN);
+                Settings.currentUser.setAccessToken(token);
                 goToHomeView();
             } else {
-                showNicknameAlert(googleSignInAccount);
+                showNicknameAlert(googleSignInAccount, token);
             }
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
-            showNicknameAlert(googleSignInAccount);
+            showNicknameAlert(googleSignInAccount, token);
         }
 
         final String CLIENT_ID = getString(R.string.server_client_id);
         //String scopes = "oauth2:profile email"; // This can work !
         String scope = "audience:server:client_id:" + CLIENT_ID;
-        String token = null;
+        String accessToken = null;
         try{
-            token = GoogleAuthUtil.getToken(getApplicationContext(), googleSignInAccount.getAccount().name, scope);
+            accessToken = GoogleAuthUtil.getToken(getApplicationContext(), googleSignInAccount.getAccount().name, scope);
         }
         catch (IOException e){
             Log.e(TAG, "IO Exception: " + e.getMessage());
@@ -335,7 +346,7 @@ public class LoginActivity extends AppCompatActivity
             Log.e(TAG, "GoogleAuthException: " + e.getMessage());
         }
 
-        System.out.println(" token : "+token);
+        System.out.println(" token : "+accessToken);
 
     }
 
@@ -368,7 +379,7 @@ public class LoginActivity extends AppCompatActivity
      * @param googleSignInAccount google api.
      */
     @UiThread
-    void showNicknameAlert(final GoogleSignInAccount googleSignInAccount) {
+    void showNicknameAlert(final GoogleSignInAccount googleSignInAccount, final String token) {
         Log.d(TAG, "Show Nickname Dialog");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Authentification");
@@ -378,29 +389,26 @@ public class LoginActivity extends AppCompatActivity
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setPositiveButton(R.string.login_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String nickname = input.getText().toString();
-                Log.d(TAG, nickname);
 
-                User user = new User.Builder()
-                        .setEmail(googleSignInAccount.getEmail())
-                        .setAccessToken(TMP_ACCESS_TOKEN)
-                        .setPseudo(nickname)
-                        //.setPicture(googleSignInAccount.getPhotoUrl()
-                                //.getPath())
-                        .build();
+        builder.setPositiveButton(R.string.login_ok, (dialog, which) -> {
+            String nickname = input.getText().toString();
+            Log.d(TAG, nickname);
 
-                registration(user);
+            User.Builder userBuilder = new User.Builder()
+                    .setEmail(googleSignInAccount.getEmail())
+                    .setAccessToken(token)
+                    .setPseudo(nickname);
+
+            Uri picture = googleSignInAccount.getPhotoUrl();
+            if (picture != null) {
+                userBuilder.setPicture(picture.getPath());
             }
+
+            registration(userBuilder.build());
         });
-        builder.setNegativeButton(R.string.login_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "Closing dialog...");
-                dialog.cancel();
-            }
+        builder.setNegativeButton(R.string.login_cancel, (dialog, which) -> {
+            Log.d(TAG, "Closing dialog...");
+            dialog.cancel();
         });
 
         builder.show();

@@ -22,6 +22,7 @@ public class User implements Requestable {
     private String picture;
     private double longitude;
     private double latitude;
+    private boolean selected;
 
     @SerializedName(value = "access_token")
     private String accessToken;

@@ -3,8 +3,10 @@
     <string name="prompt_titre">Titre</string>
     <string name="prompt_description">Description</string>
     <string name="fragment_title_settings">Paramètres</string>
-    <string name="fragment_title_algorithmes">Algorithmes</string>
+    <string name="fragment_title_sm">Vote Simple</string>
+    <string name="fragment_title_algorithms">Algorithmes</string>
     <string name="fragment_title_invitation">Invitation</string>
+    <string name="fragment_title_recap">Récapitulatif</string>
     <string name="fragment_title_confirm">Confirmation</string>
     <string name="confidentiality">Confidentialité</string>
     <string name="tidy">Ordonné</string>

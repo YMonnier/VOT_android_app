@@ -16,4 +16,9 @@ public interface Validable {
      * @return true if the form is valid, otherwise false.
      */
     boolean validate();
+
+    /**
+     * Set data to the parent model.
+     */
+    void setData();
 }

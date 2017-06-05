@@ -3,8 +3,8 @@ package pm12016g3.tln.univ.fr.vot.models;
 import java.util.List;
 
 import lombok.Data;
+import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCData;
 
 /**
  * Project android.
@@ -16,7 +16,7 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCData;
  */
 
 @Data
-public class SocialChoice<T extends SCData>
+public class SocialChoice<T>
         implements Requestable {
     public enum Type {
         STV("STV"),
@@ -55,5 +55,28 @@ public class SocialChoice<T extends SCData>
         this.type = type;
         this.confidentiality = confidentiality;
         this.closed = closed;
+    }
+
+    /**
+     * Return the drawable image ID of the respective social choice
+     * @return drawable image ID
+     */
+    public int getDrawableImage() {
+        int res = 0;
+        switch (type) {
+            case STV:
+                res = R.drawable.type_one;
+                break;
+            case JM:
+                res = R.drawable.type_two;
+                break;
+            case SM:
+                res = R.drawable.type_three;
+                break;
+            case KY:
+                res = R.drawable.type_four;
+                break;
+        }
+        return res;
     }
 }
