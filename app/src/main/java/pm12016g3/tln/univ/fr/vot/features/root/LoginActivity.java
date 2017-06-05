@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -45,14 +43,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.network.NetworkUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTAuthAPI;
@@ -304,50 +301,48 @@ public class LoginActivity extends AppCompatActivity
      */
     @Background
     void loginAction(final GoogleSignInAccount googleSignInAccount) {
-        final String email = googleSignInAccount.getEmail();
-        final String token = FirebaseInstanceId.getInstance().getToken();
-        final User user = new User.Builder()
-                .setEmail(email)
-                .setAccessToken(token) // tmp solution...
-                .setDeviceToken(token)
-                .build();
-
-        try {
-            ResponseEntity<Response<User>> response = apiService.login(user);
-            Log.i(TAG, response.toString());
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                Settings.currentUser = response.getBody().getData();
-                Settings.currentUser.setAccessToken(token);
-                goToHomeView();
-            } else {
-                showNicknameAlert(googleSignInAccount, token);
-            }
-        } catch (RestClientException e) {
-            Log.e(TAG, e.getLocalizedMessage());
-            showNicknameAlert(googleSignInAccount, token);
-        }
-
         final String CLIENT_ID = getString(R.string.server_client_id);
-        //String scopes = "oauth2:profile email"; // This can work !
         String scope = "audience:server:client_id:" + CLIENT_ID;
         String accessToken = null;
-        try{
-            accessToken = GoogleAuthUtil.getToken(getApplicationContext(), googleSignInAccount.getAccount().name, scope);
-        }
-        catch (IOException e){
+
+        try {
+            if (googleSignInAccount.getAccount() != null) {
+                accessToken = GoogleAuthUtil.getToken(getApplicationContext(), googleSignInAccount.getAccount().name, scope);
+
+                final String email = googleSignInAccount.getEmail();
+                final String token = FirebaseInstanceId.getInstance().getToken();
+                final User user = new User.Builder()
+                        .setEmail(email)
+                        .setAccessToken(accessToken)
+                        .setDeviceToken(token)
+                        .build();
+
+                try {
+                    ResponseEntity<Response<User>> response = apiService.login(user);
+                    Log.i(TAG, response.toString());
+
+                    if (response.getStatusCode().is2xxSuccessful()) {
+                        Settings.currentUser = response.getBody().getData();
+                        Settings.currentUser.setAccessToken(token);
+                        goToHomeView();
+                    } else if (response.getStatusCode().is4xxClientError()) {
+                        showNicknameAlert(googleSignInAccount, user);
+                    }
+                } catch (RestClientException e) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                    showNicknameAlert(googleSignInAccount, user);
+                }
+            }
+        } catch (IOException e) {
             Log.e(TAG, "IO Exception: " + e.getMessage());
-        }
-        catch (UserRecoverableAuthException e){
+        } catch (UserRecoverableAuthException e) {
             startActivityForResult(e.getIntent(), 987);
-        }
-        catch (GoogleAuthException e)
-        {
+        } catch (GoogleAuthException e) {
             Log.e(TAG, "GoogleAuthException: " + e.getMessage());
         }
 
-        System.out.println(" token : "+accessToken);
 
+        System.out.println(" token : " + accessToken);
     }
 
     /**
@@ -358,6 +353,9 @@ public class LoginActivity extends AppCompatActivity
     @Background
     void registration(User user) {
         try {
+            Log.d(TAG, user.toString());
+            Log.d(TAG, GsonSingleton.getInstance().toJson(user));
+
             ResponseEntity<Response<User>> response = apiService.registration(user);
             Log.d(TAG, response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
@@ -365,7 +363,6 @@ public class LoginActivity extends AppCompatActivity
                 goToHomeView();
             }
         } catch (RestClientException e) {
-
             Log.e(TAG, String.valueOf(e.getStackTrace()));
             Snack.showSuccessfulMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.snack_error_registration_failed),
@@ -379,7 +376,7 @@ public class LoginActivity extends AppCompatActivity
      * @param googleSignInAccount google api.
      */
     @UiThread
-    void showNicknameAlert(final GoogleSignInAccount googleSignInAccount, final String token) {
+    void showNicknameAlert(final GoogleSignInAccount googleSignInAccount, final User user) {
         Log.d(TAG, "Show Nickname Dialog");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Authentification");
@@ -394,17 +391,14 @@ public class LoginActivity extends AppCompatActivity
             String nickname = input.getText().toString();
             Log.d(TAG, nickname);
 
-            User.Builder userBuilder = new User.Builder()
-                    .setEmail(googleSignInAccount.getEmail())
-                    .setAccessToken(token)
-                    .setPseudo(nickname);
+            user.setPseudo(nickname);
 
             Uri picture = googleSignInAccount.getPhotoUrl();
             if (picture != null) {
-                userBuilder.setPicture(picture.getPath());
+                user.setPicture(picture.getPath());
             }
 
-            registration(userBuilder.build());
+            registration(user);
         });
         builder.setNegativeButton(R.string.login_cancel, (dialog, which) -> {
             Log.d(TAG, "Closing dialog...");

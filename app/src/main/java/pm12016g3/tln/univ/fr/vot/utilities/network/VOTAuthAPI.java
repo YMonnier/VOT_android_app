@@ -4,6 +4,7 @@ import org.androidannotations.rest.spring.annotations.Accept;
 import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Header;
 import org.androidannotations.rest.spring.annotations.Post;
+import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +47,27 @@ public interface VOTAuthAPI {
     @Post("users")
     @Header(name = "Content-Type", value = "application/json")
     ResponseEntity<Response<User>> registration(@Body User user);
+
+
+    /**
+     * Update the device token of the current user action.
+     *
+     * @param user user information
+     * @return A user object.
+     */
+    @Post("users/device_token")
+    @Header(name = "Content-Type", value = "application/json")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<User>> deviceToken(@Body User user);
+
+
+    /**
+     * Set a specific header to the HTTP request.
+     *
+     * @param name  header name
+     * @param value header value
+     */
+    void setHeader(String name, String value);
+
+    String getHeader(String name);
 }

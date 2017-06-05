@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -138,6 +139,7 @@ public class NetworkFragment extends Fragment {
             Log.d(TAG, response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<User> users = response.getBody().getData();
+                Log.d(TAG, Arrays.toString(users.toArray()));
                 allFriends.addAll(users);
                 adapter.getItems()
                         .addAll(users);
@@ -172,7 +174,7 @@ public class NetworkFragment extends Fragment {
     }
 
     /**
-     * Set adapter to the card recycler view .
+     * Set adapter
      * This task is done on UI Thread.
      */
     @UiThread

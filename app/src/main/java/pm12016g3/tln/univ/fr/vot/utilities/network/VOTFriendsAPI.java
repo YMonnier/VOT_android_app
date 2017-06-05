@@ -2,6 +2,7 @@ package pm12016g3.tln.univ.fr.vot.utilities.network;
 
 import org.androidannotations.rest.spring.annotations.Accept;
 import org.androidannotations.rest.spring.annotations.Get;
+import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -26,13 +27,31 @@ import pm12016g3.tln.univ.fr.vot.models.network.Response;
 public interface VOTFriendsAPI {
 
     /**
-     * Get all social choice.
+     * Get all friend of the authenticated person..
      *
      * @return A list of Social Choice Object.
      */
     @Get("/users/friends")
     @RequiresHeader("Authorization")
     ResponseEntity<Response<List<User>>> getFriends();
+
+    /**
+     * Get all friend of the authenticated person..
+     *
+     * @return A list of Social Choice Object.
+     */
+    @Get("/users")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<List<User>>> getUsers();
+
+    /**
+     * Get all friend of the authenticated person..
+     *
+     * @return A list of Social Choice Object.
+     */
+    @Get("/users/pseudo/{nickname}")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<List<User>>> findUserByPseudo(@Path final String nickname);
 
 
     /**

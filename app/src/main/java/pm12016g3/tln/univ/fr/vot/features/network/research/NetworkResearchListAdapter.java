@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 
 /**
@@ -17,7 +17,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
  */
 
 @EBean
-public class NetworkResearchListAdapter extends ListViewAdapterBase<BasicItem, NetworkResearchItemView> {
+public class NetworkResearchListAdapter extends ListViewAdapterBase<User, NetworkResearchItemView> {
     @Override
     protected NetworkResearchItemView onCreateItemView(ViewGroup parent) {
         return NetworkResearchItemView_.build(parent.getContext());
