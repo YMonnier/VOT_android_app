@@ -143,6 +143,7 @@ public class NetworkFragment extends Fragment {
                         .addAll(users);
 
                 setAdapter();
+                dismissProgress();
             } else {
                 dismissProgress();
             }
