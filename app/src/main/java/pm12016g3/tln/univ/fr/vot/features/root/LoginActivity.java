@@ -2,6 +2,7 @@ package pm12016g3.tln.univ.fr.vot.features.root;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -367,14 +368,17 @@ public class LoginActivity extends AppCompatActivity
                 String nickname = input.getText().toString();
                 Log.d(TAG, nickname);
 
-                User user = new User.Builder()
+                User.Builder userBuilder = new User.Builder()
                         .setEmail(googleSignInAccount.getEmail())
                         .setAccessToken(TMP_ACCESS_TOKEN)
-                        .setPseudo(nickname)
-                        .setPicture(googleSignInAccount.getPhotoUrl()
-                                .getPath())
-                        .build();
-                registration(user);
+                        .setPseudo(nickname);
+
+                Uri picture = googleSignInAccount.getPhotoUrl();
+                if (picture != null) {
+                    userBuilder.setPicture(picture.getPath());
+                }
+
+                registration(userBuilder.build());
             }
         });
         builder.setNegativeButton(R.string.login_cancel, new DialogInterface.OnClickListener() {
