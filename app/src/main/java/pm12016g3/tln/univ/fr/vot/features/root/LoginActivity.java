@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,9 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,6 +42,10 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
@@ -236,6 +244,7 @@ public class LoginActivity extends AppCompatActivity
      */
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        System.out.println("rhalalala");
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -255,6 +264,7 @@ public class LoginActivity extends AppCompatActivity
             Log.d(TAG, String.valueOf(acct.getGrantedScopes()));
             Log.d(TAG, acct.getAccount().toString());
 
+            System.out.println("ça se lance !");
             loginAction(acct);
 
         } else {
@@ -307,19 +317,26 @@ public class LoginActivity extends AppCompatActivity
             showNicknameAlert(googleSignInAccount);
         }
 
-        /*final String CLIENT_ID = getString(R.string.server_client_id);
-        final List<String> SCOPES = Arrays.asList(
-                "https://www.googleapis.com/auth/plus.login");
+        final String CLIENT_ID = getString(R.string.server_client_id);
+        //String scopes = "oauth2:profile email"; // This can work !
+        String scope = "audience:server:client_id:" + CLIENT_ID;
+        String token = null;
+        try{
+            token = GoogleAuthUtil.getToken(getApplicationContext(), googleSignInAccount.getAccount().name, scope);
+        }
+        catch (IOException e){
+            Log.e(TAG, "IO Exception: " + e.getMessage());
+        }
+        catch (UserRecoverableAuthException e){
+            startActivityForResult(e.getIntent(), 987);
+        }
+        catch (GoogleAuthException e)
+        {
+            Log.e(TAG, "GoogleAuthException: " + e.getMessage());
+        }
 
-        String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",
-                CLIENT_ID,
-                TextUtils.join(" ", SCOPES));
+        System.out.println(" token : "+token);
 
-
-            String exchangeCode = GoogleAuthUtil.getToken(getApplicationContext(),
-                    googleSignInAccount.getAccount(),
-                    scope);
-        */
     }
 
     /**
@@ -371,9 +388,10 @@ public class LoginActivity extends AppCompatActivity
                         .setEmail(googleSignInAccount.getEmail())
                         .setAccessToken(TMP_ACCESS_TOKEN)
                         .setPseudo(nickname)
-                        .setPicture(googleSignInAccount.getPhotoUrl()
-                                .getPath())
+                        //.setPicture(googleSignInAccount.getPhotoUrl()
+                                //.getPath())
                         .build();
+
                 registration(user);
             }
         });
