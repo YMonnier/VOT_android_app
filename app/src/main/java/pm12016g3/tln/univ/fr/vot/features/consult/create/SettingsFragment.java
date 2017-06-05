@@ -186,7 +186,8 @@ public class SettingsFragment extends AppFragment
         return !cancel;
     }
 
-    private void setData() {
+    @Override
+    public void setData() {
         String typeStr = (String) algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();
