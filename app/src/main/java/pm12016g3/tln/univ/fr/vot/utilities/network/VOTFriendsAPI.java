@@ -1,10 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.utilities.network;
 
-import com.google.gson.JsonObject;
-
 import org.androidannotations.rest.spring.annotations.Accept;
 import org.androidannotations.rest.spring.annotations.Get;
-import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -12,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
 /**
  * Project android.
  * Package pm12016g3.tln.univ.fr.vot.utilities.network.
- * File VOTServiceAPI.java.
+ * File VOTSocialChoiceAPI.java.
  * Created by Ysee on 01/06/2017 - 09:53.
  * www.yseemonnier.com
  * https://github.com/YMonnier
@@ -25,21 +23,17 @@ import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
 @Rest(rootUrl = "http://dapm1-g3-vot.herokuapp.com/api", converters = {MyGsonHttpMessageConverter.class})
 @Accept(MediaType.APPLICATION_JSON)
-public interface VOTServiceAPI {
+public interface VOTFriendsAPI {
 
     /**
      * Get all social choice.
      *
      * @return A list of Social Choice Object.
      */
-    @Get("/social_choices")
+    @Get("/users/friends")
     @RequiresHeader("Authorization")
-    ResponseEntity<Response<List<JsonObject>>> getSocialChoices();
+    ResponseEntity<Response<List<User>>> getFriends();
 
-
-    @Get("/social_choices/{id}")
-    @RequiresHeader("Authorization")
-    ResponseEntity<Response<JsonObject>> getSocialChoice(@Path Long id);
 
     /**
      * Set a specific header to the HTTP request.

@@ -36,7 +36,7 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
-import pm12016g3.tln.univ.fr.vot.utilities.network.VOTServiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
 import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerTouchListener;
 
@@ -73,7 +73,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
     RecyclerView recyclerView;
 
     @RestService
-    VOTServiceAPI serviceAPI;
+    VOTSocialChoiceAPI serviceAPI;
 
     /**
      * Progress view
