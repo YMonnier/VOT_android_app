@@ -96,7 +96,6 @@ public class ConsultFragment extends Fragment implements ClickListener {
      */
     @Background
     void loadData() {
-
         try {
             showProgress();
             Log.d(TAG, String.valueOf(Settings.currentUser));
@@ -112,30 +111,39 @@ public class ConsultFragment extends Fragment implements ClickListener {
                         String stype = socialChoiceJson.get(JsonKeys.TYPE).getAsString();
                         SocialChoice.Type type = SocialChoice.Type.valueOf(stype);
 
-                        if (type == SocialChoice.Type.SM) {
-                            SocialChoice<SCSMajorityBallot> sc = gde.deserialize(socialChoiceJson, SCSMajorityBallot.class);
-                            adapter.add(sc);
-                            Log.d(TAG, sc.toString());
-                        } else if (type == SocialChoice.Type.KY) {
-                            SocialChoice<SCKemenyYoung> sc = gde.deserialize(socialChoiceJson, SCKemenyYoung.class);
-                            adapter.add(sc);
-                            Log.d(TAG, sc.toString());
-                        } else if (type == SocialChoice.Type.JM) {
-                            SocialChoice<SCMajorityJudgment> sc = gde.deserialize(socialChoiceJson, SCMajorityJudgment.class);
-                            adapter.add(sc);
-                            Log.d(TAG, sc.toString());
-                        } else if (type == SocialChoice.Type.STV) {
-                            SocialChoice<SCSimpleTransfarableVote> sc = gde.deserialize(socialChoiceJson, SCSimpleTransfarableVote.class);
-                            adapter.add(sc);
-                            Log.d(TAG, sc.toString());
+                        switch (type) {
+                            case SM:
+                                SocialChoice<SCSMajorityBallot> scmb = gde
+                                        .deserialize(socialChoiceJson,
+                                                SCSMajorityBallot.class);
+                                adapter.add(scmb);
+                                Log.d(TAG, scmb.toString());
+                                break;
+                            case KY:
+                                SocialChoice<SCKemenyYoung> scky = gde
+                                        .deserialize(socialChoiceJson,
+                                                SCKemenyYoung.class);
+                                adapter.add(scky);
+                                Log.d(TAG, scky.toString());
+                                break;
+                            case JM:
+                                SocialChoice<SCMajorityJudgment> scmj = gde
+                                        .deserialize(socialChoiceJson,
+                                                SCMajorityJudgment.class);
+                                adapter.add(scmj);
+                                Log.d(TAG, scmj.toString());
+                                break;
+                            case STV:
+                                SocialChoice<SCSimpleTransfarableVote> scstv = gde
+                                        .deserialize(socialChoiceJson,
+                                                SCSimpleTransfarableVote.class);
+                                adapter.add(scstv);
+                                Log.d(TAG, scstv.toString());
+                                break;
                         }
                     }
                     setAdapter();
                     dismissProgress();
-                    //recyclerView.setAdapter(adapter);
-                    /*recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
-                            recyclerView,
-                            this));*/
                 }
             } else {
                 dismissProgress();
@@ -144,27 +152,14 @@ public class ConsultFragment extends Fragment implements ClickListener {
             Log.d(TAG, e.getLocalizedMessage());
             dismissProgress();
         }
-/*
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.KY,true,true));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.JM,true,false));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.SM,true,false));
-        socialChoiceList
-                .add(new SocialChoice("super title","description",SocialChoice.Type.STV,true,false));
-
-        List<ConsultCardItem> consultCardItemList = new ArrayList<>();
-        for(SocialChoice sc : socialChoiceList){
-            consultCardItemList
-                    .add(new ConsultCardItem(sc.getType(),sc.getTitle(),sc.isClosed()));
-        }
-
-        adapter.addAll(consultCardItemList);
-*/
-        //progressView.dismiss();
     }
 
+    /**
+     * On click action for the current card view.
+     *
+     * @param view     CardViewItem
+     * @param position Position of the card view clicked.
+     */
     @Override
     public void onClick(View view, int position) {
 
@@ -173,7 +168,9 @@ public class ConsultFragment extends Fragment implements ClickListener {
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
 
         if (visibility == VISIBLE) {
-            startActivity(new Intent(getActivity().getApplicationContext(), ResultActivity_.class));
+            startActivity(new Intent(getActivity()
+                    .getApplicationContext(),
+                    ResultActivity_.class));
         } else {
             switch (type) {
                 case STV:
@@ -204,16 +201,28 @@ public class ConsultFragment extends Fragment implements ClickListener {
         Log.d(TAG, "onLongClick...");
     }
 
+    /**
+     * Show the progress view.
+     * This task is done on UI Thread.
+     */
     @UiThread
     void showProgress() {
         progressView.show();
     }
 
+    /**
+     * Dismiss the progress view.
+     * This task is done on UI Thread.
+     */
     @UiThread
     void dismissProgress() {
         progressView.dismiss();
     }
 
+    /**
+     * Set adapter to the card recycler view .
+     * This task is done on UI Thread.
+     */
     @UiThread
     void setAdapter() {
         recyclerView.setAdapter(adapter);
