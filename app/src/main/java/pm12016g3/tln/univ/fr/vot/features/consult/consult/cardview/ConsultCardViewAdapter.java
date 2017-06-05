@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.RecyclerViewAdapterBase;
 import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.ViewWrapper;
 
@@ -17,7 +18,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.recycler.ViewWrapper;
  */
 
 @EBean
-public class ConsultCardViewAdapter extends RecyclerViewAdapterBase<ConsultCardItem, ConsultCardView> {
+public class ConsultCardViewAdapter extends RecyclerViewAdapterBase<SocialChoice, ConsultCardView> {
     @Override
     protected ConsultCardView onCreateItemView(ViewGroup parent, int viewType) {
         return ConsultCardView_.build(parent.getContext());
@@ -26,7 +27,7 @@ public class ConsultCardViewAdapter extends RecyclerViewAdapterBase<ConsultCardI
     @Override
     public void onBindViewHolder(ViewWrapper<ConsultCardView> holder, int position) {
         ConsultCardView view = holder.getView();
-        ConsultCardItem item = getItems().get(position);
+        SocialChoice item = getItems().get(position);
         view.bind(item);
     }
 }

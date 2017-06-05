@@ -247,16 +247,26 @@ public class LoginActivity extends AppCompatActivity
             GoogleSignInAccount acct = result.getSignInAccount();
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             //updateUI(true);
-            System.out.println(acct.getId());
-            System.out.println(acct.getIdToken());
-            Log.d(TAG, acct.toString());
-            Log.d(TAG, acct.getDisplayName());
-            Log.d(TAG, acct.getEmail());
-            Log.d(TAG, acct.getGivenName());
-            Log.d(TAG, String.valueOf(acct.getGrantedScopes()));
-            Log.d(TAG, acct.getAccount().toString());
 
-            loginAction(acct);
+            if (acct != null) {
+                Log.d(TAG, acct.toString());
+                if (acct.getId() != null)
+                    System.out.println(acct.getId());
+                if (acct.getIdToken() != null)
+                    System.out.println(acct.getIdToken());
+                if (acct.getDisplayName() != null)
+                    Log.d(TAG, acct.getDisplayName());
+                if (acct.getEmail() != null)
+                    Log.d(TAG, acct.getEmail());
+                if (acct.getGivenName() != null)
+                    Log.d(TAG, acct.getGivenName());
+
+                Log.d(TAG, String.valueOf(acct.getGrantedScopes()));
+                if (acct.getAccount() != null)
+                    Log.d(TAG, acct.getAccount().toString());
+
+                loginAction(acct);
+            }
 
         } else {
             // Signed out, show unauthenticated UI.

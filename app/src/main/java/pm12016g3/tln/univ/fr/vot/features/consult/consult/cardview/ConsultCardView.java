@@ -9,6 +9,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
 
 /**
@@ -22,7 +23,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.Bindable;
 
 @EViewGroup(R.layout.consult_consult_card_item)
 public class ConsultCardView extends LinearLayout
-implements Bindable<ConsultCardItem> {
+        implements Bindable<SocialChoice> {
 
     @ViewById(R.id.image)
     ImageView imageView;
@@ -38,12 +39,12 @@ implements Bindable<ConsultCardItem> {
     }
 
     @Override
-    public void bind(ConsultCardItem object) {
+    public void bind(SocialChoice object) {
         imageView.setImageResource(object.getDrawableImage());
         title.setText(object.getTitle());
-        if(object.isClosed()){
+        if (object.isClosed()) {
             closed.setVisibility(VISIBLE);
-        }else{
+        } else {
             closed.setVisibility(INVISIBLE);
         }
     }
