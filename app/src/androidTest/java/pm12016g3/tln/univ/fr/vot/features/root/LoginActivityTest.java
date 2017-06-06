@@ -32,67 +32,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class LoginActivityTest {
 
-    private static final String VALID_EMAIL = "test@gmail.com";
-    private static final String NOT_VALID_EMAIL = "test@test";
-    private static final String VALID_PASSWORD = "password";
-    private static final String NOT_VALID_PASSWORD = "abcd";
-    private static final String EMPTY_VALUE = "";
-
     @Rule
     public ActivityTestRule<LoginActivity_> mActivityRule = new ActivityTestRule<LoginActivity_>(LoginActivity_.class);
 
-    /**
-     * Check if error display if email is empty
-     */
     @Test
-    public void loginWithEmptyEmail(){
-        onView(ViewMatchers.withId(R.id.input_email)).perform(typeText(EMPTY_VALUE),closeSoftKeyboard());
-        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
-        onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_field_required))));
-    }
-
-    /**
-     * Check if error display if password is empty
-     */
-    @Test
-    public void loginWithEmptyPassword(){
-        onView(ViewMatchers.withId(R.id.input_email)).perform(typeText(VALID_EMAIL),closeSoftKeyboard());
-        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(EMPTY_VALUE),closeSoftKeyboard());
-        onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_field_required))));
-    }
-
-    /**
-     * Check if EmailValidator is valid
-     */
-    @Test
-    public void loginWithInvalidEmail(){
-        onView(ViewMatchers.withId(R.id.input_email)).perform(typeText(NOT_VALID_EMAIL),closeSoftKeyboard());
-        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
-        onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_email)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_invalid_email))));
-    }
-
-    /**
-     * Check if PasswordValidator is valid
-     */
-    @Test
-    public void loginWithInvalidPassword(){
-        onView(ViewMatchers.withId(R.id.input_email)).perform(typeText(VALID_EMAIL),closeSoftKeyboard());
-        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(NOT_VALID_PASSWORD),closeSoftKeyboard());
-        onView(withId(R.id.btn_confirmation)).perform(click());
-        onView(withId(R.id.input_password)).check(matches(EspressoUtils.withError(mActivityRule.getActivity().getString(R.string.error_invalid_password))));
-    }
-
-    /**
-     * Test all fields of the view
-     */
-    @Test
-    public void loginWithSucess(){
-        onView(ViewMatchers.withId(R.id.input_email)).perform(typeText(VALID_EMAIL),closeSoftKeyboard());
-        onView(ViewMatchers.withId(R.id.input_password)).perform(typeText(VALID_PASSWORD),closeSoftKeyboard());
-        onView(withId(R.id.btn_confirmation)).perform(click());
+    public void loginWithGmail(){
+        onView(withId(R.id.login_google_button)).perform(click());
     }
 
 
