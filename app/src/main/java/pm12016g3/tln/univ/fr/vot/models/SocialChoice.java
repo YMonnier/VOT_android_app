@@ -60,6 +60,7 @@ public class SocialChoice<T>
 
     /**
      * Return the drawable image ID of the respective social choice
+     *
      * @return drawable image ID
      */
     public int getDrawableImage() {

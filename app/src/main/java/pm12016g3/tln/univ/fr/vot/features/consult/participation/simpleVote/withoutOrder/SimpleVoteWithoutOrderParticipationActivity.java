@@ -1,17 +1,10 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckedTextView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -22,7 +15,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
@@ -38,7 +30,6 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivity {
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
-
 
     SocialChoice socialChoice;
 

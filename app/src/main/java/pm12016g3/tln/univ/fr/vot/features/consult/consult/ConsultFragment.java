@@ -2,7 +2,6 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +38,7 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ClickListener;
@@ -105,7 +105,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
             Log.d(TAG, String.valueOf(Settings.currentUser));
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
-            Log.d(TAG, "la réponse "+response.toString());
+            Log.d(TAG, "la réponse " + response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<JsonObject> socialChoices = response.getBody().getData();
                 GsonDeserializer gde = new GsonDeserializer();
@@ -170,7 +170,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         SocialChoice.Type type = adapter.getItems().get(position).getType();
         SocialChoice socialChoice = adapter.getItems().get(position);
 
-        System.out.println(" SC : "+adapter.getItems().get(position));
+        System.out.println(" SC : " + adapter.getItems().get(position));
 
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
 
@@ -190,22 +190,26 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
                     break;
                 case SM:
-                    System.out.println(" data : "+((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
+                    System.out.println(" data : " + ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
                     boolean ordered = ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered();
                     if (ordered) {
                         startActivity(
                                 new Intent(getActivity().
                                         getApplicationContext(),
                                         SimpleVoteWithOrderParticipationActivity_.class));
-                    }
-                    else {
-                        Intent intent = new Intent(getActivity().
-                                getApplicationContext(),
-                                SimpleVoteWithoutOrderParticipationActivity_.class);
-                        System.out.println("je passe un SC : "+socialChoice);
-                        Gson gson = new Gson();
+                    } else {
+                        System.out.println("je passe un SC : " + socialChoice);
+                        Gson gson = GsonSingleton.getInstance();
+
+                        Intent intent = SimpleVoteWithoutOrderParticipationActivity_
+                                .intent(getActivity())
+                                .get();
                         intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
-                        startActivity(intent);
+
+                        SimpleVoteWithoutOrderParticipationActivity_
+                                .intent(intent)
+                                .socialChoice(socialChoice)
+                                .start();
                     }
 
                     break;
