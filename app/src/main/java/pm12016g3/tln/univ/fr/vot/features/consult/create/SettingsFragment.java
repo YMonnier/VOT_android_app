@@ -3,6 +3,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -86,6 +87,7 @@ public class SettingsFragment extends AppFragment
     void init() {
         fragmentTitle = getString(R.string.fragment_title_settings);
         parent = (CreateFragment) getParentFragment();
+        algorithms.setOnTouchListener(spinnerOnTouchHandler);
     }
 
     @OptionsItem(R.id.menu_item_next_arrow)
@@ -267,11 +269,28 @@ public class SettingsFragment extends AppFragment
 
     @Click(R.id.algorithms_help)
     void algorithmsHelper() {
+        ViewUtils.closeKeyboard(getActivity(),
+                getActivity().getCurrentFocus());
         Log.d(TAG, "OnClick - Algorithm Helper....");
     }
 
     @Click(R.id.confidentiality_help)
     void confidentialityHelper() {
+        ViewUtils.closeKeyboard(getActivity(),
+                getActivity().getCurrentFocus());
         Log.d(TAG, "OnClick - Confidentiality Helper....");
     }
+
+    /**
+     * View OnTouchListener for the current Algorithm Spinner.
+     * Allowing to hide the ketboard when user press on the spinner.
+     */
+    private View.OnTouchListener spinnerOnTouchHandler = (v, event) -> {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            Log.d(TAG, "On Touch On Spinner");
+            ViewUtils.closeKeyboard(getActivity(),
+                    getActivity().getCurrentFocus());
+        }
+        return false; // Display the spinner
+     };
 }
