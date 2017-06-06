@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -106,8 +108,7 @@ public class NetworkFragment extends Fragment {
         if (text.length() == 0) {
             adapter.addAll(allFriends);
         } else if (text.length() != 0) {
-            allFriends
-                    .stream()
+            Stream.of(allFriends)
                     .filter(friend -> friend.getPseudo().toLowerCase().startsWith(text.toString().toLowerCase()))
                     .forEach(friend -> adapter.add(friend));
         }
