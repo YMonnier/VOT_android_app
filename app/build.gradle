@@ -110,6 +110,9 @@ dependencies {
     // Stream API from Java 8 rewritten on iterators for Java 7 and below
     compile 'com.annimon:stream:1.1.7'
 
+    // Fragment Slide
+    compile 'com.heinrichreimersoftware:material-intro:1.5.2'
+
     // Firebase
     compile 'com.google.firebase:firebase-messaging:10.0.1'
 

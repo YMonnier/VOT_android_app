@@ -15,27 +15,20 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
-import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
-import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
-import pm12016g3.tln.univ.fr.vot.utilities.network.VOTAuthAPI;
-import pm12016g3.tln.univ.fr.vot.utilities.network.VOTvoteAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTVoteAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -48,7 +41,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
     private final String TV_STRING1 = "Vous pouvez selectionner jusqu'à ";
-    private final String TV_STRING2 = " choix \nVotre choix :";
+    private final String TV_STRING2 = " choix \nLes choix :";
 
     SocialChoice<SCSMajorityBallot> socialChoice;
 
@@ -69,7 +62,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
      * information from server.
      */
     @RestService
-    VOTvoteAPI apiService;
+    VOTVoteAPI apiService;
 
     /**
      * Adapter for DragListView
@@ -105,6 +98,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
                 R.id.sv_participation_choice_title,
                 true,
                 socialChoice);
+
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
 

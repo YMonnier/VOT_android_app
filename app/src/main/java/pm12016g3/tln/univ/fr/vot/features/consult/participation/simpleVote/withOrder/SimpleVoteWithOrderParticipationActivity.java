@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
@@ -21,6 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
+import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -32,6 +38,16 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity {
 
     final String TAG = SimpleVoteWithOrderParticipationActivity.class.getSimpleName();
+    private final String TV_STRING1 = "Vous devez faire un classement.\nVous pouvez selectionner jusqu'à ";
+    private final String TV_STRING2 = " choix \nLes choix :";
+
+    SocialChoice<SCSMajorityBallot> socialChoice;
+
+    @ViewById(R.id.tv_reference)
+    TextView tv_reference;
+
+    @ViewById(R.id.vote_description)
+    TextView vote_description;
 
     /**
      * DragListView that contains the choices
@@ -55,6 +71,19 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
      */
     @AfterViews
     void init() {
+
+        String strObj = getIntent().getStringExtra(ExtraKeys.SOCIAL_CHOICE);
+        Gson gson = GsonSingleton.getInstance();
+        GsonDeserializer gsonDeserializer = new GsonDeserializer();
+        socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
+
+        System.out.println(" obj : "+socialChoice);
+
+        this.setTitle(socialChoice.getTitle());
+
+        tv_reference.setText(TV_STRING1+socialChoice.getData().getNbChoice()+TV_STRING2);
+        vote_description.setText(socialChoice.getDescription());
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -67,10 +96,12 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
+
         listAdapter = new SimpleVoteWithOrderParticipationListAdapter(choices,
                 R.layout.consult_participation_simple_vote_with_order_participation_item,
                 R.id.sv_participation_item_choice, false);
         choiceListView.setAdapter(listAdapter, true);
+
         choiceListView.setCanDragHorizontally(false);
         choiceListView.setCustomDragItem(new MyDragItem(this,
                 R.layout.consult_participation_simple_vote_with_order_participation_item));

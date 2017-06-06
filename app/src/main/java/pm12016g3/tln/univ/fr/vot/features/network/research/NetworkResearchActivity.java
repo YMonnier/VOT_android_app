@@ -5,16 +5,13 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -22,11 +19,12 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.network.research.custom.SendOnClickListener;
+import pm12016g3.tln.univ.fr.vot.models.FriendRequest;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
@@ -35,14 +33,13 @@ import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
-import static com.google.android.gms.wearable.DataMap.TAG;
-
 /**
  * Created by wenlixing on 17/05/2017.
  */
 
 @EActivity(R.layout.network_network_research_activity)
-public class NetworkResearchActivity extends AppCompatActivity {
+public class NetworkResearchActivity extends AppCompatActivity
+        implements SendOnClickListener<User> {
     private final String TAG = NetworkResearchActivity.class.getSimpleName();
     /**
      * EditText to Research Persons
@@ -63,11 +60,6 @@ public class NetworkResearchActivity extends AppCompatActivity {
     NetworkResearchListAdapter adapter;
 
     /**
-     * List of persons
-     */
-    List<User> allPersons = new ArrayList<>();
-
-    /**
      * Progress view
      */
     LoaderDialog progressView;
@@ -80,6 +72,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
+        adapter.setListener(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,18 +117,8 @@ public class NetworkResearchActivity extends AppCompatActivity {
                        int before,
                        int start,
                        int count) {
-
-        searchOnAPI(text.toString());
-        /*if (text.length() == 0) {
-            adapter.addAll(allPersons);
-        } else if (text.length() != 0) {
-            for (BasicItem person : allPersons) {
-                if (person.getTitle().toLowerCase().startsWith(text.toString().toLowerCase())) {
-                    adapter.add(person);
-                }
-            }
-        }*/
-
+        if (text != null)
+            searchOnAPI(text.toString());
     }
 
     /**
@@ -198,5 +181,32 @@ public class NetworkResearchActivity extends AppCompatActivity {
     void clearAdapter() {
         adapter.clear();
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Custom on Click listner
+     *
+     * @param item item clicked.
+     */
+    @Override
+    public void onClick(User item) {
+        Log.d(TAG, "Item clicked: " + item);
+        FriendRequest friendRequest = new FriendRequest();
+        friendRequest.add(item.getId());
+        send(friendRequest);
+    }
+
+    /**
+     * Send a friend request
+     * @param friendRequest friend request
+     */
+    @Background
+    void send(FriendRequest friendRequest) {
+        try {
+            Response response = serviceAPI.requests(friendRequest);
+            Log.d(TAG, response.toString());
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 }
