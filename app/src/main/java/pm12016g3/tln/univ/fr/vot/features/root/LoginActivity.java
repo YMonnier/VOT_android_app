@@ -323,7 +323,7 @@ public class LoginActivity extends AppCompatActivity
 
                     if (response.getStatusCode().is2xxSuccessful()) {
                         Settings.currentUser = response.getBody().getData();
-                        Settings.currentUser.setAccessToken(token);
+                        Settings.currentUser.setAccessToken(accessToken);
                         goToHomeView();
                     } else if (response.getStatusCode().is4xxClientError()) {
                         showNicknameAlert(googleSignInAccount, user);
