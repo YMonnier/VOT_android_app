@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="snack_error_no_internet">Aucune connexion Internet... Veuillez réessayer plus tard</string>
+    <string name="snack_error_no_algo_selected">Veuillez selectionner un algorithme.</string>
+    <string name="snack_error_no_internet">Aucune connexion Internet... Veuillez réessayer plus tard.</string>
     <string name="snack_error_registration_failed">Inscription a échouée...!</string>
 </resources>
