@@ -185,6 +185,7 @@ public class NetworkResearchActivity extends AppCompatActivity
 
     /**
      * Custom on Click listner
+     *
      * @param item item clicked.
      */
     @Override
@@ -192,7 +193,20 @@ public class NetworkResearchActivity extends AppCompatActivity
         Log.d(TAG, "Item clicked: " + item);
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.add(item.getId());
-        Response response = serviceAPI.requests(friendRequest);
-        Log.d(TAG, response.toString());
+        send(friendRequest);
+    }
+
+    /**
+     * Send a friend request
+     * @param friendRequest friend request
+     */
+    @Background
+    void send(FriendRequest friendRequest) {
+        try {
+            Response response = serviceAPI.requests(friendRequest);
+            Log.d(TAG, response.toString());
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 }
