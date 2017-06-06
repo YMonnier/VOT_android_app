@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity
     void init() {
         setSupportActionBar(toolbar);
         setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
+
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView userNameView = (TextView) headerLayout.findViewById(R.id.user_name);
+        userNameView.setText(Settings.currentUser.getPseudo());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
