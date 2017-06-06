@@ -33,6 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkMark="?android:listChoiceIndicatorMultiple"
-        android:focusableInTouchMode="false" />
+        android:focusableInTouchMode="false"/>
 </LinearLayout>
 
