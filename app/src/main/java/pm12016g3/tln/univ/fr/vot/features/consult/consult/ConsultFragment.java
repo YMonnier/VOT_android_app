@@ -193,14 +193,16 @@ public class ConsultFragment extends Fragment implements ClickListener {
                     System.out.println(" data : " + ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
                     boolean ordered = ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered();
                     if (ordered) {
-                        startActivity(
-                                new Intent(getActivity().
-                                        getApplicationContext(),
-                                        SimpleVoteWithOrderParticipationActivity_.class));
+
+                        Gson gson = GsonSingleton.getInstance();
+                        Intent intent = SimpleVoteWithOrderParticipationActivity_
+                                .intent(getActivity())
+                                .get();
+                        intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
+                        startActivity(intent);
                     } else {
                         System.out.println("je passe un SC : " + socialChoice);
                         Gson gson = GsonSingleton.getInstance();
-
                         Intent intent = SimpleVoteWithoutOrderParticipationActivity_
                                 .intent(getActivity())
                                 .get();

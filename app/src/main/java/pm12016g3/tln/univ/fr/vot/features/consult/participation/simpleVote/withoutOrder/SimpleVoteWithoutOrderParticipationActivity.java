@@ -48,7 +48,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
     private final String TV_STRING1 = "Vous pouvez selectionner jusqu'à ";
-    private final String TV_STRING2 = " choix \nVotre choix :";
+    private final String TV_STRING2 = " choix \nLes choix :";
 
     SocialChoice<SCSMajorityBallot> socialChoice;
 
@@ -105,6 +105,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
                 R.id.sv_participation_choice_title,
                 true,
                 socialChoice);
+
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
 
