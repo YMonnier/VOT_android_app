@@ -2,6 +2,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -56,7 +57,7 @@ import static android.view.View.VISIBLE;
  */
 
 @EFragment(R.layout.consult_consult_fragment)
-public class ConsultFragment extends Fragment implements ClickListener {
+public class ConsultFragment extends Fragment implements ClickListener, SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = ConsultFragment.class.getSimpleName();
 
     /**
@@ -76,6 +77,9 @@ public class ConsultFragment extends Fragment implements ClickListener {
     @ViewById
     RecyclerView recyclerView;
 
+    @ViewById(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @RestService
     VOTSocialChoiceAPI serviceAPI;
 
@@ -90,6 +94,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
         progressView = new LoaderDialog(getActivity(), "");
         loadData();
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     /**
@@ -241,6 +246,15 @@ public class ConsultFragment extends Fragment implements ClickListener {
     }
 
     /**
+     * Clear the current adpter
+     * This task is done on UI Thread.
+     */
+    @UiThread
+    void clearAdapter() {
+        adapter.clear();
+    }
+
+    /**
      * Set adapter to the card recycler view .
      * This task is done on UI Thread.
      */
@@ -251,4 +265,14 @@ public class ConsultFragment extends Fragment implements ClickListener {
                 recyclerView,
                 this));
     }
+
+    /**
+     * Refresh listener for swipeRefreshLayout
+     * It will reload information from server
+     */
+    @Override
+    public void onRefresh() {
+        loadData();
+    }
+
 }
