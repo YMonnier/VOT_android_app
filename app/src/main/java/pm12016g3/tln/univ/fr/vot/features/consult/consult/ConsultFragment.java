@@ -2,11 +2,13 @@ package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
@@ -25,6 +27,7 @@ import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder.SimpleVoteWithoutOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
@@ -33,6 +36,7 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCKemenyYoung;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
+import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
@@ -164,6 +168,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
     public void onClick(View view, int position) {
 
         SocialChoice.Type type = adapter.getItems().get(position).getType();
+        SocialChoice socialChoice = adapter.getItems().get(position);
 
         System.out.println(" SC : "+adapter.getItems().get(position));
 
@@ -186,10 +191,23 @@ public class ConsultFragment extends Fragment implements ClickListener {
                     break;
                 case SM:
                     System.out.println(" data : "+((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
-                    startActivity(
-                            new Intent(getActivity().
-                                    getApplicationContext(),
-                                    SimpleVoteWithOrderParticipationActivity_.class));
+                    boolean ordered = ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered();
+                    if (ordered) {
+                        startActivity(
+                                new Intent(getActivity().
+                                        getApplicationContext(),
+                                        SimpleVoteWithOrderParticipationActivity_.class));
+                    }
+                    else {
+                        Intent intent = new Intent(getActivity().
+                                getApplicationContext(),
+                                SimpleVoteWithoutOrderParticipationActivity_.class);
+                        System.out.println("je passe un SC : "+socialChoice);
+                        Gson gson = new Gson();
+                        intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
+                        startActivity(intent);
+                    }
+
                     break;
                 case KY:
 

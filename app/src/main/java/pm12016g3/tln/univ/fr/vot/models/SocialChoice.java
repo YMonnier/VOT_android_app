@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -17,7 +18,7 @@ import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
 
 @Data
 public class SocialChoice<T>
-        implements Requestable {
+        implements Requestable, Serializable {
     public enum Type {
         STV("STV"),
         JM("JM"),
