@@ -13,6 +13,8 @@ import com.woxthebox.draglistview.DragItemAdapter;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 
 /**
  * Created by wenlixing on 22/05/2017.
@@ -38,11 +40,16 @@ public class SimpleVoteWithOrderParticipationListAdapter
      */
     private boolean mDragOnLongPress;
 
+    private int countTrue;
+
+    private SocialChoice<SCSMajorityBallot> socialChoice;
+
     public SimpleVoteWithOrderParticipationListAdapter(List<SimpleVoteWithOrderParticipationItem> list, int layoutId,
-                                                       int grabHandleId, boolean dragOnLongPress) {
+                                                       int grabHandleId, boolean dragOnLongPress, SocialChoice<SCSMajorityBallot> socialChoice) {
         this.mLayoutId = layoutId;
         this.mGrabHandleId = grabHandleId;
         this.mDragOnLongPress = dragOnLongPress;
+        this.socialChoice = socialChoice;
         setHasStableIds(true);
         setItemList(list);
     }
@@ -94,23 +101,60 @@ public class SimpleVoteWithOrderParticipationListAdapter
             int currentPosition = getAdapterPosition();
             int lastPosition = getItemCount()-1;
 
-            check.setChecked(!check.isChecked());
+
+            System.out.println("je suis là");
+
             SimpleVoteWithOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
             if (check.isChecked()) {
-                clickedItem.setChecked(true);
-                choice_id.setText(String.valueOf(getAdapterPosition() + 1));
-                if(currentPosition != 0){
-                    changeItemPosition(currentPosition, 0);
-                    notifyDataSetChanged();
-                }
-            } else {
+                countTrue--;
                 clickedItem.setChecked(false);
                 choice_id.setText(" ");
                 if(currentPosition != lastPosition){
                     changeItemPosition(currentPosition, lastPosition);
                     notifyDataSetChanged();
                 }
+            } else {
+                System.out.println(" et là aussi ");
+                if (countTrue >= socialChoice.getData().getNbChoice())
+                    return;
+                countTrue++;
+                clickedItem.setChecked(true);
+                choice_id.setText(String.valueOf(getAdapterPosition() + 1));
+                if(currentPosition != 0){
+                    changeItemPosition(currentPosition, 0);
+                    notifyDataSetChanged();
+                }
             }
+
+
+            /*int currentPosition = getAdapterPosition();
+            int lastPosition = getItemCount()-1;
+
+            System.out.println("je suis là");
+
+            SimpleVoteWithOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+
+            if (check.isChecked()) {
+                countTrue--;
+                System.out.println(" ^^ coutn = "+countTrue);
+                check.setChecked(!check.isChecked());
+                clickedItem.setChecked(false);
+                if(currentPosition != lastPosition){
+                    changeItemPosition(currentPosition, lastPosition);
+                    notifyDataSetChanged();
+                }
+            } else {
+                if (countTrue >= socialChoice.getData().getNbChoice())
+                    return;
+                countTrue++;
+                System.out.println(" ^^ coutn = "+countTrue);
+                check.setChecked(!check.isChecked());
+                clickedItem.setChecked(true);
+                if(currentPosition != 0){
+                    changeItemPosition(currentPosition, 0);
+                    notifyDataSetChanged();
+                }
+            }*/
         }
     }
 

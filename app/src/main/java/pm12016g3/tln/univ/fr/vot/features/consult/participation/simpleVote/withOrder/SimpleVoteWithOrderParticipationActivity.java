@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
@@ -88,10 +89,9 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
-        choices.add(new SimpleVoteWithOrderParticipationItem("jon"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("helo"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("cuda"));
-        choices.add(new SimpleVoteWithOrderParticipationItem("dada"));
+
+        for (Candidat candidat : socialChoice.getCandidats())
+            choices.add(new SimpleVoteWithOrderParticipationItem(candidat.getName()));
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
@@ -99,7 +99,7 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
 
         listAdapter = new SimpleVoteWithOrderParticipationListAdapter(choices,
                 R.layout.consult_participation_simple_vote_with_order_participation_item,
-                R.id.sv_participation_item_choice, false);
+                R.id.sv_participation_item_choice, false, socialChoice);
         choiceListView.setAdapter(listAdapter, true);
 
         choiceListView.setCanDragHorizontally(false);
