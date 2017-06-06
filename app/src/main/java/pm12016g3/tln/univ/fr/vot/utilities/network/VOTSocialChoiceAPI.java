@@ -32,7 +32,7 @@ public interface VOTSocialChoiceAPI {
      *
      * @return A list of Social Choice Object.
      */
-    @Get("/social_choices")
+    @Get("/social_choices/current")
     @RequiresHeader("Authorization")
     ResponseEntity<Response<List<JsonObject>>> getSocialChoices();
 
