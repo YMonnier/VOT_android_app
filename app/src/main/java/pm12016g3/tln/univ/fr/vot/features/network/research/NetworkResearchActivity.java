@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
@@ -33,12 +34,14 @@ import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
+import static com.google.android.gms.wearable.DataMap.TAG;
+
 /**
  * Created by wenlixing on 17/05/2017.
  */
 
 @EActivity(R.layout.network_network_research_activity)
-@OptionsMenu(R.menu.network_research_activity_bar)
+
 public class NetworkResearchActivity extends AppCompatActivity {
     private final String TAG = NetworkResearchActivity.class.getSimpleName();
     /**
@@ -94,14 +97,6 @@ public class NetworkResearchActivity extends AppCompatActivity {
         finish();
     }
 
-    /**
-     * Listen to the click of the check button on the menu bar
-     */
-    @OptionsItem(R.id.network_research_action_check)
-    public void onClickCheckmark() {
-        ViewUtils.closeKeyboard(this, getCurrentFocus());
-        finish();
-    }
 
     /**
      * Listen to Person Item click in the ListView

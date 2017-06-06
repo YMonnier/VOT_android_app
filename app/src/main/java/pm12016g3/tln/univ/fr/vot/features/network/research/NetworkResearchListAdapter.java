@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.network.research;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
@@ -22,4 +23,5 @@ public class NetworkResearchListAdapter extends ListViewAdapterBase<User, Networ
     protected NetworkResearchItemView onCreateItemView(ViewGroup parent) {
         return NetworkResearchItemView_.build(parent.getContext());
     }
+
 }
