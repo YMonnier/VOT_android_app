@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="jm_title1">Le Jugement Majoritaire</string>
+    <string name="explication1">Le jugement majoritaire est une méthode de scrutin qui demande l\'avis des votans sur tous les candidats.</string>
+    <string name="jm_title2">Un fonctionnement par échelle</string>
+    <string name="explication2">Le votant est invité à donner son avis pour chaque candidat en utilisant l\'échelle ci-dessus.</string>
+    <string name="jm_title3">Vainqueur</string>
+    <string name="explication3">Le vainqueur est le candidat le plus apprécié parmi ceux ayant la meilleur appréciation.</string>
+    <string name="confidentiality_explication">Un choix social peut être défini comme anonyme. Il sera alors impossible de savoir ce que chaque participant a voté.</string>
+</resources>

@@ -87,6 +87,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--            *** TUTORIAL SLIDE ***  -->
+        <activity
+            android:name=".features.consult.create.TutorialActivity_"
+            android:parentActivityName=".features.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--            *** CONFIDENTIALITY SLIDE ***  -->
+        <activity
+            android:name=".features.consult.create.ConfidentialityActivity_"
+            android:parentActivityName=".features.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <!--             *** NETWORK PACKAGE *** -->
         <activity
             android:name=".features.network.research.NetworkResearchActivity_"
