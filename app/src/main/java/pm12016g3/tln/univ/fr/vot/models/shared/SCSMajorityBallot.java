@@ -19,4 +19,9 @@ public class SCSMajorityBallot implements SCData {
 
     @SerializedName(value = "choice_nb")
     private int nbChoice;
+
+    public SCSMajorityBallot(boolean ordered, int nbChoice) {
+        this.ordered = ordered;
+        this.nbChoice = nbChoice;
+    }
 }
