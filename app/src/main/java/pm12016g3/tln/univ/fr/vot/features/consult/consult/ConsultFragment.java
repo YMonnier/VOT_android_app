@@ -1,7 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +29,7 @@ import java.util.List;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.cardview.ConsultCardViewAdapter;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.jm.JMParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder.SimpleVoteWithoutOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity_;
@@ -196,6 +196,13 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
                                     STVParticipationActivity_.class));
                     break;
                 case JM:
+
+                    Gson gsonJM = GsonSingleton.getInstance();
+                    Intent intentJM = JMParticipationActivity_
+                            .intent(getActivity())
+                            .get();
+                    intentJM.putExtra(ExtraKeys.SOCIAL_CHOICE, gsonJM.toJson(socialChoice));
+                    startActivity(intentJM);
 
                     break;
                 case SM:
