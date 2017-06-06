@@ -13,6 +13,6 @@ public class SimpleVoteWithoutOrderParticipationItem {
 
     public SimpleVoteWithoutOrderParticipationItem(String choice_title) {
         this.choice_title = choice_title;
-        this.checked = true;
+        this.checked = false;
     }
 }
