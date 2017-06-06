@@ -173,11 +173,19 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Function allowing to navigate
+     * to the next view (`ConsultFragment`)
+     */
+    private void goToHomeView() {
+        startActivity(new Intent(this, MainActivity_.class));
+    }
 
     @Override
     public void onClick(View view) {
         if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
             googleSignIn();
+
         } else {
             Log.e(TAG, "No connection!....");
             Snack.showSuccessfulMessage(getWindow().getDecorView().findViewById(android.R.id.content),
@@ -277,6 +285,7 @@ public class LoginActivity extends AppCompatActivity
                     if (response.getStatusCode().is2xxSuccessful()) {
                         Settings.currentUser = response.getBody().getData();
                         Settings.currentUser.setAccessToken(accessToken);
+                        goToHomeView();
                     } else if (response.getStatusCode().is4xxClientError()) {
                         showNicknameAlert(googleSignInAccount, user);
                     }
@@ -312,6 +321,7 @@ public class LoginActivity extends AppCompatActivity
             Log.d(TAG, response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 Settings.currentUser = user;
+                goToHomeView();
             }
         } catch (RestClientException e) {
             Log.e(TAG, String.valueOf(e.getStackTrace()));
