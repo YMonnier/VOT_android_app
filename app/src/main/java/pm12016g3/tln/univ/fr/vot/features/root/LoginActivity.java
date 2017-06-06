@@ -275,6 +275,9 @@ public class LoginActivity extends AppCompatActivity
                         .build();
 
                 try {
+
+                    Log.i(TAG, "Login User...");
+                    Log.i(TAG, GsonSingleton.getInstance().toJson(user));
                     ResponseEntity<Response<User>> response = apiService.login(user);
                     Log.i(TAG, response.toString());
 

@@ -2,7 +2,10 @@ package pm12016g3.tln.univ.fr.vot.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
 
 /**
@@ -15,8 +18,11 @@ import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
  */
 
 @Data
-public class User implements Requestable {
+@EqualsAndHashCode(callSuper = false)
+public class User extends RealmObject implements Requestable {
+    @PrimaryKey
     private Long id;
+
     private String email;
     private String pseudo;
     private String picture;
@@ -29,7 +35,7 @@ public class User implements Requestable {
 
     @SerializedName(value = "device_token")
     private String deviceToken;
-
+    public User() {}
     private User(Builder builder) {
         this.email = builder.email;
         this.pseudo = builder.pseudo;
