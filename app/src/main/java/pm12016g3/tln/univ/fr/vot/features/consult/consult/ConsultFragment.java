@@ -101,7 +101,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
             Log.d(TAG, String.valueOf(Settings.currentUser));
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
-            Log.d(TAG, response.toString());
+            Log.d(TAG, "la réponse "+response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<JsonObject> socialChoices = response.getBody().getData();
                 GsonDeserializer gde = new GsonDeserializer();
