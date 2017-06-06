@@ -18,6 +18,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +147,7 @@ public class NetworkResearchActivity extends AppCompatActivity {
     /**
      * Function allowing to get information
      * from server and put them to the adapter.
-     *
+     * <p>
      * The user can find user by writting his nickname.
      * <p>
      * This task is done into the background thread.
@@ -156,12 +157,16 @@ public class NetworkResearchActivity extends AppCompatActivity {
     @Background
     void searchOnAPI(final String pattern) {
         clearAdapter();
+        try {
+            Log.d(TAG, Settings.currentUser.getAccessToken());
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<List<User>>> users = serviceAPI.findUserByPseudo(pattern);
+            adapter.getItems().addAll(users.getBody().getData());
 
-        serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
-        ResponseEntity<Response<List<User>>> users = serviceAPI.findUserByPseudo(pattern);
-        adapter.getItems().addAll(users.getBody().getData());
-
-        setAdapter();
+            setAdapter();
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 
     /**
