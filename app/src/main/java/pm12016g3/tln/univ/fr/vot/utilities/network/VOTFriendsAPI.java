@@ -49,7 +49,7 @@ public interface VOTFriendsAPI {
      *
      * @return A list of Social Choice Object.
      */
-    @Get("/users/pseudo/{nickname}")
+    @Get("/users/find/{nickname}")
     @RequiresHeader("Authorization")
     ResponseEntity<Response<List<User>>> findUserByPseudo(@Path final String nickname);
 
