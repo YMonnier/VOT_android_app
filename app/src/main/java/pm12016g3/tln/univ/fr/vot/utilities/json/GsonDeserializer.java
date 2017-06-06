@@ -44,6 +44,8 @@ public class GsonDeserializer {
 
     public <T> SocialChoice<T> deserialize(final JsonObject rawSocialChoice, final Class<T> dataClass) {
         return gson.fromJson(rawSocialChoice, getType(SocialChoice.class, dataClass));
-
+    }
+    public <T> SocialChoice<T> deserialize(final String rawSocialChoice, final Class<T> dataClass) {
+        return gson.fromJson(rawSocialChoice, getType(SocialChoice.class, dataClass));
     }
 }

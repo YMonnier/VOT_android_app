@@ -13,6 +13,15 @@
         android:text="@string/consult_particiation_participation_vote_description" />
 
     <TextView
+        android:id="@+id/tv_reference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="4dp"
+        android:background="@color/vot_gray" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

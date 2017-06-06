@@ -8,11 +8,19 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+
 
 /**
  * Created by wenlixing on 22/05/2017.
@@ -38,13 +46,18 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
      */
     private boolean mDragOnLongPress;
 
+    private SocialChoice<SCSMajorityBallot> socialChoice;
+
+    private int countTrue;
+
     static int  countFalse = 0;
 
     public SimpleVoteWithoutOrderParticipationListAdapter(List<SimpleVoteWithoutOrderParticipationItem> list, int layoutId,
-                                                          int grabHandleId, boolean dragOnLongPress) {
+                                                          int grabHandleId, boolean dragOnLongPress, SocialChoice<SCSMajorityBallot> socialChoice) {
         this.mLayoutId = layoutId;
         this.mGrabHandleId = grabHandleId;
         this.mDragOnLongPress = dragOnLongPress;
+        this.socialChoice = socialChoice;
         setHasStableIds(true);
         setItemList(list);
     }
@@ -87,20 +100,31 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
          */
         @Override
         public void onItemClicked(View view) {
+
+            System.out.println("size choice : "+socialChoice.getData().getNbChoice());
+
             int currentPosition = getAdapterPosition();
             int lastPosition = getItemCount()-1;
-            check.setChecked(!check.isChecked());
             SimpleVoteWithoutOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+
             if (check.isChecked()) {
-                clickedItem.setChecked(true);
-                if(currentPosition != 0){
-                    changeItemPosition(currentPosition, 0);
-                    notifyDataSetChanged();
-                }
-            } else {
+                countTrue--;
+                System.out.println(" ^^ coutn = "+countTrue);
+                check.setChecked(!check.isChecked());
                 clickedItem.setChecked(false);
                 if(currentPosition != lastPosition){
                     changeItemPosition(currentPosition, lastPosition);
+                    notifyDataSetChanged();
+                }
+            } else {
+                if (countTrue >= socialChoice.getData().getNbChoice())
+                    return;
+                countTrue++;
+                System.out.println(" ^^ coutn = "+countTrue);
+                check.setChecked(!check.isChecked());
+                clickedItem.setChecked(true);
+                if(currentPosition != 0){
+                    changeItemPosition(currentPosition, 0);
                     notifyDataSetChanged();
                 }
             }

@@ -26,7 +26,10 @@ import java.util.Objects;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -40,7 +43,10 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
 
 
-    SocialChoice socialChoice;
+    SocialChoice<SCSMajorityBallot> socialChoice;
+
+    @ViewById(R.id.tv_reference)
+    TextView tv_reference;
 
     /**
      * DragListView that contains the choices
@@ -65,16 +71,22 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
     @AfterViews
     void init() {
 
-        Gson gson = new Gson();
         String strObj = getIntent().getStringExtra(ExtraKeys.SOCIAL_CHOICE);
-        socialChoice = gson.fromJson(strObj, SocialChoice.class);
+        Gson gson = GsonSingleton.getInstance();
+        GsonDeserializer gsonDeserializer = new GsonDeserializer();
+        socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
 
         System.out.println(" obj : "+socialChoice);
+
+        tv_reference.setText("Vous pouvez selectionner jusqu'à : "+socialChoice.getData().getNbChoice()+ "choix");
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
+
+        for (String s : socialChoice.get)
+
         choices.add(new SimpleVoteWithoutOrderParticipationItem("jon"));
         choices.add(new SimpleVoteWithoutOrderParticipationItem("helo"));
         choices.add(new SimpleVoteWithoutOrderParticipationItem("cuda"));
@@ -85,7 +97,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
         listAdapter = new SimpleVoteWithoutOrderParticipationListAdapter(choices,
                 R.layout.consult_participation_simple_vote_with_order_participation_item,
-                R.id.sv_participation_choice_title, true);
+                R.id.sv_participation_choice_title, true, socialChoice);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
 
