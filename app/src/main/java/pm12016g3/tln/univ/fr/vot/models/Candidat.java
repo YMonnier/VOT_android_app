@@ -15,4 +15,8 @@ import lombok.Data;
 public class Candidat {
     private Long id;
     private String name;
+
+    public Candidat(String name) {
+        this.name = name;
+    }
 }

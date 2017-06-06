@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -34,6 +35,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFr
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
@@ -370,5 +372,10 @@ public class SimpleVoteFragment extends AppFragment
         boolean tidy = tidyView.isChecked();
         SCSMajorityBallot data = new SCSMajorityBallot(tidy, nbChoice);
         parent.getSocialChoice().setData(data);
+
+        Gson gson = GsonSingleton.getInstance();
+        
+
+        //parent.getSocialChoice().setCandidats();
     }
 }
