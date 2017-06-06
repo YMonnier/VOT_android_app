@@ -49,11 +49,12 @@ public class NotificationTokenService extends FirebaseInstanceIdService {
 
     @Background
     void updateDeviceToken(final String token) {
-        Log.d(TAG, "updateDeviceToken on server: " + token);
+        Log.i(TAG, "updateDeviceToken on server: " + token);
         Settings.currentUser.setDeviceToken(token);
         try {
             apiService.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<User>> response = apiService.deviceToken(Settings.currentUser);
+            Log.d(TAG, response.toString());
             if (response.getStatusCode().is4xxClientError()
                     || response.getStatusCode().is5xxServerError()) {
                 updateDeviceToken(token);
