@@ -205,11 +205,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
                                 .intent(getActivity())
                                 .get();
                         intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
-
-                        SimpleVoteWithoutOrderParticipationActivity_
-                                .intent(intent)
-                                .socialChoice(socialChoice)
-                                .start();
+                        startActivity(intent);
                     }
 
                     break;
