@@ -15,4 +15,5 @@ import lombok.Data;
 public class Candidat {
     private Long id;
     private String name;
+    private boolean selected;
 }

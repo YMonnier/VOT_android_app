@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
 import com.google.gson.Gson;
 import com.woxthebox.draglistview.DragListView;
 
@@ -13,17 +14,28 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.User;
+import pm12016g3.tln.univ.fr.vot.models.Vote;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTAuthAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTvoteAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -53,15 +65,16 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
     DragListView choiceListView;
 
     /**
-     * Adapter for DragListView
+     * Rest service to get
+     * information from server.
      */
-
-    SimpleVoteWithoutOrderParticipationListAdapter listAdapter;
+    @RestService
+    VOTvoteAPI apiService;
 
     /**
-     * A list of Participation Item object
+     * Adapter for DragListView
      */
-    List<SimpleVoteWithoutOrderParticipationItem> choices;
+    SimpleVoteWithoutOrderParticipationListAdapter listAdapter;
 
     /**
      * Initialisation after the views binding has happened
@@ -84,17 +97,14 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        choices = new ArrayList<>();
-
-        for (Candidat candidat : socialChoice.getCandidats())
-            choices.add(new SimpleVoteWithoutOrderParticipationItem(candidat.getName()));
-
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
-        listAdapter = new SimpleVoteWithoutOrderParticipationListAdapter(choices,
+        listAdapter = new SimpleVoteWithoutOrderParticipationListAdapter(
                 R.layout.consult_participation_simple_vote_with_order_participation_item,
-                R.id.sv_participation_choice_title, true, socialChoice);
+                R.id.sv_participation_choice_title,
+                true,
+                socialChoice);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
 
@@ -105,6 +115,39 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
      */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark(){
+
+        Map<String,Object> hashMap = new HashMap<>();
+        hashMap.put("1", "a");
+        Gson gson = new Gson();
+
+        /*for (SimpleVoteWithoutOrderParticipationItem simpleVoteWithoutOrderParticipationItem : listAdapter.getItemList()) {
+            if (simpleVoteWithoutOrderParticipationItem.isChecked()) {
+                Candidat candidat = new Candidat();
+                candidat.setName(simpleVoteWithoutOrderParticipationItem.getChoice_title());
+                list.add(candidat);
+            }
+
+        }*/
+
+        List<Candidat> candidatsSelected = Stream.of(listAdapter.getItemList())
+                .filter(value -> value.isSelected())
+                .toList();
+        Vote vote = new Vote(socialChoice.getId());
+        Stream.of(candidatsSelected)
+                .forEach(candidat -> vote.put(candidat.getName()));
+        Log.d(TAG, "Vote anwser: " + vote);
+
+
+        /*try {
+            ResponseEntity<Response<String>> response = apiService.insert(vote);
+            Log.i(TAG, response.toString());
+
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }*/
+
+        //ResponseEntity<Response<String>> response = apiService.insert(vote);
+        //Log.d(TAG, "Vote resposne: " + response);
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         Log.d(TAG,listAdapter.getItemList().toString());
         finish();

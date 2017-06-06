@@ -17,6 +17,7 @@ import com.woxthebox.draglistview.DragItemAdapter;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
@@ -27,7 +28,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
  */
 
 public class SimpleVoteWithoutOrderParticipationListAdapter
-        extends DragItemAdapter<SimpleVoteWithoutOrderParticipationItem, SimpleVoteWithoutOrderParticipationListAdapter.ViewHolder> {
+        extends DragItemAdapter<Candidat, SimpleVoteWithoutOrderParticipationListAdapter.ViewHolder> {
 
     private final static String TAG = SimpleVoteWithoutOrderParticipationListAdapter.class.getSimpleName();
 
@@ -52,14 +53,16 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
 
     static int  countFalse = 0;
 
-    public SimpleVoteWithoutOrderParticipationListAdapter(List<SimpleVoteWithoutOrderParticipationItem> list, int layoutId,
-                                                          int grabHandleId, boolean dragOnLongPress, SocialChoice<SCSMajorityBallot> socialChoice) {
+    public SimpleVoteWithoutOrderParticipationListAdapter(int layoutId,
+                                                          int grabHandleId,
+                                                          boolean dragOnLongPress,
+                                                          SocialChoice<SCSMajorityBallot> socialChoice) {
         this.mLayoutId = layoutId;
         this.mGrabHandleId = grabHandleId;
         this.mDragOnLongPress = dragOnLongPress;
         this.socialChoice = socialChoice;
         setHasStableIds(true);
-        setItemList(list);
+        setItemList(socialChoice.getCandidats());
     }
 
     @Override
@@ -70,15 +73,15 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
 
     @Override
     public long getItemId(int position) {
-        return mItemList.get(position).getChoice_title().hashCode();
+        return mItemList.get(position).getName().hashCode();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        SimpleVoteWithoutOrderParticipationItem item = mItemList.get(position);
-        holder.choice_title.setText(item.getChoice_title());
-        holder.check.setChecked(item.isChecked());
+        Candidat item = mItemList.get(position);
+        holder.choice_title.setText(item.getName());
+        holder.check.setChecked(item.isSelected());
     }
 
     class ViewHolder extends DragItemAdapter.ViewHolder {
@@ -105,13 +108,13 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
 
             int currentPosition = getAdapterPosition();
             int lastPosition = getItemCount()-1;
-            SimpleVoteWithoutOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+            Candidat clickedItem = mItemList.get(getAdapterPosition());
 
             if (check.isChecked()) {
                 countTrue--;
                 System.out.println(" ^^ coutn = "+countTrue);
                 check.setChecked(!check.isChecked());
-                clickedItem.setChecked(false);
+                clickedItem.setSelected(false);
                 if(currentPosition != lastPosition){
                     changeItemPosition(currentPosition, lastPosition);
                     notifyDataSetChanged();
@@ -122,7 +125,7 @@ public class SimpleVoteWithoutOrderParticipationListAdapter
                 countTrue++;
                 System.out.println(" ^^ coutn = "+countTrue);
                 check.setChecked(!check.isChecked());
-                clickedItem.setChecked(true);
+                clickedItem.setSelected(true);
                 if(currentPosition != 0){
                     changeItemPosition(currentPosition, 0);
                     notifyDataSetChanged();
