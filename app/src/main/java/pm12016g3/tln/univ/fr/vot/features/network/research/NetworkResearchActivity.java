@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -41,7 +42,6 @@ import static com.google.android.gms.wearable.DataMap.TAG;
  */
 
 @EActivity(R.layout.network_network_research_activity)
-
 public class NetworkResearchActivity extends AppCompatActivity {
     private final String TAG = NetworkResearchActivity.class.getSimpleName();
     /**
@@ -96,7 +96,6 @@ public class NetworkResearchActivity extends AppCompatActivity {
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
-
 
     /**
      * Listen to Person Item click in the ListView
