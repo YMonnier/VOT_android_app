@@ -165,6 +165,8 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
         SocialChoice.Type type = adapter.getItems().get(position).getType();
 
+        System.out.println(" SC : "+adapter.getItems().get(position));
+
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
 
         if (visibility == VISIBLE) {
@@ -183,6 +185,7 @@ public class ConsultFragment extends Fragment implements ClickListener {
 
                     break;
                 case SM:
+                    System.out.println(" data : "+((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
                     startActivity(
                             new Intent(getActivity().
                                     getApplicationContext(),

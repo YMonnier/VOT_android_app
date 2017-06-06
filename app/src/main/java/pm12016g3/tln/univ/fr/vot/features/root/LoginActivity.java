@@ -66,7 +66,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 
 @EActivity
 public class LoginActivity extends AppCompatActivity
-        implements FacebookCallback<LoginResult>,
+        implements
         View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity
      * Button action to login to the API.
      */
     //@ViewById(R.id.login_button)
-    LoginButton loginConfirmation;
 
     /**
      * Progress Dialog
@@ -156,9 +155,6 @@ public class LoginActivity extends AppCompatActivity
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
 
-
-        loginConfirmation = (LoginButton) findViewById(R.id.login_facebook_button);
-        loginConfirmation.setOnClickListener(this);
     }
 
     private void checkAuthentication() {
@@ -198,9 +194,6 @@ public class LoginActivity extends AppCompatActivity
                 case R.id.login_google_button:
                     googleSignIn();
                     break;
-                case R.id.login_facebook_button:
-                    LoginManager.getInstance().registerCallback(callbackManager, this);
-                    break;
                 case R.id.test_button:
                     goToHomeView();
                     break;
@@ -211,26 +204,6 @@ public class LoginActivity extends AppCompatActivity
                     getString(R.string.snack_error_no_internet),
                     Snackbar.LENGTH_LONG);
         }
-    }
-
-    //
-    // Facebook API Handler
-    //
-    @Override
-    public void onSuccess(LoginResult loginResult) {
-        String token = loginResult.getAccessToken().getToken();
-        Log.d(TAG, "OnSuccess");
-        Log.d(TAG, "Facebook token: " + token);
-    }
-
-    @Override
-    public void onCancel() {
-        Log.d(TAG, "onCancel");
-    }
-
-    @Override
-    public void onError(FacebookException error) {
-        Log.d(TAG, "onError: " + error.getLocalizedMessage());
     }
 
     //
