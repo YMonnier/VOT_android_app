@@ -9,6 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -20,11 +27,15 @@ import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity;
+import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private GoogleApiClient googleApiClient;
+
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawer;
 
@@ -36,8 +47,16 @@ public class MainActivity extends AppCompatActivity
 
     @AfterViews
     void init() {
+        googleApiClient = LoginActivity.googleApiClient;
+        if (!googleApiClient.isConnected())
+            googleApiClient.connect();
+
         setSupportActionBar(toolbar);
         setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
+
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView userNameView = (TextView) headerLayout.findViewById(R.id.user_name);
+        userNameView.setText(Settings.currentUser.getPseudo());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -61,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Fragment fragment = null;
-
+        boolean disconnected = false;
         switch (item.getItemId()) {
             case R.id.sidebar_consult:
 
@@ -79,14 +98,17 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.sidebar_logout:
-                startActivity(new Intent(this, LoginActivity.class));
+                disconnected = true;
+                signOut();
+                startActivity(new Intent(this, LoginActivity_.class));
                 break;
             case R.id.sidebar_about:
                 fragment = new AboutUsFragment_();
                 break;
         }
-        assert fragment == null;
-        setFragment(fragment, item.getTitle().toString());
+        if(!disconnected){
+            assert fragment == null;
+            setFragment(fragment, item.getTitle().toString());}
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -102,5 +124,16 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.mainContent, fragment)
                 .commit();
         setTitle(title);
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        googleApiClient.disconnect();
+                        //finish();
+                    }
+                });
     }
 }

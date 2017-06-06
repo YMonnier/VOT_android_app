@@ -16,4 +16,8 @@ public class Candidat {
     private Long id;
     private String name;
     private boolean selected;
+    
+    public Candidat(String name) {
+        this.name = name;
+    }
 }

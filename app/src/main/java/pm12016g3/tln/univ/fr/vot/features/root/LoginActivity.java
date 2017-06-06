@@ -11,18 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -33,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.androidannotations.annotations.Background;
@@ -68,7 +63,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 public class LoginActivity extends AppCompatActivity
         implements
         View.OnClickListener,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
@@ -88,7 +83,7 @@ public class LoginActivity extends AppCompatActivity
     /**
      * Google Api Client
      */
-    private GoogleApiClient googleApiClient;
+    public static GoogleApiClient googleApiClient;
 
     /**
      * Rest service to get
@@ -113,7 +108,6 @@ public class LoginActivity extends AppCompatActivity
         checkAuthentication();
 
 
-
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.i(TAG, "Device token: " + deviceToken);
     }
@@ -131,10 +125,12 @@ public class LoginActivity extends AppCompatActivity
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */,
-                        this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+
+        googleApiClient.connect();
+
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.login_google_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -367,5 +363,15 @@ public class LoginActivity extends AppCompatActivity
         });
 
         builder.show();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 }
