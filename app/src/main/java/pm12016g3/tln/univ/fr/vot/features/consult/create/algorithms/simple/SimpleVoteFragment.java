@@ -13,7 +13,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
-import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -34,8 +33,8 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
-import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
@@ -108,7 +107,7 @@ public class SimpleVoteFragment extends AppFragment
 
     /**
      * Go to the Invitation view.
-     *
+     * <p>
      * Check if all data is available and valid.
      * If it is not that case, the App should dsplay a message error.
      */
@@ -193,7 +192,7 @@ public class SimpleVoteFragment extends AppFragment
                 adapter.getItems()
                         .removeAll(
                                 Stream.of(adapter.getItems())
-                                        .filter(BasicItem::isSelected)
+                                        .filter(Candidat::isSelected)
                                         .toList());
 
                 adapter.notifyDataSetChanged();
@@ -210,7 +209,7 @@ public class SimpleVoteFragment extends AppFragment
     private boolean shouldShowTrashButton() {
         boolean res = false;
         int i = 0;
-        List<BasicItem> list = adapter.getItems();
+        List<Candidat> list = adapter.getItems();
         while (i < list.size() && !res) {
             if (list.get(i).isSelected())
                 res = true;
@@ -228,7 +227,7 @@ public class SimpleVoteFragment extends AppFragment
     void updateList(String string) {
         Log.d(TAG, "Add candidat... " + string);
         ViewUtils.closeKeyboard(getActivity(), getActivity().getCurrentFocus());
-        BasicItem item = new BasicItem(string);
+        Candidat item = new Candidat(string);
         if (!adapter.getItems().contains(item)) {
             adapter.add(item);
             adapter.notifyDataSetChanged();
@@ -372,10 +371,7 @@ public class SimpleVoteFragment extends AppFragment
         boolean tidy = tidyView.isChecked();
         SCSMajorityBallot data = new SCSMajorityBallot(tidy, nbChoice);
         parent.getSocialChoice().setData(data);
-
-        Gson gson = GsonSingleton.getInstance();
-        
-
-        //parent.getSocialChoice().setCandidats();
+        parent.getSocialChoice().setCandidats(adapter.getItems());
+        Log.d(TAG, "Social Choice updated: " + parent.getSocialChoice());
     }
 }

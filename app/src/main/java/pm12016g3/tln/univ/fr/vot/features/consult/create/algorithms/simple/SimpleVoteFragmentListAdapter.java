@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 
 /**
@@ -18,7 +18,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 
 @EBean
 public class SimpleVoteFragmentListAdapter
-        extends ListViewAdapterBase<BasicItem, SimpleVoteItemView> {
+        extends ListViewAdapterBase<Candidat, SimpleVoteItemView> {
     @Override
     protected SimpleVoteItemView onCreateItemView(ViewGroup parent) {
         return SimpleVoteItemView_.build(parent.getContext());
