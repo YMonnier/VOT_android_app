@@ -1,17 +1,11 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -22,9 +16,9 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
@@ -41,12 +35,16 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivity {
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
-
+    private final String TV_STRING1 = "Vous pouvez selectionner jusqu'à ";
+    private final String TV_STRING2 = " choix \nVotre choix :";
 
     SocialChoice<SCSMajorityBallot> socialChoice;
 
     @ViewById(R.id.tv_reference)
     TextView tv_reference;
+
+    @ViewById(R.id.vote_description)
+    TextView vote_description;
 
     /**
      * DragListView that contains the choices
@@ -78,19 +76,18 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
 
         System.out.println(" obj : "+socialChoice);
 
-        tv_reference.setText("Vous pouvez selectionner jusqu'à : "+socialChoice.getData().getNbChoice()+ "choix");
+        this.setTitle(socialChoice.getTitle());
+
+        tv_reference.setText(TV_STRING1+socialChoice.getData().getNbChoice()+TV_STRING2);
+        vote_description.setText(socialChoice.getDescription());
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
 
-        for (String s : socialChoice.get)
-
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("jon"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("helo"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("cuda"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("dada"));
+        for (Candidat candidat : socialChoice.getCandidats())
+            choices.add(new SimpleVoteWithoutOrderParticipationItem(candidat.getName()));
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 

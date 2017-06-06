@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
@@ -32,6 +33,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
@@ -62,6 +64,9 @@ public class SimpleVoteFragment extends AppFragment
 
     @ViewById(R.id.listView)
     ListView listView;
+
+    @ViewById(R.id.tidy)
+    Switch tidyView;
 
     @ViewById(R.id.form)
     LinearLayout form;
@@ -99,10 +104,24 @@ public class SimpleVoteFragment extends AppFragment
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Go to the Invitation view.
+     *
+     * Check if all data is available and valid.
+     * If it is not that case, the App should dsplay a message error.
+     */
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
-        parent.nextStep(this, new InvitationFragment_());
+        if (validate()) {
+            if (checkListNumberOfChoices()) {
+                setData();
+                parent.nextStep(this, new InvitationFragment_());
+            } else
+                Snack.showFailureMessage(getView(),
+                        getString(R.string.snack_error_no_algo_selected),
+                        Snackbar.LENGTH_LONG);
+        }
     }
 
     @OptionsItem(R.id.menu_item_back_arrow)
@@ -163,7 +182,10 @@ public class SimpleVoteFragment extends AppFragment
         AnimatedButton button = (AnimatedButton) view;
         if (button != null) {
             if (button.getTag().equals(ADD_BUTTON_TAG)) {
-                attempt();
+                if (validate()) {
+                    String candidat = inputCandidat.getText().toString();
+                    updateList(candidat);
+                }
             } else if (button.getTag().equals(TRASH_BUTTON_TAG)) {
 
                 adapter.getItems()
@@ -176,13 +198,6 @@ public class SimpleVoteFragment extends AppFragment
                 removeTrashButton();
             }
         }
-
-    }
-
-    /**
-     * Check inputs data if there are valid.
-     */
-    private void attempt() {
 
     }
 
@@ -309,36 +324,41 @@ public class SimpleVoteFragment extends AppFragment
      */
     @Override
     public boolean validate() {
-        String candidat = inputCandidat.getText().toString();
         String nbChoice = inputNbChoice.getText().toString();
         resetErrorUi();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(candidat)) {
-            focusView = inputCandidat;
-            updateErrorUi(inputCandidat, getString(R.string.error_field_required));
-            cancel = true;
-        } else if (TextUtils.isEmpty(nbChoice)) {
+        if (TextUtils.isEmpty(nbChoice)) {
             if (focusView == null)
                 focusView = inputNbChoice;
             updateErrorUi(inputNbChoice, getString(R.string.error_field_required));
             cancel = true;
         }
-
+        Log.d(TAG, "Add On List View ? " + cancel);
         if (cancel) {
             // There was an error; don't attempt, focus on the first
             // form field with an error.
             assert focusView != null;
             if (focusView != null)
                 focusView.requestFocus();
-        } else {
-            updateList(candidat);
         }
 
+        return !cancel;
+    }
 
-        return cancel;
+    /**
+     * Check if the list size is lower
+     * than the number of choice.
+     *
+     * @return true if the size of lise is lower than the
+     * number of choice otherwise false.
+     */
+    private boolean checkListNumberOfChoices() {
+        int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
+        Log.d(TAG, "nbChoice: " + nbChoice + " listSize: " + adapter.getItems().size());
+        return adapter.getItems().size() > nbChoice;
     }
 
     /**
@@ -346,6 +366,9 @@ public class SimpleVoteFragment extends AppFragment
      */
     @Override
     public void setData() {
-
+        int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
+        boolean tidy = tidyView.isChecked();
+        SCSMajorityBallot data = new SCSMajorityBallot(tidy, nbChoice);
+        parent.getSocialChoice().setData(data);
     }
 }

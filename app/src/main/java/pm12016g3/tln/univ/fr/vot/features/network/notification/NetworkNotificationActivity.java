@@ -19,8 +19,6 @@ import pm12016g3.tln.univ.fr.vot.R;
 @EActivity(R.layout.network_notification_activity)
 public class NetworkNotificationActivity extends AppCompatActivity {
 
-
-
     @AfterViews
     void init() {
 

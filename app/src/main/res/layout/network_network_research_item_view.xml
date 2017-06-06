@@ -15,5 +15,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/network_research_item_invitation"
-        android:src="@drawable/ic_invitation"/>
+        android:src="@drawable/ic_invitation" />
 </LinearLayout>

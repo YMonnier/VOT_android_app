@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +26,7 @@ import java.util.Arrays;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 
@@ -47,7 +49,7 @@ public class SettingsFragment extends AppFragment
      * Default spinner value
      * That attribute should not be selected.
      */
-    private final String DEFAULT_ALGORITHM = "Type";
+    private static final String DEFAULT_ALGORITHM = "Type";
 
     /**
      * Confidentiality boolean.
@@ -148,6 +150,7 @@ public class SettingsFragment extends AppFragment
         updateResetErrorUi();
 
         boolean cancel = false;
+        boolean isSpinner = false;
         View focusView = null;
 
         Object selectedItem = algorithms.getSelectedItem();
@@ -170,8 +173,10 @@ public class SettingsFragment extends AppFragment
             Log.d(TAG, algorithm);
             if (algorithm.equals(DEFAULT_ALGORITHM)) {
                 cancel = true;
-                if (focusView == null)
+                if (focusView == null) {
                     focusView = algorithms;
+                    isSpinner = true;
+                }
             }
         }
 
@@ -183,9 +188,12 @@ public class SettingsFragment extends AppFragment
             if (focusView != null)
                 focusView.requestFocus();
         }
+        if (isSpinner)
+            Snack.showFailureMessage(getView(),
+                    getString(R.string.snack_error_no_algo_selected),
+                    Snackbar.LENGTH_LONG);
 
-
-        return !cancel;
+            return !cancel;
     }
 
     @Override
@@ -292,5 +300,5 @@ public class SettingsFragment extends AppFragment
                     getActivity().getCurrentFocus());
         }
         return false; // Display the spinner
-     };
+    };
 }
