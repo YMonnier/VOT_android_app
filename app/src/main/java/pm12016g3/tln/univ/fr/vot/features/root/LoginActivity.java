@@ -73,10 +73,6 @@ public class LoginActivity extends AppCompatActivity
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
     //private static final String TMP_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODE4OTA4NDIsInN1YiI6NH0.H3WUro_qfBBU1BLvB-nQdSahSiEZ454MoKeYhvwYgr0";
-    /**
-     * Button action to login to the API.
-     */
-    //@ViewById(R.id.login_button)
 
     /**
      * Progress Dialog
@@ -116,8 +112,6 @@ public class LoginActivity extends AppCompatActivity
 
         checkAuthentication();
 
-        Button test = (Button) findViewById(R.id.test_button);
-        test.setOnClickListener(this);
 
 
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
@@ -179,25 +173,11 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Function allowing to navigate
-     * to the next view (`ConsultFragment`)
-     */
-    private void goToHomeView() {
-        startActivity(new Intent(this, MainActivity_.class));
-    }
 
     @Override
     public void onClick(View view) {
         if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
-            switch (view.getId()) {
-                case R.id.login_google_button:
-                    googleSignIn();
-                    break;
-                case R.id.test_button:
-                    goToHomeView();
-                    break;
-            }
+            googleSignIn();
         } else {
             Log.e(TAG, "No connection!....");
             Snack.showSuccessfulMessage(getWindow().getDecorView().findViewById(android.R.id.content),
@@ -297,7 +277,6 @@ public class LoginActivity extends AppCompatActivity
                     if (response.getStatusCode().is2xxSuccessful()) {
                         Settings.currentUser = response.getBody().getData();
                         Settings.currentUser.setAccessToken(accessToken);
-                        goToHomeView();
                     } else if (response.getStatusCode().is4xxClientError()) {
                         showNicknameAlert(googleSignInAccount, user);
                     }
@@ -333,7 +312,6 @@ public class LoginActivity extends AppCompatActivity
             Log.d(TAG, response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 Settings.currentUser = user;
-                goToHomeView();
             }
         } catch (RestClientException e) {
             Log.e(TAG, String.valueOf(e.getStackTrace()));
