@@ -45,6 +45,7 @@ public class SocialChoice<T>
     private boolean closed;
     private List<User> voted;
     private List<User> participants;
+    private List<Candidat> candidats;
     private T data;
 
     public SocialChoice() {
