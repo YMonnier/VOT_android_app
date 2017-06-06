@@ -1,17 +1,14 @@
 package pm12016g3.tln.univ.fr.vot.features.network.research;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.EBean;
 
-import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.network.research.custom.SendOnClickListener;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Project android.
@@ -24,8 +21,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 @EBean
 public class NetworkResearchListAdapter
-        extends ListViewAdapterBase<User, NetworkResearchItemView>
-        implements View.OnClickListener {
+        extends ListViewAdapterBase<User, NetworkResearchItemView> {
+    private final String TAG = NetworkResearchListAdapter.class.getSimpleName();
+
+    /**
+     * Custom Listener.
+     */
+    private SendOnClickListener<User> sendListener = null;
+
     @Override
     protected NetworkResearchItemView onCreateItemView(ViewGroup parent) {
         return NetworkResearchItemView_.build(parent.getContext());
@@ -33,16 +36,24 @@ public class NetworkResearchListAdapter
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View v =super.getView(i, view, viewGroup);
-        ImageButton invitation =
-                ((ImageButton)v.findViewById(R.id.network_research_item_invitation));
-        invitation.setOnClickListener(this);
+        NetworkResearchItemView v = (NetworkResearchItemView) super.getView(i, view, viewGroup);
+        //v.invitation.setOnClickListener();
+        //ImageButton invitation =
+        //       ((ImageButton) v.findViewById(R.id.network_research_item_invitation));
+        Log.d(TAG, "Get View...");
+        v.invitation.setOnClickListener(view1 -> {
+            if (sendListener != null) {
+                sendListener.onClick(getItem(i));
+            }
+        });
         return v;
     }
 
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(getApplicationContext(),"Click image button",Toast.LENGTH_LONG).show();
+    /**
+     * Set the custom Send On Click listener.
+     * @param listener custom listener.
+     */
+    public void setListener(SendOnClickListener<User> listener) {
+        sendListener = listener;
     }
-
 }

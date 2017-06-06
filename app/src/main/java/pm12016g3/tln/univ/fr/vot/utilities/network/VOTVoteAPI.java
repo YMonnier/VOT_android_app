@@ -8,7 +8,6 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
@@ -18,7 +17,7 @@ import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
 @Rest(rootUrl = "http://dapm1-g3-vot.herokuapp.com/api", converters = {MyGsonHttpMessageConverter.class})
 @Accept(MediaType.APPLICATION_JSON)
-public interface VOTvoteAPI {
+public interface VOTVoteAPI {
 
     /**
      * Insert vote
@@ -29,5 +28,4 @@ public interface VOTvoteAPI {
     @Post("votes")
     @Header(name = "Content-Type", value = "application/json")
     ResponseEntity<Response<String>> insert(@Body Vote vote);
-
 }

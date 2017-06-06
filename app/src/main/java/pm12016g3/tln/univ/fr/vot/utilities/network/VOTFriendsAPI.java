@@ -1,8 +1,10 @@
 package pm12016g3.tln.univ.fr.vot.utilities.network;
 
 import org.androidannotations.rest.spring.annotations.Accept;
+import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Path;
+import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import pm12016g3.tln.univ.fr.vot.models.FriendRequest;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
@@ -53,6 +56,15 @@ public interface VOTFriendsAPI {
     @RequiresHeader("Authorization")
     ResponseEntity<Response<List<User>>> findUserByPseudo(@Path final String nickname);
 
+
+    /**
+     * Sends friend requests
+     *
+     * @return A response
+     */
+    @Post("/social_relations/friend_request")
+    @RequiresHeader("Authorization")
+    Response requests(@Body FriendRequest friendRequest);
 
     /**
      * Set a specific header to the HTTP request.
