@@ -97,7 +97,8 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
     }
 
     /**
-     * A custom drag item provided to change the visual appearance of the dragging item.
+     * A custom drag item provided to change
+     * the visual appearance of the dragging item.
      */
     private static class MyDragItem extends DragItem {
 
