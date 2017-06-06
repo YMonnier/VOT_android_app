@@ -279,6 +279,7 @@ public class SettingsFragment extends AppFragment
     void algorithmsHelper() {
         ViewUtils.closeKeyboard(getActivity(),
                 getActivity().getCurrentFocus());
+        TutorialActivity_.intent(getActivity()).start();
         Log.d(TAG, "OnClick - Algorithm Helper....");
     }
 
@@ -286,6 +287,7 @@ public class SettingsFragment extends AppFragment
     void confidentialityHelper() {
         ViewUtils.closeKeyboard(getActivity(),
                 getActivity().getCurrentFocus());
+        ConfidentialityActivity_.intent(getActivity()).start();
         Log.d(TAG, "OnClick - Confidentiality Helper....");
     }
 
