@@ -1,12 +1,15 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.consult;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -21,6 +24,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -274,7 +278,93 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
      */
     @Override
     public void onRefresh() {
-        loadData();
+
+        /*getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(),"on refresh",Toast.LENGTH_LONG).show();
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+                //loadData();
+            }
+        });
+*/
+        Refresh refresh = new Refresh();
+        refresh.execute();
+
     }
 
+    class Refresh extends AsyncTask<Void, Void, List<SocialChoice>> {
+
+        @Override
+        protected List<SocialChoice> doInBackground(Void... Void) {
+            List<SocialChoice> list = new ArrayList<>();
+            try {
+                serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+                ResponseEntity<Response<List<JsonObject>>> response = serviceAPI.getSocialChoices();
+                Log.d(TAG, "la réponse " + response.toString());
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    List<JsonObject> socialChoices = response.getBody().getData();
+                    GsonDeserializer gde = new GsonDeserializer();
+                    if (socialChoices != null) {
+                        for (JsonObject socialChoiceJson : socialChoices) {
+
+                            String stype = socialChoiceJson.get(JsonKeys.TYPE).getAsString();
+                            SocialChoice.Type type = SocialChoice.Type.valueOf(stype);
+
+                            switch (type) {
+                                case SM:
+                                    SocialChoice<SCSMajorityBallot> scmb = gde
+                                            .deserialize(socialChoiceJson,
+                                                    SCSMajorityBallot.class);
+                                    list.add(scmb);
+                                    Log.d(TAG, scmb.toString());
+                                    break;
+                                case KY:
+                                    SocialChoice<SCKemenyYoung> scky = gde
+                                            .deserialize(socialChoiceJson,
+                                                    SCKemenyYoung.class);
+                                    list.add(scky);
+                                    Log.d(TAG, scky.toString());
+                                    break;
+                                case JM:
+                                    SocialChoice<SCMajorityJudgment> scmj = gde
+                                            .deserialize(socialChoiceJson,
+                                                    SCMajorityJudgment.class);
+                                    list.add(scmj);
+                                    Log.d(TAG, scmj.toString());
+                                    break;
+                                case STV:
+                                    SocialChoice<SCSimpleTransfarableVote> scstv = gde
+                                            .deserialize(socialChoiceJson,
+                                                    SCSimpleTransfarableVote.class);
+                                    list.add(scstv);
+                                    Log.d(TAG, scstv.toString());
+                                    break;
+                            }
+                        }
+                    }
+                }
+            } catch (RestClientException e) {
+                Log.d(TAG, e.getLocalizedMessage());
+
+            }
+            Log.d("TAG", list.toString());
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<SocialChoice> list) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), "on refresh", Toast.LENGTH_LONG).show();
+                    adapter.clear();
+                    adapter.addAll(list);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
+    }
 }

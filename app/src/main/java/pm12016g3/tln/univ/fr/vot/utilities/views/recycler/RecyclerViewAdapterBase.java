@@ -71,5 +71,6 @@ public abstract class RecyclerViewAdapterBase<T, V extends View & Bindable<T>> e
      */
     public void clear() {
         items.clear();
+        notifyDataSetChanged();
     }
 }
