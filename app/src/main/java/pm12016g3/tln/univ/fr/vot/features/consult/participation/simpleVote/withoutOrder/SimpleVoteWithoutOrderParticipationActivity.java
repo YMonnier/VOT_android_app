@@ -3,6 +3,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.with
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.woxthebox.draglistview.DragListView;
@@ -17,8 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -30,8 +35,16 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivity {
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
+    private final String TV_STRING1 = "Vous pouvez selectionner jusqu'à ";
+    private final String TV_STRING2 = " choix \nVotre choix :";
 
-    SocialChoice socialChoice;
+    SocialChoice<SCSMajorityBallot> socialChoice;
+
+    @ViewById(R.id.tv_reference)
+    TextView tv_reference;
+
+    @ViewById(R.id.vote_description)
+    TextView vote_description;
 
     /**
      * DragListView that contains the choices
@@ -56,27 +69,32 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
     @AfterViews
     void init() {
 
-        Gson gson = new Gson();
         String strObj = getIntent().getStringExtra(ExtraKeys.SOCIAL_CHOICE);
-        socialChoice = gson.fromJson(strObj, SocialChoice.class);
+        Gson gson = GsonSingleton.getInstance();
+        GsonDeserializer gsonDeserializer = new GsonDeserializer();
+        socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
 
         System.out.println(" obj : "+socialChoice);
+
+        this.setTitle(socialChoice.getTitle());
+
+        tv_reference.setText(TV_STRING1+socialChoice.getData().getNbChoice()+TV_STRING2);
+        vote_description.setText(socialChoice.getDescription());
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         choices = new ArrayList<>();
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("jon"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("helo"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("cuda"));
-        choices.add(new SimpleVoteWithoutOrderParticipationItem("dada"));
+
+        for (Candidat candidat : socialChoice.getCandidats())
+            choices.add(new SimpleVoteWithoutOrderParticipationItem(candidat.getName()));
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
         listAdapter = new SimpleVoteWithoutOrderParticipationListAdapter(choices,
                 R.layout.consult_participation_simple_vote_with_order_participation_item,
-                R.id.sv_participation_choice_title, true);
+                R.id.sv_participation_choice_title, true, socialChoice);
         choiceListView.setAdapter(listAdapter, true);
         choiceListView.setCanDragHorizontally(false);
 
