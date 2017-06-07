@@ -16,12 +16,12 @@ import pm12016g3.tln.univ.fr.vot.R;
  */
 @EFragment(R.layout.about_us_fragment)
 public class AboutUsFragment extends Fragment {
-    @ViewById(R.id.about_us_tv)
-    TextView aboutus;
+
+    //R.string.about_us
 
     @AfterViews
     void init(){
-        aboutus.setText(R.string.about_us);
+
     }
 
 }

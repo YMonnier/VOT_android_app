@@ -162,10 +162,6 @@
             android:name=".features.test.TestActivity_"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".features.consult.participation.example.ParticipationActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
 
 
         <activity
