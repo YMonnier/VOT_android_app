@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
 import android.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.util.Log;
 
 import org.androidannotations.annotations.AfterViews;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import lombok.Getter;
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.custom.LifelineView;
@@ -134,6 +137,7 @@ public class CreateFragment extends Fragment {
         }
         return res;
     }
+
 
     @Override
     public String toString() {

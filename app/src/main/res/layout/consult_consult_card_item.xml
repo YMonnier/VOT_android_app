@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"
-            android:padding="20dp"
+            android:padding="10dp"
             tools:text="Paris"
             android:fontFamily="sans-serif"
             android:textColor="#333"

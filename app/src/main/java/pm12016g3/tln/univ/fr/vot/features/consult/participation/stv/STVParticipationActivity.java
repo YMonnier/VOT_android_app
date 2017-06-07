@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
@@ -21,6 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
+import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -39,6 +47,9 @@ public class STVParticipationActivity extends AppCompatActivity {
     @ViewById(R.id.stv_participation_draglistview)
     DragListView choiceListView;
 
+    @ViewById(R.id.vote_description)
+    TextView description;
+
     /**
      * Adapter for DragListView
      */
@@ -48,7 +59,9 @@ public class STVParticipationActivity extends AppCompatActivity {
     /**
      * A list of Participation Item object
      */
-    List<STVParticipationItem> choices;
+    List<Candidat> candidats;
+
+    SocialChoice<SCSimpleTransfarableVote> socialChoice;
 
     /**
      * Initialisation after the views binding has happened
@@ -58,16 +71,17 @@ public class STVParticipationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        choices = new ArrayList<>();
-        choices.add(new STVParticipationItem("jon"));
-        choices.add(new STVParticipationItem("helo"));
-        choices.add(new STVParticipationItem("cuda"));
-        choices.add(new STVParticipationItem("dada"));
+        String strObj = getIntent().getStringExtra(ExtraKeys.SOCIAL_CHOICE);
+        Gson gson = GsonSingleton.getInstance();
+        GsonDeserializer gsonDeserializer = new GsonDeserializer();
+        socialChoice = gsonDeserializer.deserialize(strObj, SCSimpleTransfarableVote.class);
+        description.setText(socialChoice.getDescription());
+        candidats = socialChoice.getCandidats();
 
         choiceListView.getRecyclerView().setVerticalScrollBarEnabled(true);
 
         choiceListView.setLayoutManager(new LinearLayoutManager(this));
-        listAdapter = new STVParticipationListAdapter(choices,
+        listAdapter = new STVParticipationListAdapter(candidats,
                 R.layout.consult_participation_stv_participation_item,
                 R.id.stv_participation_item,
                 false);
@@ -83,6 +97,7 @@ public class STVParticipationActivity extends AppCompatActivity {
      */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark(){
+        listAdapter.getItemList();
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         Log.d(TAG,listAdapter.getItemList().toString());
         finish();
