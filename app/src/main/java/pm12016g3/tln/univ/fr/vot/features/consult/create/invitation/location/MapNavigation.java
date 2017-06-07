@@ -65,13 +65,13 @@ public class MapNavigation implements OnMapReadyCallback {
     /**
      * Initialize the Map Navigation and the Location Service.
      */
-    public void init() {
+    public void init(FragmentManager fragmentManager) {
         // Get Google Map and initialize it
         /*SupportMapFragment mapFragment = (SupportMapFragment) context.getSupportFragmentManager()
                 .findFragmentById(R.id.map_navigation);
         mapFragment.getMapAsync(this);*/
-        MapFragment mapFragment = ((MapFragment)context.getFragmentManager().findFragmentById(R.id.map_navigation));
-
+        MapFragment mapFragment = ((MapFragment)fragmentManager.findFragmentById(R.id.map_navigation));
+        //mapFragment.getMapAsync(this);
 
         try {
             MapsInitializer.initialize(context.getApplicationContext());
