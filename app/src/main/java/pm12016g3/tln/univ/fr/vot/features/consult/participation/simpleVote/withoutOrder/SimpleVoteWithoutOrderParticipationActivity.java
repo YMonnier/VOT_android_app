@@ -80,11 +80,11 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
 
-        System.out.println(" obj : "+socialChoice);
+        System.out.println(" obj : " + socialChoice);
 
         this.setTitle(socialChoice.getTitle());
 
-        tv_reference.setText(TV_STRING1+socialChoice.getData().getNbChoice()+TV_STRING2);
+        tv_reference.setText(TV_STRING1 + socialChoice.getData().getNbChoice() + TV_STRING2);
         vote_description.setText(socialChoice.getDescription());
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -108,29 +108,26 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
      * Listen to the click of the check button on the menu bar
      */
     @OptionsItem(R.id.participation_action_check)
-    public void onClickCheckmark(){
+    public void onClickCheckmark() {
 
-        Map<String,Object> hashMap = new HashMap<>();
+        Map<String, Object> hashMap = new HashMap<>();
         hashMap.put("1", "a");
         Gson gson = new Gson();
 
-        /*for (SimpleVoteWithoutOrderParticipationItem simpleVoteWithoutOrderParticipationItem : listAdapter.getItemList()) {
-            if (simpleVoteWithoutOrderParticipationItem.isChecked()) {
-                Candidat candidat = new Candidat();
-                candidat.setName(simpleVoteWithoutOrderParticipationItem.getChoice_title());
-                list.add(candidat);
-            }
-
-        }*/
 
         List<Candidat> candidatsSelected = Stream.of(listAdapter.getItemList())
                 .filter(value -> value.isSelected())
                 .toList();
-        Vote vote = new Vote(socialChoice.getId());
-        Stream.of(candidatsSelected)
-                .forEach(candidat -> vote.put(candidat.getName()));
-        Log.d(TAG, "Vote anwser: " + vote);
 
+        int count = 0;
+        Vote vote = new Vote(socialChoice.getId());
+
+        for (Candidat candidat : candidatsSelected) {
+            count += 1;
+            vote.put(String.valueOf(count), candidat.getName());
+        }
+
+        Log.d(TAG, "Vote anwser: " + vote);
 
         /*try {
             ResponseEntity<Response<String>> response = apiService.insert(vote);
@@ -143,7 +140,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         //ResponseEntity<Response<String>> response = apiService.insert(vote);
         //Log.d(TAG, "Vote resposne: " + response);
         ViewUtils.closeKeyboard(this, getCurrentFocus());
-        Log.d(TAG,listAdapter.getItemList().toString());
+        Log.d(TAG, listAdapter.getItemList().toString());
         finish();
     }
 
@@ -151,7 +148,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
      * Go back when click go back button
      */
     @OptionsItem(android.R.id.home)
-    public void onClickUpArrow(){
+    public void onClickUpArrow() {
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }

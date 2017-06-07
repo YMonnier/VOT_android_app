@@ -19,8 +19,13 @@ public class JsonKeys {
     public final static String VOTES = "voted";
     public final static String CANDIDATS = "candidats";
 
-
     // Social choices
     public final static String TYPE = "type";
     public final static String DESCRIPTION = "description";
+
+    // RNotification Keys.
+    public final static String MESSAGE_ID = "message_id";
+    public final static String SENDER = "sender";
+    public final static String CONTENT = "content";
+
 }

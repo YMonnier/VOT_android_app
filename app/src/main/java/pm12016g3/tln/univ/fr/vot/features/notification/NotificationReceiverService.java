@@ -1,9 +1,26 @@
 package pm12016g3.tln.univ.fr.vot.features.notification;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.androidannotations.annotations.EService;
+
+import io.realm.Realm;
+import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.notification.shared.RNotifFriendRequest;
+import pm12016g3.tln.univ.fr.vot.models.realm.Request;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 
 /**
  * Project android.
@@ -14,8 +31,32 @@ import com.google.firebase.messaging.RemoteMessage;
  * https://github.com/YMonnier
  */
 
+@EService
 public class NotificationReceiverService extends FirebaseMessagingService {
     private static final String TAG = NotificationReceiverService.class.getSimpleName();
+    public long id = 0;
+    /**
+     * RNotification Manager.
+     */
+    NotificationManager notificationManager;
+
+    /**
+     * Gson Generic Deserialiser;
+     */
+    GsonDeserializer gsonDeserializer;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        init();
+    }
+
+    private void init() {
+        notificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        gsonDeserializer = new GsonDeserializer();
+    }
+
     /**
      * Receive a notification which has been
      * pushed by the server to broadcast a social choice information/message.
@@ -25,7 +66,103 @@ public class NotificationReceiverService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
-        Log.d(TAG, "FCM Notification Message: " + remoteMessage.getNotification());
+        Log.d(TAG, "FCM RNotification Message: " + remoteMessage.getNotification());
         Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+
+        if (remoteMessage.getData() != null) {
+            if (remoteMessage.getData().containsKey(JsonKeys.MESSAGE_ID)) {
+                Gson gson = GsonSingleton.getInstance();
+                JsonObject json = gson
+                        .fromJson(gson.toJson(remoteMessage.getData()), JsonObject.class);
+                Log.d(TAG, json.toString());
+                long messageID = json.get(JsonKeys.MESSAGE_ID).getAsLong();
+                JsonObject content = gson.fromJson(json.get(JsonKeys.CONTENT).getAsString(), JsonObject.class);
+
+                if (messageID == 1) {
+
+                } else if (messageID == 2) {
+                    treatsFriendRequest(content);
+                } else if (messageID == 3) {
+
+                } else if (messageID == 4) {
+
+                } else if (messageID == 5) {
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Treat the message received by notification
+     *
+     * @param value
+     */
+    private void treatsFriendRequest(JsonObject value) {
+        Gson gson = GsonSingleton.getInstance();
+        RNotifFriendRequest nfr = gson.fromJson(value, RNotifFriendRequest.class);
+        String name = nfr.getRelation().getSender().getPseudo();
+
+        push(getString(R.string.notification_title_friend_request),
+                name + " " + getString(R.string.notification_friend_request));
+
+        // Get a Realm instance for this thread
+        Realm realm = Realm.getDefaultInstance();
+        Request reqFromDB = realm.where(Request.class)
+                .equalTo(JsonKeys.ID, nfr.getRelation().getId())
+                .findFirst();
+        if (reqFromDB == null) {
+            realm.executeTransaction(realm1 -> {
+                Request req = realm1.createObject(Request.class);
+                req.setId(nfr.getRelation().getId());
+                req.setSender(nfr.getRelation().getSender());
+                req.setReceiver(nfr.getRelation().getReceiver());
+            });
+        }
+    }
+
+
+    void showFriendRequestAnswer() {
+        Log.d(TAG, "Show Nickname Dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Authentification");
+        builder.setMessage(R.string.login_nickname);
+
+
+        builder.setPositiveButton(R.string.login_ok, (dialog, which) -> {
+
+            /*Log.d(TAG, nickname);
+
+            user.setPseudo(nickname);
+
+            Uri picture = googleSignInAccount.getPhotoUrl();
+            if (picture != null) {
+                user.setPicture(picture.getPath());
+            }*/
+
+
+        });
+        builder.setNegativeButton(R.string.login_cancel, (dialog, which) -> {
+            Log.d(TAG, "Closing dialog...");
+            dialog.cancel();
+        });
+
+        builder.show();
+    }
+
+    /**
+     * Displays RNotification depending on the message received.
+     *
+     * @param title notification title.
+     * @param body  notification content.
+     */
+    private void push(String title, String body) {
+        id += 1;
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .build();
+        this.notificationManager.notify(1, notification);
     }
 }

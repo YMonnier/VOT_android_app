@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity
                 .addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
 
         googleApiClient.connect();
-
+        Settings.googleApiClient = googleApiClient;
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.login_google_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -275,8 +275,13 @@ public class LoginActivity extends AppCompatActivity
                         .build();
 
                 try {
+
+                    Log.i(TAG, "Login User...");
+                    Log.i(TAG, GsonSingleton.getInstance().toJson(user));
+                    System.out.println("token device 2: "+token);
+
                     ResponseEntity<Response<User>> response = apiService.login(user);
-                    Log.i(TAG, response.toString());
+                    Log.i(TAG, "resposne "+response.toString());
 
                     if (response.getStatusCode().is2xxSuccessful()) {
                         Settings.currentUser = response.getBody().getData();

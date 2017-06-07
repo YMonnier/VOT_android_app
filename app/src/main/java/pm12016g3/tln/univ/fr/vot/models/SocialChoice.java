@@ -40,12 +40,19 @@ public class SocialChoice<T>
     }
 
     private Long id;
+
     private String title;
+
     private String description;
+
     private Type type;
+
     private boolean confidentiality;
+
     private boolean closed;
+
     private List<User> voted;
+
     private List<User> participants;
 
     @SerializedName(value = "value")

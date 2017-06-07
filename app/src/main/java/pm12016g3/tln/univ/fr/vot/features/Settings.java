@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import pm12016g3.tln.univ.fr.vot.models.User;
 
 /**
@@ -13,4 +15,5 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 
 public class Settings {
     public static User currentUser = null;
+    public static GoogleApiClient googleApiClient = null;
 }
