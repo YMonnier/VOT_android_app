@@ -5,6 +5,7 @@ import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.Post;
+import org.androidannotations.rest.spring.annotations.Put;
 import org.androidannotations.rest.spring.annotations.RequiresHeader;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.MediaType;
@@ -60,11 +61,22 @@ public interface VOTFriendsAPI {
     /**
      * Sends friend requests
      *
+     * @param friendRequest a firend request
      * @return A response
      */
     @Post("/social_relations/friend_request")
     @RequiresHeader("Authorization")
     Response requests(@Body FriendRequest friendRequest);
+
+    /**
+     * Update a friend request
+     *
+     * @param friendRequest a firend request
+     * @return A response
+     */
+    @Put("/social_relations/friend_request")
+    @RequiresHeader("Authorization")
+    Response updateFriendRequest(@Body FriendRequest friendRequest);
 
     /**
      * Set a specific header to the HTTP request.

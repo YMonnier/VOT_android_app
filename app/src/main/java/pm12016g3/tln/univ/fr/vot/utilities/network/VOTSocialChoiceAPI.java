@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 
@@ -47,6 +48,10 @@ public interface VOTSocialChoiceAPI {
     @Post("/votes")
     @RequiresHeader("Authorization")
     ResponseEntity<Response<JsonObject>> vote(@Body Vote vote);
+
+    @Post("/social_choices/")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<JsonObject>> createSociaChoice(@Body SocialChoice vote);
 
     /**
      * Set a specific header to the HTTP request.
