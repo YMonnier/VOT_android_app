@@ -4,9 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +16,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.InjectMenu;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
@@ -35,6 +31,7 @@ import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.network.notification.ShowFriendInvitationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.network.research.NetworkResearchActivity_;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
@@ -100,9 +97,9 @@ public class NetworkFragment extends Fragment {
     }
 
     @OptionsItem(R.id.network_friend_alarm)
-    void onClickAlarm(){
-        Toast.makeText(getActivity(),"click alarm",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(getActivity(),ShowFriendInvitationActivity_.class));
+    void onClickAlarm() {
+        Toast.makeText(getActivity(), "click alarm", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(getActivity(), ShowFriendInvitationActivity_.class));
     }
 
     /**

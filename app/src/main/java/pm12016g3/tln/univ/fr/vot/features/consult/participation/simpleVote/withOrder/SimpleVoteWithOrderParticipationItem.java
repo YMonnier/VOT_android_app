@@ -10,6 +10,7 @@ public class SimpleVoteWithOrderParticipationItem {
 
     private String choice_title;
     private boolean checked;
+    private int order;
 
     public SimpleVoteWithOrderParticipationItem(String choice_title) {
         this.choice_title = choice_title;

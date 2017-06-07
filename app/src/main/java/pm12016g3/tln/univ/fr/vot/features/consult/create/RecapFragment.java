@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -9,17 +10,34 @@ import com.google.android.gms.games.multiplayer.Participant;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+
+import com.google.gson.JsonObject;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import pm12016g3.tln.univ.fr.vot.R;
+
 import pm12016g3.tln.univ.fr.vot.features.consult.create.recap.RecapListViewAdapter;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.User;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
+
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
@@ -52,6 +70,7 @@ public class RecapFragment extends AppFragment {
     @ViewById(R.id.recap_date)
     TextView recapDate;
 
+
     @ViewById(R.id.recap_candidat)
     ListView candidatListView;
 
@@ -63,6 +82,9 @@ public class RecapFragment extends AppFragment {
 
     @Bean
     RecapListViewAdapter participantAdapter;
+
+    @RestService
+    VOTSocialChoiceAPI serviceAPI;
 
     /**
      * Parent fragment.
@@ -104,5 +126,21 @@ public class RecapFragment extends AppFragment {
     void previous() {
         Log.d(TAG, "Back button");
         parent.previousStep();
+    }
+
+    @Click(R.id.send_bt)
+    void sendAction() {
+        try {
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
+            Log.d(TAG, response.toString());
+            if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
+                Snack.showFailureMessage(getView(),
+                        getString(R.string.snack_error_http_400_500),
+                        Snackbar.LENGTH_LONG);
+            }
+        } catch (RestClientException e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
     }
 }
