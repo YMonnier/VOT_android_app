@@ -28,4 +28,5 @@ public class JsonKeys {
     public final static String SENDER = "sender";
     public final static String CONTENT = "content";
 
+
 }
