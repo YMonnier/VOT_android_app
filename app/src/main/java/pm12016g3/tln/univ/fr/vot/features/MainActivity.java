@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -55,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         googleApiClient = LoginActivity.googleApiClient;
         if (!googleApiClient.isConnected())
             googleApiClient.connect();
+
+        initRealmDatabase();
 
         setSupportActionBar(toolbar);
         setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
@@ -145,12 +145,9 @@ public class MainActivity extends AppCompatActivity
 
     private void signOut() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        googleApiClient.disconnect();
-                        //finish();
-                    }
+                status -> {
+                    googleApiClient.disconnect();
+                    //finish();
                 });
     }
 }

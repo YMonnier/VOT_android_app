@@ -367,14 +367,11 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
 
         @Override
         protected void onPostExecute(List<SocialChoice> list) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getActivity(), "on refresh", Toast.LENGTH_LONG).show();
-                    adapter.clear();
-                    adapter.addAll(list);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+            getActivity().runOnUiThread(() -> {
+                Toast.makeText(getActivity(), "on refresh", Toast.LENGTH_LONG).show();
+                adapter.clear();
+                adapter.addAll(list);
+                swipeRefreshLayout.setRefreshing(false);
             });
         }
     }
