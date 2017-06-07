@@ -186,9 +186,14 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
 
         if (visibility == VISIBLE) {
-            startActivity(new Intent(getActivity()
+/*            startActivity(new Intent(getActivity()
                     .getApplicationContext(),
-                    ResultActivity_.class));
+                    ResultActivity_.class));*/
+            intent = ResultActivity_
+                    .intent(getActivity())
+                    .get();
+            intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+            startActivity(intent);
         } else {
             switch (type) {
                 case STV:
