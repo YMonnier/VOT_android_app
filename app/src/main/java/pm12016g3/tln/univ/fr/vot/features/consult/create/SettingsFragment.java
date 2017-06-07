@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
+import android.app.DatePickerDialog;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -21,7 +23,15 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm.JMFragment;
@@ -29,6 +39,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm.JMFragmen
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.stv.STVFragment_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.utilities.DateValidator;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
@@ -45,7 +56,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 @EFragment(R.layout.consult_create_settings_fragment)
 @OptionsMenu(R.menu.consult_create_menu_next_arrow)
 public class SettingsFragment extends AppFragment
-        implements Validable {
+        implements Validable, DatePickerDialog.OnDateSetListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
     /**
@@ -53,6 +64,11 @@ public class SettingsFragment extends AppFragment
      * That attribute should not be selected.
      */
     private static final String DEFAULT_ALGORITHM = "Type";
+
+    Calendar calendar;
+
+    @ViewById(R.id.et_calendar)
+    EditText etCalendar;
 
     /**
      * Confidentiality boolean.
@@ -93,6 +109,25 @@ public class SettingsFragment extends AppFragment
         fragmentTitle = getString(R.string.fragment_title_settings);
         parent = (CreateFragment) getParentFragment();
         algorithms.setOnTouchListener(spinnerOnTouchHandler);
+    }
+
+    /**
+     * Display date picker when touch startDateField
+     */
+    @Click(R.id.et_calendar)
+    void onClickOnSelectStartDate() {
+        Calendar calendar = Calendar.getInstance();
+
+        // Hide keyboard before to show DatePickerDialog
+        ViewUtils.closeKeyboard(getActivity(),
+                getActivity().getCurrentFocus());
+
+        // Setup date picker with a minimum date.
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, calendar
+                .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        pickerDialog.show();
     }
 
     @OptionsItem(R.id.menu_item_next_arrow)
@@ -226,6 +261,7 @@ public class SettingsFragment extends AppFragment
         parent.getSocialChoice().setTitle(title);
         parent.getSocialChoice().setDescription(description);
         parent.getSocialChoice().setConfidentiality(confidentiality.isChecked());
+        parent.getSocialChoice().setEnd_date(calendar.getTimeInMillis());
         if (type != null)
             parent.getSocialChoice().setType(type);
     }
@@ -312,4 +348,18 @@ public class SettingsFragment extends AppFragment
         }
         return false; // Display the spinner
     };
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        if (DateValidator.validate(calendar)) {
+            String myFormat = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+            etCalendar.setText(sdf.format(calendar.getTime()));
+        } else {
+            etCalendar.setText("");
+            updateErrorUi(etCalendar, "Invalid selected date");
+        }
+    }
 }

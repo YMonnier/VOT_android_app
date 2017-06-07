@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/et_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:hint="Clique ici pour choisir une date de fin\npour le choix social"/>
+
     <ScrollView
         android:id="@+id/create_form"
         android:layout_width="match_parent"
