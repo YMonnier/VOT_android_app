@@ -27,7 +27,9 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -106,7 +108,11 @@ public class RecapFragment extends AppFragment {
         socialChoice = parent.getSocialChoice();
         //setAdapters(parent.getSocialChoice());
         recapTitle.setText(socialChoice.getTitle());
-        recapDescription.setText(socialChoice.getDescription());
+        recapDescription.setText("Description : " + socialChoice.getDescription());
+        long time = Long.valueOf(socialChoice.getEndDate()).longValue();
+        Date dateend = new Date(time);
+        Timestamp endtime = new Timestamp(dateend.getTime());
+        recapDate.setText("Clos le : " + endtime.toString());
 
         switch (socialChoice.getType()){
             case JM :
@@ -143,9 +149,9 @@ public class RecapFragment extends AppFragment {
         List<String> participants = new ArrayList<>();
 
         //just for test
-        participants.add("fff");
-        participants.add("ddd");
-        participants.add("hhh");
+        participants.add("John");
+        participants.add("Henry");
+        participants.add("Paul");
 
         //Todo: invite the frieds
         /*for ( Object user : socialChoice.getParticipants()) {
@@ -180,7 +186,7 @@ public class RecapFragment extends AppFragment {
 
     @Click(R.id.send_bt)
     void sendAction() {
-        /*try {
+        try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
             Log.d(TAG, response.toString());
@@ -191,6 +197,6 @@ public class RecapFragment extends AppFragment {
             }
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
-        }*/
+        }
     }
 }
