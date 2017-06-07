@@ -36,7 +36,6 @@ import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
-import pm12016g3.tln.univ.fr.vot.utilities.network.VOTVoteAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**

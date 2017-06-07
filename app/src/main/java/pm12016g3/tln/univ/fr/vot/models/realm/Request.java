@@ -1,7 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.models.realm;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pm12016g3.tln.univ.fr.vot.models.User;
@@ -18,9 +17,6 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Request extends RealmObject {
-    @PrimaryKey
-    private Long id;
-
     private User sender;
     private User receiver;
 
