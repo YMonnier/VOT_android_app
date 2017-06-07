@@ -1,4 +1,4 @@
-package pm12016g3.tln.univ.fr.vot.features.network;
+package pm12016g3.tln.univ.fr.vot.features.network.notification;
 
 import android.view.ViewGroup;
 
