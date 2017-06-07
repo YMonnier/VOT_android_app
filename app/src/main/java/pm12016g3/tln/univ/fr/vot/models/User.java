@@ -24,17 +24,23 @@ public class User extends RealmObject implements Requestable {
     private Long id;
 
     private String email;
+
     private String pseudo;
+
     private String picture;
+
     private double longitude;
+
     private double latitude;
-    private boolean selected;
 
     @SerializedName(value = "access_token")
     private String accessToken;
 
     @SerializedName(value = "device_token")
     private String deviceToken;
+
+    private boolean selected;
+
     public User() {}
     private User(Builder builder) {
         this.email = builder.email;
