@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="elimination">
+        <item>less</item>
+        <item>occurrence</item>
+    </string-array>
+
+    <string-array name="quota">
+        <item>haare</item>
+        <item>autre</item>
+    </string-array>
+
+</resources>

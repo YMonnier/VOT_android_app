@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models.shared;
 
+import lombok.Data;
+
 /**
  * Project android.
  * Package pm12016g3.tln.univ.fr.vot.models.shared.
@@ -8,11 +10,11 @@ package pm12016g3.tln.univ.fr.vot.models.shared;
  * www.yseemonnier.com
  * https://github.com/YMonnier
  */
-
+@Data
 public class SCSimpleTransfarableVote implements SCData {
-    enum Elimination {
-        LESS("Less"),
-        OCCURENCE("Occurence");
+    public enum Elimination {
+        LESS("less"),
+        OCCURENCE("occurrence");
         private String value;
 
         Elimination(String value) {
