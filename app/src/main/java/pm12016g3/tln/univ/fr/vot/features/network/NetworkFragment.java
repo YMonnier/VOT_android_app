@@ -99,7 +99,6 @@ public class NetworkFragment extends Fragment {
     public void onStart() {
         super.onStart();
         loadData();
-        adapter.notifyDataSetChanged();
     }
 
     @OptionsItem(R.id.network_friend_alarm)
@@ -163,6 +162,7 @@ public class NetworkFragment extends Fragment {
                 allFriends.addAll(users);
                 adapter.getItems()
                         .addAll(users);
+                update();
                 dismissProgress();
             } else {
                 dismissProgress();
@@ -198,5 +198,11 @@ public class NetworkFragment extends Fragment {
     @UiThread
     void setAdapter() {
         friendListView.setAdapter(adapter);
+    }
+
+    @UiThread
+    void update() {
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 }
