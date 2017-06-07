@@ -42,6 +42,19 @@ public class User extends RealmObject implements Requestable {
     private boolean selected;
 
     public User() {}
+
+    public void init(User user) {
+        this.id = user.id;
+        this.email = user.email;
+        this.pseudo = user.pseudo;
+        this.picture = user.picture;
+        this.longitude = user.longitude;
+        this.latitude = user.latitude;
+        this.accessToken = user.accessToken;
+        this.deviceToken = user.deviceToken;
+        this.selected = user.selected;
+    }
+
     private User(Builder builder) {
         this.email = builder.email;
         this.pseudo = builder.pseudo;

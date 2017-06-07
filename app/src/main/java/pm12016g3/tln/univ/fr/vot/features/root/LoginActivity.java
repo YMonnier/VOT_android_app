@@ -39,6 +39,8 @@ import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
@@ -107,9 +109,19 @@ public class LoginActivity extends AppCompatActivity
 
         checkAuthentication();
 
+        initRealmDatabase();
 
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.i(TAG, "Device token: " + deviceToken);
+    }
+
+    /**
+     * Init the global Realm configuration.
+     */
+    private void initRealmDatabase() {
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     /**

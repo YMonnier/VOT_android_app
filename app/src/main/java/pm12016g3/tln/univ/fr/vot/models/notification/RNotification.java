@@ -15,19 +15,6 @@ import lombok.Data;
 
 @Data
 public class RNotification<T> {
-    public enum MessageType {
-        SOCIAL_CHOICE_INVITATION(1),
-        FRIEND_REQUEST(2),
-        FRIEND_REQUEST_ACCEPTED(3),
-        FRIEND_REQUEST_DECLINE(4),
-        SOCIAL_CHOICE_IMMINENT_CLOSE(5),
-        SOCIAL_CHOICE_CLOSED(6);
-
-        public long id;
-        private MessageType(long id) {
-            this.id = id;
-        }
-    }
     @SerializedName("message_id")
     private Long id;
     private T content;

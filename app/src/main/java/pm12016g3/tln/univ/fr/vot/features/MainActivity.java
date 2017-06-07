@@ -1,14 +1,17 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -16,21 +19,23 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
+import pm12016g3.tln.univ.fr.vot.features.notification.NotificationBroadcastManager;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
-import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment;
 import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment_;
+import pm12016g3.tln.univ.fr.vot.models.realm.Request;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -48,13 +53,17 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
 
+    /**
+     * Broadcast Manager
+     */
+    @Bean
+    NotificationBroadcastManager notificationBroadcastManager;
+
     @AfterViews
     void init() {
         googleApiClient = LoginActivity.googleApiClient;
         if (!googleApiClient.isConnected())
             googleApiClient.connect();
-
-        initRealmDatabase();
 
         setSupportActionBar(toolbar);
         setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
@@ -71,13 +80,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @AfterInject
+    void initAfterInject() {
+        initObserverableNotificaiton();
+    }
+
     /**
-     * Init the global Realm configuration.
+     * Initialize the notification observable.
      */
-    private void initRealmDatabase() {
-        Realm.init(this);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(realmConfiguration);
+    private void initObserverableNotificaiton() {
+        notificationBroadcastManager.addObserver(this,
+                NotificationBroadcastManager.Type.FRIEND_REQUEST,
+                friendRequestReceiver);
     }
 
     @Override
@@ -123,17 +137,19 @@ public class MainActivity extends AppCompatActivity
                 fragment = new AboutUsFragment_();
                 break;
         }
-        if(!disconnected){
+        if (!disconnected) {
             assert fragment == null;
-            setFragment(fragment, item.getTitle().toString());}
+            setFragment(fragment, item.getTitle().toString());
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     /**
      * Change the content view with a specific fragment.
+     *
      * @param fragment fragment to replace.
-     * @param title fragment title.
+     * @param title    fragment title.
      */
     private void setFragment(Fragment fragment, String title) {
         getFragmentManager()
@@ -149,5 +165,35 @@ public class MainActivity extends AppCompatActivity
                     googleApiClient.disconnect();
                     //finish();
                 });
+    }
+
+    private BroadcastReceiver friendRequestReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String uuid = intent.getStringExtra(NotificationBroadcastManager.EXTRA_FRIEND_REQUEST_RECEIVER);
+            Realm realm = Realm.getDefaultInstance();
+            Request request = realm.where(Request.class).equalTo("id", uuid).findFirst();
+            if (request != null) {
+                showFriendRequestAnswer(request);
+            }
+        }
+    };
+
+    void showFriendRequestAnswer(Request request) {
+        Log.d(TAG, "Show Nickname Dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.notification_title_friend_request));
+        builder.setMessage(request.getSender().getPseudo() + " vous demande en ami.");
+
+        builder.setPositiveButton(R.string.notification_dialog_accept, (dialog, which) -> {
+
+        });
+
+        builder.setNegativeButton(R.string.notification_dialog_decline, (dialog, which) -> {
+            Log.d(TAG, "Closing dialog...");
+            dialog.cancel();
+        });
+
+        builder.show();
     }
 }

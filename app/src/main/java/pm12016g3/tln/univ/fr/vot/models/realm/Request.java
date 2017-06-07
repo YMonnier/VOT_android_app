@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models.realm;
 
+import java.util.UUID;
+
 import io.realm.RealmObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +19,7 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Request extends RealmObject {
+    private String id = UUID.randomUUID().toString();
     private User sender;
     private User receiver;
 
