@@ -151,9 +151,8 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         finish();
     }
 
-    // TODO: COMMENT
     /**
-     *
+     * Send a vote to the database
      * @param vote
      */
     @Background

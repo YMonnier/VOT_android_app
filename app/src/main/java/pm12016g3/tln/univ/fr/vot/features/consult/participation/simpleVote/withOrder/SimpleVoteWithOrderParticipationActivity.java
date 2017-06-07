@@ -8,26 +8,38 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder.SimpleVoteWithoutOrderParticipationItem;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.Vote;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -49,6 +61,13 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
 
     @ViewById(R.id.vote_description)
     TextView vote_description;
+
+    /**
+     * Rest service to get
+     * information from server.
+     */
+    @RestService
+    VOTSocialChoiceAPI serviceAPI;
 
     /**
      * DragListView that contains the choices
@@ -115,6 +134,20 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
     public void onClickCheckmark(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         Log.d(TAG,listAdapter.getItemList().toString());
+
+        List<SimpleVoteWithOrderParticipationItem> candidatsSelected = Stream.of(listAdapter.getItemList())
+                .filter(value -> value.isChecked())
+                .toList();
+
+        Vote vote = new Vote(socialChoice.getId());
+        System.out.println("lalala  : "+candidatsSelected);
+
+        for (SimpleVoteWithOrderParticipationItem candidat : candidatsSelected) {
+            vote.put(String.valueOf(candidat.getOrder()), candidat.getChoice_title());
+        }
+
+        sendVote(vote);
+
         finish();
     }
 
@@ -125,6 +158,21 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
     public void onClickUpArrow(){
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
+    }
+
+    /**
+     * Send a vote to the database
+     * @param vote
+     */
+    @Background
+    void sendVote(Vote vote) {
+        try {
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
+            Log.d(TAG, response.toString());
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 
     /**
