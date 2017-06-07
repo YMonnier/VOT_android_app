@@ -37,9 +37,6 @@ public class NetworkResearchListAdapter
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         NetworkResearchItemView v = (NetworkResearchItemView) super.getView(i, view, viewGroup);
-        //v.invitation.setOnClickListener();
-        //ImageButton invitation =
-        //       ((ImageButton) v.findViewById(R.id.network_research_item_invitation));
         Log.d(TAG, "Get View...");
         v.invitation.setOnClickListener(view1 -> {
             if (sendListener != null) {
@@ -51,6 +48,7 @@ public class NetworkResearchListAdapter
 
     /**
      * Set the custom Send On Click listener.
+     *
      * @param listener custom listener.
      */
     public void setListener(SendOnClickListener<User> listener) {

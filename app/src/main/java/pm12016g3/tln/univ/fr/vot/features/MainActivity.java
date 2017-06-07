@@ -37,7 +37,6 @@ import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 import pm12016g3.tln.univ.fr.vot.features.notification.NotificationBroadcastManager;
-import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
 import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment_;
 import pm12016g3.tln.univ.fr.vot.models.realm.Request;
@@ -71,11 +70,14 @@ public class MainActivity extends AppCompatActivity
 
     @AfterViews
     void init() {
-        googleApiClient = LoginActivity.googleApiClient;
-        if (!googleApiClient.isConnected())
-            googleApiClient.connect();
+        googleApiClient = Settings.googleApiClient;
+        if (googleApiClient != null) {
+            if (!googleApiClient.isConnected())
+                googleApiClient.connect();
+        }
 
         setSupportActionBar(toolbar);
+
         setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
 
         View headerLayout = navigationView.getHeaderView(0);
