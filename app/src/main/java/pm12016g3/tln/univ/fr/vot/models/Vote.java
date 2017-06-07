@@ -15,16 +15,14 @@ import lombok.Data;
 public class Vote {
     @SerializedName("id_social_choice")
     private Long socialChoiceID;
-    private Map<String, Object> data = new HashMap<>();
 
-    int count = 0;
+    private Map<String, Object> data = new HashMap<>();
 
     public Vote(Long socialChoiceID) {
         this.socialChoiceID = socialChoiceID;
     }
 
-    public void put(Object value) {
-        count += 1;
-        data.put(String.valueOf(count), value);
+    public void put(String key, Object value) {
+        data.put(key, value);
     }
 }

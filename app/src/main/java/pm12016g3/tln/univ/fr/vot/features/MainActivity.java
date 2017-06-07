@@ -22,6 +22,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
@@ -67,6 +69,15 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    /**
+     * Init the global Realm configuration.
+     */
+    private void initRealmDatabase() {
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     @Override

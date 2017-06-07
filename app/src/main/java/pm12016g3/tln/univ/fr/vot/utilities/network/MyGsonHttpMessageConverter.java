@@ -33,6 +33,7 @@ public class MyGsonHttpMessageConverter extends GsonHttpMessageConverter {
 
         Gson customGson = new GsonBuilder()
                 .setDateFormat(GsonSingleton.DATE_FORMAT)
+                //.excludeFieldsWithoutExposeAnnotation()
                 .create();
 
         super.setGson(customGson);
