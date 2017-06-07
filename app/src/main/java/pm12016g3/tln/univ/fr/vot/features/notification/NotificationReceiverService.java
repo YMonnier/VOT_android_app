@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -12,10 +11,13 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
+import org.androidannotations.annotations.SystemService;
 
 import io.realm.Realm;
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.notification.shared.RNotifFriendRequest;
 import pm12016g3.tln.univ.fr.vot.models.realm.Request;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
@@ -35,10 +37,18 @@ import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 public class NotificationReceiverService extends FirebaseMessagingService {
     private static final String TAG = NotificationReceiverService.class.getSimpleName();
     public long id = 0;
+
     /**
      * RNotification Manager.
      */
+    @SystemService
     NotificationManager notificationManager;
+
+    /**
+     * Broadcast Manager
+     */
+    @Bean
+    NotificationBroadcastManager notificationBroadcastManager;
 
     /**
      * Gson Generic Deserialiser;
@@ -108,46 +118,32 @@ public class NotificationReceiverService extends FirebaseMessagingService {
 
         // Get a Realm instance for this thread
         Realm realm = Realm.getDefaultInstance();
-        Request reqFromDB = realm.where(Request.class)
-                .equalTo(JsonKeys.ID, nfr.getRelation().getId())
+
+        final String USER_SENDER = "sender.pseudo";
+        final String USER_RECEIVER = "receiver.pseudo";
+        Request request = realm.where(Request.class)
+                .equalTo(USER_SENDER, nfr.getRelation().getSender().getPseudo())
+                .equalTo(USER_RECEIVER, nfr.getRelation().getReceiver().getPseudo())
                 .findFirst();
-        if (reqFromDB == null) {
-            realm.executeTransaction(realm1 -> {
-                Request req = realm1.createObject(Request.class);
-                req.setId(nfr.getRelation().getId());
-                req.setSender(nfr.getRelation().getSender());
-                req.setReceiver(nfr.getRelation().getReceiver());
-            });
+
+
+        if (request == null) {
+            realm.beginTransaction();
+            request = realm.createObject(Request.class);
+            User sender = realm
+                    .createObjectFromJson(User.class, gson.toJson(nfr.getRelation().getSender()));
+
+            User receiver = realm
+                    .createObjectFromJson(User.class, gson.toJson(nfr.getRelation().getReceiver()));
+
+            request.setSender(sender);
+            request.setReceiver(receiver);
+            realm.commitTransaction();
         }
-    }
 
-
-    void showFriendRequestAnswer() {
-        Log.d(TAG, "Show Nickname Dialog");
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Authentification");
-        builder.setMessage(R.string.login_nickname);
-
-
-        builder.setPositiveButton(R.string.login_ok, (dialog, which) -> {
-
-            /*Log.d(TAG, nickname);
-
-            user.setPseudo(nickname);
-
-            Uri picture = googleSignInAccount.getPhotoUrl();
-            if (picture != null) {
-                user.setPicture(picture.getPath());
-            }*/
-
-
-        });
-        builder.setNegativeButton(R.string.login_cancel, (dialog, which) -> {
-            Log.d(TAG, "Closing dialog...");
-            dialog.cancel();
-        });
-
-        builder.show();
+        notificationBroadcastManager.send(this,
+                NotificationBroadcastManager.Type.FRIEND_REQUEST,
+                request.getId());
     }
 
     /**
@@ -161,7 +157,7 @@ public class NotificationReceiverService extends FirebaseMessagingService {
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setSmallIcon(R.drawable.type_two)
                 .build();
         this.notificationManager.notify(1, notification);
     }

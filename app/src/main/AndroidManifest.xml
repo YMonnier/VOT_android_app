@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/type_two"
+        android:icon="@mipmap/ic_vot"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -114,6 +114,12 @@
             android:screenOrientation="portrait" />
         <activity android:name=".features.test.TestActivity" />
 
+        <activity
+            android:name=".features.network.ShowFriendInvitationActivity_"
+            android:configChanges="orientation"
+            android:label="@string/network_friend_invitation"
+            android:screenOrientation="portrait" />
+
         <!--             *** CONSULT PACKAGE *** -->
         <activity android:name=".features.consult.participation.example.ParticipationActivity_">
         </activity>
@@ -132,10 +138,13 @@
         </activity>
 
         <activity
-            android:name=".features.consult.result.ResultActivity_"
+            android:name=".features.consult.result.SMResultActivity_"
             android:label="@string/consult_result">
         </activity>
-
+        <activity
+            android:name=".features.consult.result.OtherAlgoResultActivity_"
+            android:label="@string/consult_result">
+        </activity>
         <activity
             android:name=".features.network.notification.NetworkNotificationActivity_"
             android:label="@string/consult_result">

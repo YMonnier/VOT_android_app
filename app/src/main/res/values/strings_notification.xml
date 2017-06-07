@@ -2,4 +2,6 @@
 <resources>
     <string name="notification_friend_request"> vous demande en ami.</string>
     <string name="notification_title_friend_request">Requête d\'ami</string>
+    <string name="notification_dialog_accept">Confirmer</string>
+    <string name="notification_dialog_decline">Décliner</string>
 </resources>

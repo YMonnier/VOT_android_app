@@ -3,6 +3,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.with
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -102,6 +103,7 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
         this.setTitle(socialChoice.getTitle());
 
         tv_reference.setText(TV_STRING1+socialChoice.getData().getNbChoice()+TV_STRING2);
+        vote_description.setMovementMethod(new ScrollingMovementMethod());
         vote_description.setText(socialChoice.getDescription());
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);

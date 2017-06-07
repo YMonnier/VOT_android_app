@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.jm;
 
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -74,6 +75,7 @@ public class JMParticipationActivity extends AppCompatActivity {
         this.setTitle(socialChoice.getTitle());
 
         tv_reference.setText(TV_STRING);
+        vote_description.setMovementMethod(new ScrollingMovementMethod());
         vote_description.setText(socialChoice.getDescription());
 
         Stream.of(socialChoice.getCandidats())

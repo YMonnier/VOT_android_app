@@ -14,7 +14,6 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 
 @Data
 public class RNotifRelation {
-    private Long id;
     private boolean confirm;
     private User receiver;
     private User sender;
