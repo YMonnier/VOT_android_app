@@ -22,7 +22,8 @@ public class GsonSingleton {
      */
     public static Gson getInstance() {
         if (gson == null) {
-            return new GsonBuilder()
+            gson = new GsonBuilder()
+                    //.excludeFieldsWithoutExposeAnnotation()
                     .setDateFormat(DATE_FORMAT)
                     .create();
         }

@@ -2,36 +2,34 @@ package pm12016g3.tln.univ.fr.vot.features.consult.participation.jm;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.annimon.stream.Stream;
+import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity;
-import pm12016g3.tln.univ.fr.vot.models.Candidat;
-import pm12016g3.tln.univ.fr.vot.models.JMVote;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.Vote;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
-import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
-import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 
 /**
  * Created by damienlemenager on 06/06/2017.
@@ -57,100 +55,65 @@ public class JMParticipationActivity extends AppCompatActivity {
     ListView lv_jm_candidats;
 
     @Bean
-    JMParticipationAdapter adapter;
+    JMParticipationListAdapter adapter;
+
+    @RestService
+    VOTSocialChoiceAPI serviceAPI;
 
     /**
      * Initialisation after the views binding has happened
      */
     @AfterViews
     void init() {
-
         String strObj = getIntent().getStringExtra(ExtraKeys.SOCIAL_CHOICE);
-        Gson gson = GsonSingleton.getInstance();
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCMajorityJudgment.class);
 
-        System.out.println(" obj : "+socialChoice);
+        System.out.println(" obj : " + socialChoice);
 
         this.setTitle(socialChoice.getTitle());
 
         tv_reference.setText(TV_STRING);
         vote_description.setText(socialChoice.getDescription());
 
+        Stream.of(socialChoice.getCandidats())
+                .forEach(candidat -> candidat.setLabels(socialChoice.getData().getLabels()));
 
-        JMCandidat jmCandidat = null;
-        List<JMCandidat> list = new ArrayList<>();
-
-        for (Candidat candidat : socialChoice.getCandidats()) {
-            jmCandidat = new JMCandidat();
-            jmCandidat.setName(candidat.getName());
-            jmCandidat.setLabels(socialChoice.getData().getLabels());
-            list.add(jmCandidat);
-        }
-
-        adapter.getItems().addAll(list);
+        adapter.getItems().addAll(socialChoice.getCandidats());
         lv_jm_candidats.setAdapter(adapter);
-
-        //added LayoutParams
-        /*LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        LinearLayout linearLayoutTMP = null;
-        TextView textView = null;
-
-        Spinner spinner = null;
-
-        ArrayAdapter<String> spinnerArrayAdapter = null;
-
-
-        for (Candidat candidat : socialChoice.getCandidats()) {
-
-            linearLayoutTMP = new LinearLayout(this);
-            linearLayoutTMP.setOrientation(LinearLayout.HORIZONTAL);
-            linearLayoutTMP.setLayoutParams(params);
-            linearLayoutTMP.setId((candidat.getId().intValue())+9);
-
-            //add textView
-            textView = new TextView(this);
-            textView.setTextSize(20);
-            textView.setText(candidat.getName()+ " : ");
-            textView.setId((candidat.getId().intValue())+10);
-            textView.setPadding(100,5,10,5);
-
-            linearLayoutTMP.addView(textView);
-
-            spinner = new Spinner(this);
-            List<String> list = new ArrayList<>();
-
-            for (String str : socialChoice.getData().getLabels())
-                list.add(str);
-            spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list); //selected item will look like a spinner set from XML
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(spinnerArrayAdapter);
-            spinner.setLayoutParams(params);
-            spinner.setId((candidat.getId().intValue())+11);
-            System.out.println("id spinner : "+(candidat.getId().intValue())+11);
-            linearLayoutTMP.addView(spinner);
-            ll_candidats.addView(linearLayoutTMP);
-
-        }*/
-
-
     }
-
+    // TODO: COMMENT
     /**
-     * Listen to the click of the check button on the menu bar
+     *
      */
     @OptionsItem(R.id.participation_action_check)
-    public void onClickCheckmark(){
+    public void onClickCheckmark() {
         System.out.println("jclique ici");
-        JMVote jmVote = new JMVote(socialChoice.getId());
+        Vote vote = new Vote(socialChoice.getId());
 
-        for (int i = 0; i< socialChoice.getCandidats().size(); i++) {
-            JMCandidat jmCandidat = adapter.getItem(i);
+        Log.d(TAG, String.valueOf(socialChoice.getCandidats()));
+        Stream.of(socialChoice.getCandidats())
+                .forEach(candidat -> vote.put(candidat.getName(), candidat.getLabelSelected()));
+        Log.d(TAG, String.valueOf(vote));
 
-        }
+        sendVote(vote);
 
         finish();
     }
 
+    // TODO: COMMENT
+    /**
+     *
+     * @param vote
+     */
+    @Background
+    void sendVote(Vote vote) {
+        try {
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
+            Log.d(TAG, response.toString());
+        } catch (RestClientException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+    }
 }
