@@ -3,6 +3,7 @@ package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -93,6 +94,7 @@ public class STVParticipationActivity extends AppCompatActivity {
 
         //Setting params
         getSupportActionBar().setTitle(socialChoice.getTitle());
+        description.setMovementMethod(new ScrollingMovementMethod());
         description.setText(socialChoice.getDescription());
         candidats = socialChoice.getCandidats();
 

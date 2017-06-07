@@ -69,10 +69,14 @@ public class SimpleVoteWithOrderParticipationListAdapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         SimpleVoteWithOrderParticipationItem item = mItemList.get(position);
-        if (item.isChecked())
+        if (item.isChecked()){
             holder.choice_id.setText(String.valueOf(position + 1));
-        else
+            item.setOrder(position + 1);
+        }
+        else {
             holder.choice_id.setText(" ");
+            item.setOrder(0);
+        }
         holder.choice_title.setText(item.getChoice_title());
         holder.check.setChecked(item.isChecked());
     }
@@ -109,6 +113,7 @@ public class SimpleVoteWithOrderParticipationListAdapter
                 countTrue--;
                 clickedItem.setChecked(false);
                 choice_id.setText(" ");
+                //clickedItem.setOrder(0);
                 if(currentPosition != lastPosition){
                     changeItemPosition(currentPosition, lastPosition);
                     notifyDataSetChanged();
@@ -120,6 +125,7 @@ public class SimpleVoteWithOrderParticipationListAdapter
                 countTrue++;
                 clickedItem.setChecked(true);
                 choice_id.setText(String.valueOf(getAdapterPosition() + 1));
+                //clickedItem.setOrder(getAdapterPosition() + 1);
                 if(currentPosition != 0){
                     changeItemPosition(currentPosition, 0);
                     notifyDataSetChanged();
