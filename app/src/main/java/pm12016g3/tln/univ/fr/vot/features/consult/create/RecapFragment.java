@@ -26,8 +26,20 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 public class RecapFragment extends AppFragment {
     private static final String TAG = RecapFragment.class.getSimpleName();
 
-    @ViewById(R.id.recap_view)
-    TextView recapView;
+    @ViewById(R.id.recap_title)
+    TextView recapTitle;
+
+    @ViewById(R.id.recap_type)
+    TextView recapType;
+
+    @ViewById(R.id.recap_description)
+    TextView recapDescription;
+
+    @ViewById(R.id.recap_confidentiality)
+    TextView recapConfidentiality;
+
+    @ViewById(R.id.recap_date)
+    TextView recapDate;
 
     /**
      * Parent fragment.
@@ -40,7 +52,15 @@ public class RecapFragment extends AppFragment {
     void init() {
         fragmentTitle = getString(R.string.fragment_title_recap);
         parent = (CreateFragment) getParentFragment();
-        recapView.setText(parent.getSocialChoice().toString());
+        recapTitle.setText(parent.getSocialChoice().getTitle());
+        recapType.setText(parent.getSocialChoice().getType().toString());
+        recapDescription.setText(parent.getSocialChoice().getDescription());
+        String confidentiality;
+        if (parent.getSocialChoice().isConfidentiality()) {
+            recapConfidentiality.setText("Anonyme");
+        } else {
+            recapConfidentiality.setText("Non Anonyme");
+        }
     }
 
     @OptionsItem(R.id.menu_item_back_arrow)
