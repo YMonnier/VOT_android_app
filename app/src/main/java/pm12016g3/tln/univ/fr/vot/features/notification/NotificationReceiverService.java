@@ -129,21 +129,24 @@ public class NotificationReceiverService extends FirebaseMessagingService {
 
         if (request == null) {
             realm.beginTransaction();
-            request = realm.createObject(Request.class);
+            request = new Request();
+            request.setId(nfr.getRelation().getId());
+            request.setConfirm(nfr.getRelation().isConfirm());
             User sender = realm
-                    .createObjectFromJson(User.class, gson.toJson(nfr.getRelation().getSender()));
+                    .createOrUpdateObjectFromJson(User.class, gson.toJson(nfr.getRelation().getSender()));
 
             User receiver = realm
-                    .createObjectFromJson(User.class, gson.toJson(nfr.getRelation().getReceiver()));
+                    .createOrUpdateObjectFromJson(User.class, gson.toJson(nfr.getRelation().getReceiver()));
 
             request.setSender(sender);
             request.setReceiver(receiver);
+            realm.copyToRealmOrUpdate(request);
             realm.commitTransaction();
         }
 
         notificationBroadcastManager.send(this,
                 NotificationBroadcastManager.Type.FRIEND_REQUEST,
-                request.getId());
+                String.valueOf(request.getId()));
     }
 
     /**

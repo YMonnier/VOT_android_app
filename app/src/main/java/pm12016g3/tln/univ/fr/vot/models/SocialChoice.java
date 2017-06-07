@@ -94,4 +94,8 @@ public class SocialChoice<T>
         }
         return res;
     }
+
+    public List<Candidat> getCandidat() {
+        return this.candidats;
+    }
 }

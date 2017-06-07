@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.utilities.network;
 
+import com.google.gson.JsonObject;
+
 import org.androidannotations.rest.spring.annotations.Accept;
 import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Get;
@@ -71,12 +73,12 @@ public interface VOTFriendsAPI {
     /**
      * Update a friend request
      *
-     * @param friendRequest a firend request
+     * @param answer true if the user confirm, otherwise, false.
      * @return A response
      */
-    @Put("/social_relations/friend_request")
+    @Put("/social_relations/{id}/confirm/{answer}")
     @RequiresHeader("Authorization")
-    Response updateFriendRequest(@Body FriendRequest friendRequest);
+    ResponseEntity<JsonObject> answer(@Path Long id, @Path boolean answer);
 
     /**
      * Set a specific header to the HTTP request.
