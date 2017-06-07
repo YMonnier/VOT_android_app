@@ -5,8 +5,63 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/recap_view"
+        android:id="@+id/recap_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:textSize="23dp"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"/>
 
+
+    <TextView
+        android:id="@+id/recap_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="type"
+        android:textColor="@color/vot_gray"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/recap_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="description"
+        android:textSize="13dp"
+        android:gravity="center"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="23dp"
+        android:paddingRight="23dp">
+
+        <TextView
+            android:id="@+id/recap_confidentiality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="confidentialité"
+            android:textSize="7dp"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/recap_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="clotûre"
+            android:textSize="7dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/send_bt"
+        android:text="Envoyer"/>
 </LinearLayout>
