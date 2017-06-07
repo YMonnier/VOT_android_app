@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,8 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
+import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment;
+import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment_;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -70,8 +73,11 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            setFragment(new ConsultFragment_(), getString(R.string.sidebar_consult));
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            moveTaskToBack(true);
+
         }
     }
 
@@ -83,19 +89,19 @@ public class MainActivity extends AppCompatActivity
         boolean disconnected = false;
         switch (item.getItemId()) {
             case R.id.sidebar_consult:
-
+                fragment = new ConsultFragment_();
                 break;
             case R.id.sidebar_create:
                 fragment = new CreateFragment_();
                 break;
             case R.id.sidebar_statistics:
-
+                fragment = new StatisticFragment_();
                 break;
             case R.id.sidebar_friends:
                 fragment = new NetworkFragment_();
                 break;
             case R.id.sidebar_options:
-
+                disconnected = true;
                 break;
             case R.id.sidebar_logout:
                 disconnected = true;

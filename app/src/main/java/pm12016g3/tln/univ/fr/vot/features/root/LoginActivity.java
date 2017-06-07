@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity
                 .addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
 
         googleApiClient.connect();
-
+        Settings.googleApiClient = googleApiClient;
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.login_google_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
