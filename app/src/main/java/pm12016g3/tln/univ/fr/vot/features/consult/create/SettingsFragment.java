@@ -261,7 +261,7 @@ public class SettingsFragment extends AppFragment
         parent.getSocialChoice().setTitle(title);
         parent.getSocialChoice().setDescription(description);
         parent.getSocialChoice().setConfidentiality(confidentiality.isChecked());
-        parent.getSocialChoice().setEnd_date(calendar.getTimeInMillis());
+        parent.getSocialChoice().setEndDate(calendar.getTimeInMillis());
         if (type != null)
             parent.getSocialChoice().setType(type);
     }

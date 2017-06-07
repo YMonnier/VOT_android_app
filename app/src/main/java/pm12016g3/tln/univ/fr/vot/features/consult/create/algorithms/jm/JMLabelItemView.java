@@ -2,14 +2,13 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm;
 
 import android.content.Context;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.models.User;
+import pm12016g3.tln.univ.fr.vot.models.Label;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BaseItemView;
 
 /**

@@ -3,7 +3,6 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
@@ -27,7 +25,6 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,9 +36,8 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFr
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
+import pm12016g3.tln.univ.fr.vot.models.Label;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;

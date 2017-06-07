@@ -4,9 +4,7 @@ import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
 
-import pm12016g3.tln.univ.fr.vot.features.network.notification.ShowFriendInvitationItemView;
-import pm12016g3.tln.univ.fr.vot.features.network.notification.ShowFriendInvitationItemView_;
-import pm12016g3.tln.univ.fr.vot.models.User;
+import pm12016g3.tln.univ.fr.vot.models.Label;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.ListViewAdapterBase;
 
 /**
