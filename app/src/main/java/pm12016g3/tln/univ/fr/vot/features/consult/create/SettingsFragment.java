@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.stv.STVFragment_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
@@ -120,6 +121,9 @@ public class SettingsFragment extends AppFragment
                 switch (type) {
                     case SM:
                         parent.nextStep(this, new SimpleVoteFragment_());
+                        break;
+                    case STV:
+                        parent.nextStep(this, new STVFragment_());
                         break;
                 }
             } else // Go the existing next view.

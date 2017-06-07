@@ -13,7 +13,7 @@
     <string name="menu_item_next_arrow">Next</string>
     <string name="menu_item_back_arrow">Previous</string>
     <string name="error_">Previous</string>
-    <string name="candidate">Choix</string>
+    <string name="candidate">Ajouter un choix</string>
     <string name="nb_choice"></string>
     <string name="add_candidate">Ajouter</string>
 
