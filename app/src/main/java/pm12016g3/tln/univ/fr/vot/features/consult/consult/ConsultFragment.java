@@ -175,6 +175,8 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
      */
     @Override
     public void onClick(View view, int position) {
+        Intent intent;
+        Gson gson = GsonSingleton.getInstance();
 
         SocialChoice.Type type = adapter.getItems().get(position).getType();
         SocialChoice socialChoice = adapter.getItems().get(position);
@@ -190,11 +192,16 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
         } else {
             switch (type) {
                 case STV:
-                    startActivity(
+                   /* startActivity(
                             new Intent(getActivity().
                                     getApplicationContext(),
-                                    STVParticipationActivity_.class));
-                    break;
+                                    STVParticipationActivity_.class));*/
+                    intent = STVParticipationActivity_
+                           .intent(getActivity())
+                           .get();
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                    startActivity(intent);
+                   break;
                 case JM:
 
                     break;
@@ -202,17 +209,14 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
                     System.out.println(" data : " + ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
                     boolean ordered = ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered();
                     if (ordered) {
-
-                        Gson gson = GsonSingleton.getInstance();
-                        Intent intent = SimpleVoteWithOrderParticipationActivity_
+                         intent = SimpleVoteWithOrderParticipationActivity_
                                 .intent(getActivity())
                                 .get();
                         intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
                         startActivity(intent);
                     } else {
                         System.out.println("je passe un SC : " + socialChoice);
-                        Gson gson = GsonSingleton.getInstance();
-                        Intent intent = SimpleVoteWithoutOrderParticipationActivity_
+                        intent = SimpleVoteWithoutOrderParticipationActivity_
                                 .intent(getActivity())
                                 .get();
                         intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));

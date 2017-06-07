@@ -13,13 +13,14 @@ import com.woxthebox.draglistview.DragItemAdapter;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 
 /**
  * Created by wenlixing on 22/05/2017.
  */
 
 public class STVParticipationListAdapter
-        extends DragItemAdapter<STVParticipationItem, STVParticipationListAdapter.ViewHolder> {
+        extends DragItemAdapter<Candidat, STVParticipationListAdapter.ViewHolder> {
 
     private final static String TAG = STVParticipationListAdapter.class.getSimpleName();
 
@@ -38,7 +39,7 @@ public class STVParticipationListAdapter
      */
     private boolean mDragOnLongPress;
 
-    public STVParticipationListAdapter(List<STVParticipationItem> list, int layoutId,
+    public STVParticipationListAdapter(List<Candidat> list, int layoutId,
                                        int grabHandleId, boolean dragOnLongPress) {
         this.mLayoutId = layoutId;
         this.mGrabHandleId = grabHandleId;
@@ -55,15 +56,15 @@ public class STVParticipationListAdapter
 
     @Override
     public long getItemId(int position) {
-        return mItemList.get(position).getChoice_title().hashCode();
+        return mItemList.get(position).getName().hashCode();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        STVParticipationItem item = mItemList.get(position);
+        Candidat item = mItemList.get(position);
         holder.choice_id.setText(String.valueOf(position + 1));
-        holder.choice_title.setText(item.getChoice_title());
+        holder.choice_title.setText(item.getName());
     }
 
     class ViewHolder extends DragItemAdapter.ViewHolder {
