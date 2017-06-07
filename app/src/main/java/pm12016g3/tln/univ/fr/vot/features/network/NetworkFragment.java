@@ -4,9 +4,13 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 
@@ -15,6 +19,9 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InjectMenu;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -40,6 +47,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
  */
 
 @EFragment(R.layout.network_network_fragment)
+@OptionsMenu(R.menu.network_fragment_bar)
 public class NetworkFragment extends Fragment {
     private final String TAG = NetworkFragment.class.getSimpleName();
     /**
@@ -79,14 +87,22 @@ public class NetworkFragment extends Fragment {
     @RestService
     VOTFriendsAPI serviceAPI;
 
+
     /**
      * Initialisation after the views binding has happened
      */
     @AfterViews
     void init() {
+        setHasOptionsMenu(true);
         progressView = new LoaderDialog(getActivity(), "");
         friendListView.setTextFilterEnabled(true);
         loadData();
+    }
+
+    @OptionsItem(R.id.network_friend_alarm)
+    void onClickAlarm(){
+        Toast.makeText(getActivity(),"click alarm",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(getActivity(),ShowFriendInvitationActivity_.class));
     }
 
     /**

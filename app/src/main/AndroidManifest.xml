@@ -114,6 +114,12 @@
             android:screenOrientation="portrait" />
         <activity android:name=".features.test.TestActivity" />
 
+        <activity
+            android:name=".features.network.ShowFriendInvitationActivity_"
+            android:configChanges="orientation"
+            android:label="@string/network_friend_invitation"
+            android:screenOrientation="portrait" />
+
         <!--             *** CONSULT PACKAGE *** -->
         <activity android:name=".features.consult.participation.example.ParticipationActivity_">
         </activity>
