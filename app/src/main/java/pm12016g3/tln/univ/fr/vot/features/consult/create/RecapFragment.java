@@ -106,10 +106,23 @@ public class RecapFragment extends AppFragment {
         socialChoice = parent.getSocialChoice();
         //setAdapters(parent.getSocialChoice());
         recapTitle.setText(socialChoice.getTitle());
-        recapType.setText(socialChoice.getType().toString());
         recapDescription.setText(socialChoice.getDescription());
 
-        String confidentiality;
+        switch (socialChoice.getType()){
+            case JM :
+                recapType.setText("Jugement Majoritaire");
+                break;
+            case STV :
+                recapType.setText("Single Transferable Vote");
+                break;
+            case KY:
+                recapType.setText("Kemeny-Young");
+                break;
+            case SM:
+                recapType.setText("Scrutin Majoritaire");
+        }
+
+
         if (parent.getSocialChoice().isConfidentiality()) {
             recapConfidentiality.setText("Anonyme");
         } else {
@@ -167,7 +180,7 @@ public class RecapFragment extends AppFragment {
 
     @Click(R.id.send_bt)
     void sendAction() {
-        try {
+        /*try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
             Log.d(TAG, response.toString());
@@ -178,6 +191,6 @@ public class RecapFragment extends AppFragment {
             }
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
-        }
+        }*/
     }
 }
