@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 
@@ -93,12 +92,18 @@ public class NetworkFragment extends Fragment {
         setHasOptionsMenu(true);
         progressView = new LoaderDialog(getActivity(), "");
         friendListView.setTextFilterEnabled(true);
+        setAdapter();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         loadData();
+        adapter.notifyDataSetChanged();
     }
 
     @OptionsItem(R.id.network_friend_alarm)
     void onClickAlarm() {
-        Toast.makeText(getActivity(), "click alarm", Toast.LENGTH_LONG).show();
         startActivity(new Intent(getActivity(), ShowFriendInvitationActivity_.class));
     }
 
@@ -152,13 +157,12 @@ public class NetworkFragment extends Fragment {
             ResponseEntity<Response<List<User>>> response = serviceAPI.getFriends();
             Log.d(TAG, response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
+                adapter.clear();
                 List<User> users = response.getBody().getData();
                 Log.d(TAG, Arrays.toString(users.toArray()));
                 allFriends.addAll(users);
                 adapter.getItems()
                         .addAll(users);
-
-                setAdapter();
                 dismissProgress();
             } else {
                 dismissProgress();

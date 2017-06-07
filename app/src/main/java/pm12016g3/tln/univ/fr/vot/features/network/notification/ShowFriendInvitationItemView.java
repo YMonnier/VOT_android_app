@@ -8,7 +8,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.models.User;
+import pm12016g3.tln.univ.fr.vot.models.realm.Request;
 import pm12016g3.tln.univ.fr.vot.utilities.views.list.BaseItemView;
 
 /**
@@ -17,7 +17,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.list.BaseItemView;
 
 @EViewGroup(R.layout.show_friend_invitation_item_view)
 public class ShowFriendInvitationItemView
-        extends BaseItemView<User> {
+        extends BaseItemView<Request> {
     @ViewById(R.id.friend_pseudo)
     TextView friendPseudo;
 
@@ -32,7 +32,7 @@ public class ShowFriendInvitationItemView
     }
 
     @Override
-    public void bind(User object) {
-        friendPseudo.setText(object.getPseudo());
+    public void bind(Request object) {
+        friendPseudo.setText(object.getSender().getPseudo());
     }
 }
