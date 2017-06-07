@@ -33,7 +33,8 @@ import pm12016g3.tln.univ.fr.vot.features.consult.participation.jm.JMParticipati
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withOrder.SimpleVoteWithOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder.SimpleVoteWithoutOrderParticipationActivity_;
 import pm12016g3.tln.univ.fr.vot.features.consult.participation.stv.STVParticipationActivity_;
-import pm12016g3.tln.univ.fr.vot.features.consult.result.ResultActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.OtherAlgoResultActivity_;
+import pm12016g3.tln.univ.fr.vot.features.consult.result.SMResultActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCKemenyYoung;
@@ -186,10 +187,15 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
         int visibility = view.findViewById(R.id.is_closed_tv).getVisibility();
 
         if (visibility == VISIBLE) {
-/*            startActivity(new Intent(getActivity()
-                    .getApplicationContext(),
-                    ResultActivity_.class));*/
-            intent = ResultActivity_
+            switch (type) {
+                case SM:
+                    intent = SMResultActivity_
+                            .intent(getActivity())
+                            .get();
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                    startActivity(intent);
+            }
+            intent = OtherAlgoResultActivity_
                     .intent(getActivity())
                     .get();
             intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
@@ -197,10 +203,7 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
         } else {
             switch (type) {
                 case STV:
-                   /* startActivity(
-                            new Intent(getActivity().
-                                    getApplicationContext(),
-                                    STVParticipationActivity_.class));*/
+
                     intent = STVParticipationActivity_
                            .intent(getActivity())
                            .get();
@@ -373,7 +376,7 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
         @Override
         protected void onPostExecute(List<SocialChoice> list) {
             getActivity().runOnUiThread(() -> {
-                Toast.makeText(getActivity(), "on refresh", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Mis à jour", Toast.LENGTH_LONG).show();
                 adapter.clear();
                 adapter.addAll(list);
                 swipeRefreshLayout.setRefreshing(false);
