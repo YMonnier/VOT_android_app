@@ -94,6 +94,7 @@ public class STVParticipationActivity extends AppCompatActivity {
 
         //Setting params
         getSupportActionBar().setTitle(socialChoice.getTitle());
+        description.setMovementMethod(new ScrollingMovementMethod());
         description.setText(socialChoice.getDescription());
         candidats = socialChoice.getCandidats();
 
