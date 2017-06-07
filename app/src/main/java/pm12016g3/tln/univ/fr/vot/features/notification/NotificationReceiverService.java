@@ -108,28 +108,32 @@ public class NotificationReceiverService extends FirebaseMessagingService {
 
         // Get a Realm instance for this thread
         Realm realm = Realm.getDefaultInstance();
+
+        final String USER_SENDER = "sender.pseudo";
+        final String USER_RECEIVER = "receiver.pseudo";
         Request reqFromDB = realm.where(Request.class)
-                .equalTo(JsonKeys.ID, nfr.getRelation().getId())
+                .equalTo(USER_SENDER, nfr.getRelation().getSender().getPseudo())
+                .equalTo(USER_RECEIVER, nfr.getRelation().getReceiver().getPseudo())
                 .findFirst();
         if (reqFromDB == null) {
             realm.executeTransaction(realm1 -> {
                 Request req = realm1.createObject(Request.class);
-                req.setId(nfr.getRelation().getId());
                 req.setSender(nfr.getRelation().getSender());
                 req.setReceiver(nfr.getRelation().getReceiver());
             });
         }
+        showFriendRequestAnswer(nfr);
     }
 
-
-    void showFriendRequestAnswer() {
+    // TODO: Show Dialog
+    void showFriendRequestAnswer(RNotifFriendRequest friendRequest) {
         Log.d(TAG, "Show Nickname Dialog");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Authentification");
-        builder.setMessage(R.string.login_nickname);
+        builder.setTitle(getString(R.string.notification_title_friend_request));
+        builder.setMessage(friendRequest.getRelation().getSender().getPseudo() + " vous demande en ami.");
 
 
-        builder.setPositiveButton(R.string.login_ok, (dialog, which) -> {
+        builder.setPositiveButton(R.string.notification_dialog_accept, (dialog, which) -> {
 
             /*Log.d(TAG, nickname);
 
@@ -142,7 +146,8 @@ public class NotificationReceiverService extends FirebaseMessagingService {
 
 
         });
-        builder.setNegativeButton(R.string.login_cancel, (dialog, which) -> {
+
+        builder.setNegativeButton(R.string.notification_dialog_decline, (dialog, which) -> {
             Log.d(TAG, "Closing dialog...");
             dialog.cancel();
         });
@@ -161,7 +166,7 @@ public class NotificationReceiverService extends FirebaseMessagingService {
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setSmallIcon(R.drawable.type_two)
                 .build();
         this.notificationManager.notify(1, notification);
     }
