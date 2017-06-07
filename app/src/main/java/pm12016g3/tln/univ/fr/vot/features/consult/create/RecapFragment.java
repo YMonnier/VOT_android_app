@@ -2,6 +2,8 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +26,9 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 
@@ -77,14 +82,15 @@ public class RecapFragment extends AppFragment {
     @ViewById(R.id.recap_participant)
     ListView participantListView;
 
-    @Bean
-    RecapListViewAdapter candidatAdapter;
 
-    @Bean
-    RecapListViewAdapter participantAdapter;
+    ArrayAdapter<String> candidatAdapter;
+
+    ArrayAdapter<String> participantAdapter;
 
     @RestService
     VOTSocialChoiceAPI serviceAPI;
+
+    SocialChoice socialChoice;
 
     /**
      * Parent fragment.
@@ -97,10 +103,11 @@ public class RecapFragment extends AppFragment {
     void init() {
         fragmentTitle = getString(R.string.fragment_title_recap);
         parent = (CreateFragment) getParentFragment();
-        setAdapters(parent.getSocialChoice());
-        recapTitle.setText(parent.getSocialChoice().getTitle());
-        recapType.setText(parent.getSocialChoice().getType().toString());
-        recapDescription.setText(parent.getSocialChoice().getDescription());
+        socialChoice = parent.getSocialChoice();
+        //setAdapters(parent.getSocialChoice());
+        recapTitle.setText(socialChoice.getTitle());
+        recapType.setText(socialChoice.getType().toString());
+        recapDescription.setText(socialChoice.getDescription());
 
         String confidentiality;
         if (parent.getSocialChoice().isConfidentiality()) {
@@ -108,19 +115,49 @@ public class RecapFragment extends AppFragment {
         } else {
             recapConfidentiality.setText("Non Anonyme");
         }
+        
+        List<String> candidats = new ArrayList<>();
+        for ( Object candidat : socialChoice.getCandidats()) {
+            candidats.add(((Candidat)candidat).getName());
+        }
+        candidatAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                candidats);
+        candidatListView.setAdapter(candidatAdapter);
+
+
+        List<String> participants = new ArrayList<>();
+
+        //just for test
+        participants.add("fff");
+        participants.add("ddd");
+        participants.add("hhh");
+
+        //Todo: invite the frieds
+        /*for ( Object user : socialChoice.getParticipants()) {
+            participants.add(((User)user).getPseudo());
+        }*/
+        participantAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                participants);
+        participantListView.setAdapter(participantAdapter);
+
     }
 
-    @UiThread
+/*    @UiThread
     void setAdapters(SocialChoice socialChoice) {
         for ( Object candidat : socialChoice.getCandidats()) {
             candidatAdapter.add(new BasicItem(((Candidat)candidat).getName()));
             candidatListView.setAdapter(candidatAdapter);
         }
+        Log.d(TAG,candidatAdapter.getItems().toString());
         for (Object participant : socialChoice.getParticipants()) {
             participantAdapter.add(new BasicItem(((User)participant).getPseudo()));
             participantListView.setAdapter(participantAdapter);
         }
-    }
+    }*/
 
     @OptionsItem(R.id.menu_item_back_arrow)
     void previous() {
