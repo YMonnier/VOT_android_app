@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="snack_error_http_400_500">Une erreur s\'est produite lors de l'envoie...</string>
+    <string name="snack_error_http_400_500">Une erreur s est produite lors de l envoie...</string>
     <string name="snack_error_size_choices">Veuillez mettre </string>
     <string name="snack_error_no_algo_selected">Veuillez selectionner un algorithme.</string>
     <string name="snack_error_no_internet">Aucune connexion Internet... Veuillez réessayer plus tard.</string>
