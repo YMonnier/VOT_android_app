@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.annimon.stream.Stream;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
@@ -102,7 +103,6 @@ public class SMResultActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
-        Log.d(TAG, "je suis la dedans");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Get SocialChoice from Intent
@@ -116,7 +116,6 @@ public class SMResultActivity extends AppCompatActivity {
             fabDetails.setVisibility(View.INVISIBLE);
         }
         getResult();
-        updatePieChart();;
     }
 
     /**
@@ -132,12 +131,9 @@ public class SMResultActivity extends AppCompatActivity {
 
         for(Map.Entry<String,Float> entry : data.entrySet()){
             Log.d(TAG,"data :" +entry.toString());
-            if(entry.getValue()!=0){
-                entries.add(new PieEntry(entry.getValue(), entry.getKey()));
-            }
+            entries.add(new PieEntry(entry.getValue(), entry.getKey()));
         }
-
-
+        
         PieDataSet set = new PieDataSet(entries, "");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(set);
@@ -174,19 +170,29 @@ public class SMResultActivity extends AppCompatActivity {
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
+            Log.d(TAG, "socialChoice ID : " + socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
-                                        getString(R.string.snack_error_http_400_500),
-                                        Snackbar.LENGTH_LONG);
+                        getString(R.string.snack_error_http_400_500),
+                        Snackbar.LENGTH_LONG);
             }
-            stats =  responseEntity.getBody().getData().getStatistics();
-            Log.d(TAG,"stats "+stats.toString());
-            stats.values().forEach(v->sum=sum+Integer.parseInt(v));
+            System.out.println("stats _1 : " + responseEntity.getBody().getData().getStatistics());
+            stats = responseEntity.getBody().getData().getStatistics();
+            System.out.println("stat := " + stats.get("b"));
+
+
+            int sum = Stream.of(stats.values())
+                    .mapToInt(Integer::parseInt)
+                    .sum();
+            System.out.println("SUM: " + sum);
 
             for (Map.Entry<String, String> e : stats.entrySet()) {
-                data.put(e.getKey(),(Float.parseFloat(e.getValue()))/sum);
+
+                data.put(e.getKey(), (Float.parseFloat(e.getValue())) / sum);
+
             }
             updatePieChart();
+
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
