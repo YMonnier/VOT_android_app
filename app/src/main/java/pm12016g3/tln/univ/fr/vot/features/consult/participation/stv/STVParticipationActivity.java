@@ -29,6 +29,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
@@ -184,7 +185,7 @@ public class STVParticipationActivity extends AppCompatActivity {
             Log.e(TAG, e.getLocalizedMessage());
             if (NetworkUtils.is403Error(e)) {
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
-                        "403! déà voté",
+                        getString(R.string.snack_error_http_participation_is_exist),
                         Snackbar.LENGTH_LONG);
             } else
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),

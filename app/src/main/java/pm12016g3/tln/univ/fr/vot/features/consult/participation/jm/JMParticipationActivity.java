@@ -136,12 +136,13 @@ public class JMParticipationActivity extends AppCompatActivity {
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
             if (NetworkUtils.is403Error(e)) {
-
-            } else {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_participation_is_exist),
+                        Snackbar.LENGTH_LONG);
+            } else
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.snack_error_http_sending),
                         Snackbar.LENGTH_LONG);
-            }
         }
     }
 

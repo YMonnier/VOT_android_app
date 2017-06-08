@@ -26,6 +26,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
@@ -171,12 +172,13 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
             if (NetworkUtils.is403Error(e)) {
-
-            } else {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_participation_is_exist),
+                        Snackbar.LENGTH_LONG);
+            } else
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.snack_error_http_sending),
                         Snackbar.LENGTH_LONG);
-            }
         }
     }
 

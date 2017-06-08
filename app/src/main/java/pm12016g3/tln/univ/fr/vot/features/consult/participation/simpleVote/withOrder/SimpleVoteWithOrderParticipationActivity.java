@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
@@ -171,17 +172,17 @@ public class SimpleVoteWithOrderParticipationActivity extends AppCompatActivity 
             if (response.getStatusCode().is2xxSuccessful())
                 backDone();
 
-
             Log.d(TAG, response.toString());
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
             if (NetworkUtils.is403Error(e)) {
-
-            } else {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_participation_is_exist),
+                        Snackbar.LENGTH_LONG);
+            } else
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.snack_error_http_sending),
                         Snackbar.LENGTH_LONG);
-            }
 
         }
     }

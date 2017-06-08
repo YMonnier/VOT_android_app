@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="snack_error_http_participation_is_exist">Vous avez déjà voté !</string>
     <string name="snack_error_http_sending">Une erreur s est produite lors de l envoie...</string>
     <string name="snack_error_http_get_error">Une erreur s est produite, veuillez réessayer plus tard.</string>
     <string name="snack_error_no_algo_selected">Veuillez selectionner un algorithme.</string>
