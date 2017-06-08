@@ -102,7 +102,6 @@ public class SMResultActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
-        Log.d(TAG, "je suis la dedans");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Get SocialChoice from Intent
@@ -116,7 +115,6 @@ public class SMResultActivity extends AppCompatActivity {
             fabDetails.setVisibility(View.INVISIBLE);
         }
         getResult();
-        updatePieChart();;
     }
 
     /**
@@ -132,9 +130,7 @@ public class SMResultActivity extends AppCompatActivity {
 
         for(Map.Entry<String,Float> entry : data.entrySet()){
             Log.d(TAG,"data :" +entry.toString());
-            if(entry.getValue()!=0){
-                entries.add(new PieEntry(entry.getValue(), entry.getKey()));
-            }
+            entries.add(new PieEntry(entry.getValue(), entry.getKey()));
         }
 
 
