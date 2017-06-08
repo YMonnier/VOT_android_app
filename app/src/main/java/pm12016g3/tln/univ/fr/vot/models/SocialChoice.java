@@ -57,7 +57,7 @@ public class SocialChoice<T>
     private List<User> participants;
 
     @SerializedName(value = "end_date")
-    private Long endDate;
+    private String endDate;
 
     @SerializedName(value = "value")
     private List<Candidat> candidats;
