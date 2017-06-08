@@ -64,7 +64,7 @@ public class LocationFriendsFragment extends Fragment {
         seekBar.setMax((MAX_RADIUS - MIN_RADIUS) / STEP_RADIUS);
         seekBar.setProgress(MIN_RADIUS);
         radiusLabel.setText(String.valueOf(currentRadius));
-        mapNavigation.init(getFragmentManager());
+        mapNavigation.init(this.getChildFragmentManager());
     }
 
     @SeekBarProgressChange(R.id.seekBar)
