@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -176,6 +177,7 @@ public class RecapFragment extends AppFragment {
     void sendAction() {
         try {
             sendSocialChoice();
+            Toast.makeText(getActivity(),"Votre social choice est bien crée",Toast.LENGTH_LONG).show();
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }

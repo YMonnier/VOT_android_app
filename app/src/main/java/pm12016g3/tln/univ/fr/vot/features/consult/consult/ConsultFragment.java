@@ -194,12 +194,14 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
                             .get();
                     intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
                     startActivity(intent);
+                    break;
+                default:
+                    intent = OtherAlgoResultActivity_
+                            .intent(getActivity())
+                            .get();
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                    startActivity(intent);
             }
-            intent = OtherAlgoResultActivity_
-                    .intent(getActivity())
-                    .get();
-            intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
-            startActivity(intent);
         } else {
             switch (type) {
                 case STV:
