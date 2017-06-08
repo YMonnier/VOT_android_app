@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -25,6 +27,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -49,7 +52,9 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 @EFragment(R.layout.consult_create_settings_fragment)
 @OptionsMenu(R.menu.consult_create_menu_next_arrow)
 public class SettingsFragment extends AppFragment
-        implements Validable, DatePickerDialog.OnDateSetListener {
+        implements Validable,
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
     /**
@@ -57,8 +62,6 @@ public class SettingsFragment extends AppFragment
      * That attribute should not be selected.
      */
     private static final String DEFAULT_ALGORITHM = "Type";
-
-    Calendar calendar;
 
     @ViewById(R.id.et_calendar)
     EditText etCalendar;
@@ -96,6 +99,11 @@ public class SettingsFragment extends AppFragment
      * to receive data from the parent.
      */
     CreateFragment parent;
+
+    /**
+     * Date selected
+     */
+    Calendar calendar;
 
     @AfterViews
     void init() {
@@ -237,7 +245,7 @@ public class SettingsFragment extends AppFragment
                     getString(R.string.snack_error_no_algo_selected),
                     Snackbar.LENGTH_LONG);
 
-            return !cancel;
+        return !cancel;
     }
 
     @Override
@@ -350,16 +358,45 @@ public class SettingsFragment extends AppFragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        final String FORMAT = "yyyy-MM-dd";
+        ;
         calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         if (DateValidator.validate(calendar)) {
-            String myFormat = FORMAT;
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-            etCalendar.setText(sdf.format(calendar.getTime()));
+            //String myFormat = FORMAT;
+            //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+            //etCalendar.setText(sdf.format(calendar.getTime()));
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+                    this, hour, minute, false);
+            timePickerDialog.show();
         } else {
             etCalendar.setText("");
             updateErrorUi(etCalendar, getString(R.string.date_picker_error_invalid));
         }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        // i = hourOfDay
+        // i1 = minute
+        final String FORMAT = "yyyy-MM-dd ";
+        calendar.set(Calendar.HOUR_OF_DAY, i);
+        calendar.set(Calendar.MINUTE, i1);
+        etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
+        //String myFormat = FORMAT;
+        //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+        //etCalendar.setText(sdf.format(calendar.getTime()));
+    }
+
+    /**
+     * Convert date to timestamp IOS 8601
+     * @param date
+     * @return
+     */
+    public static String getDateFormatIso8601(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRANCE);
+        return simpleDateFormat.format(date);
     }
 }
