@@ -99,7 +99,8 @@ public class ShowFriendInvitationActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        results.removeChangeListener(this);
+        if (results != null)
+            results.removeChangeListener(this);
         results = null;
     }
 

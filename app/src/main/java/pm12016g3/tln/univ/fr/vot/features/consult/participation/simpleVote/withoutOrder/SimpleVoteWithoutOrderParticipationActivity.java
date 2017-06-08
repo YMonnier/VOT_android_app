@@ -125,7 +125,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
 
 
         List<Candidat> candidatsSelected = Stream.of(listAdapter.getItemList())
-                .filter(value -> value.isSelected())
+                .filter(Candidat::isSelected)
                 .toList();
 
         int count = 0;

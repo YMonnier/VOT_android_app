@@ -33,6 +33,7 @@ import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.models.result.Result;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
@@ -147,9 +148,9 @@ public class SMResultActivity extends AppCompatActivity {
     void getResult() {
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
-            ResponseEntity<Response<JsonObject>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
-            jsonObject = responseEntity.getBody().getData();
+            ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
             Log.d(TAG, "Response : " + responseEntity.toString());
+
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 /*Snack.showFailureMessage(getView(),
                         getString(R.string.snack_error_http_400_500),

@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
@@ -13,9 +14,11 @@ import lombok.Data;
 
 @Data
 public class Vote {
+    @Expose
     @SerializedName("id_social_choice")
     private Long socialChoiceID;
 
+    @Expose
     private Map<String, Object> data = new HashMap<>();
 
     public Vote(Long socialChoiceID) {
