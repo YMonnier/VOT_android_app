@@ -53,6 +53,10 @@ public interface VOTSocialChoiceAPI {
     @RequiresHeader("Authorization")
     ResponseEntity<Response<JsonObject>> createSociaChoice(@Body SocialChoice vote);
 
+    @Get("/social_choices/resultat/{id}")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<JsonObject>> getResultat(@Path("id") long id);
+
     /**
      * Set a specific header to the HTTP request.
      *

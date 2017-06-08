@@ -11,8 +11,10 @@ import com.annimon.stream.Stream;
 import com.google.android.gms.games.multiplayer.Participant;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
@@ -42,6 +44,7 @@ import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
@@ -98,7 +101,6 @@ public class RecapFragment extends AppFragment {
 
     SocialChoice socialChoice;
 
-    List<String> participants = new ArrayList<>();
 
     /**
      * Parent fragment.
@@ -140,7 +142,7 @@ public class RecapFragment extends AppFragment {
         } else {
             recapConfidentiality.setText("Non Anonyme");
         }
-        
+
         List<String> candidats = new ArrayList<>();
         for ( Object candidat : socialChoice.getCandidats()) {
             candidats.add(((Candidat)candidat).getName());
@@ -153,22 +155,19 @@ public class RecapFragment extends AppFragment {
 
 
 
-        //just for test
-        participants.add("John");
-        participants.add("Henry");
-        participants.add("Paul");
-
-        //Todo: invite the frieds
-        /*for ( Object user : socialChoice.getParticipants()) {
+        List<String> participants = new ArrayList<>();
+        for ( Object user : socialChoice.getParticipants()) {
             participants.add(((User)user).getPseudo());
-        }*/
+        }
         participantAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 participants);
         participantListView.setAdapter(participantAdapter);
 
+
         //initparticipants();
+
 
     }
 
@@ -194,25 +193,34 @@ public class RecapFragment extends AppFragment {
     @Click(R.id.send_bt)
     void sendAction() {
         try {
-            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
-            ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
-            Log.d(TAG, response.toString());
-            if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
-                Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_http_400_500),
-                        Snackbar.LENGTH_LONG);
-            }
+            sendSocialChoice();
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
     }
 
+    @Background
+    void sendSocialChoice(){
+        serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+        ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
+        Log.d(TAG, response.toString());
+        if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
+            Snack.showFailureMessage(getView(),
+                    getString(R.string.snack_error_http_400_500),
+                    Snackbar.LENGTH_LONG);
+        }
+
+    }
+
+    @Background
     void initparticipants() {
         try {
             friendsAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<List<User>>> response = friendsAPI.getUsers();
             Log.d(TAG, response.toString());
             socialChoice.setParticipants(response.getBody().getData());
+            Gson gson = GsonSingleton.getInstance();
+            Log.d(TAG, gson.toJson(socialChoice));
             if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
                 Snack.showFailureMessage(getView(),
                         getString(R.string.snack_error_http_400_500),

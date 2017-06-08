@@ -67,7 +67,7 @@ public class SocialChoice<T>
 
     @Expose
     @SerializedName(value = "end_date")
-    private Long endDate;
+    private String endDate;
 
     @Expose
     @SerializedName(value = "value")
