@@ -22,7 +22,7 @@ public class DateValidator {
      * @return true if time calendar in millisecond is
      * greater than current system time.
      */
-    public static boolean validate(Calendar calendar) {
+    public static boolean dateValidate(Calendar calendar) {
         Calendar currentCalendar = Calendar.getInstance();
         if (currentCalendar == null)
             return false;
@@ -30,5 +30,20 @@ public class DateValidator {
         return calendar.get(Calendar.YEAR) >= currentCalendar.get(Calendar.YEAR)
                 && calendar.get(Calendar.MONTH) >= currentCalendar.get(Calendar.MONTH)
                 && calendar.get(Calendar.DATE) >= currentCalendar.get(Calendar.DATE);
+    }
+
+    /**
+     * Test if the calendar date is not a past date.
+     * @param calendar calendar for validation.
+     * @return true if time calendar in millisecond is
+     * greater than current system time.
+     */
+    public static boolean timeValidate(Calendar calendar) {
+        Calendar currentCalendar = Calendar.getInstance();
+        if (currentCalendar == null)
+            return false;
+        currentCalendar.setTimeInMillis(System.currentTimeMillis());
+        return calendar.get(Calendar.HOUR_OF_DAY) > currentCalendar.get(Calendar.HOUR_OF_DAY)
+                && calendar.get(Calendar.MINUTE) > currentCalendar.get(Calendar.MINUTE);
     }
 }

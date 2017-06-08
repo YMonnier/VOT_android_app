@@ -5,4 +5,6 @@
     <string name="algo_ky">Kemeny-Young</string>
     <string name="algo_stv">STV</string>
     <string name="algo_jm">Jugement-Majoritaire</string>
+    <string name="algo_anonymous">Anonyme</string>
+    <string name="algo_not_anonymous">Non Anonyme</string>
 </resources>

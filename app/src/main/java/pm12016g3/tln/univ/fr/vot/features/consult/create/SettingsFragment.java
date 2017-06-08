@@ -124,7 +124,7 @@ public class SettingsFragment extends AppFragment
                 getActivity().getCurrentFocus());
 
         // Setup date picker with a minimum date.
-        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, calendar
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), R.style.AppTheme, this, calendar
                 .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -356,20 +356,24 @@ public class SettingsFragment extends AppFragment
         return false; // Display the spinner
     };
 
+    /**
+     * Date setter
+     *
+     * @param view  date setter
+     * @param year  year
+     * @param month mount
+     * @param day   day
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         ;
         calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        if (DateValidator.validate(calendar)) {
-            //String myFormat = FORMAT;
-            //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-            //etCalendar.setText(sdf.format(calendar.getTime()));
-
+        if (DateValidator.dateValidate(calendar)) {
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
             TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
-                    this, hour, minute, false);
+                    R.style.AppTheme, this, hour, minute, false);
             timePickerDialog.show();
         } else {
             etCalendar.setText("");
@@ -377,6 +381,13 @@ public class SettingsFragment extends AppFragment
         }
     }
 
+    /**
+     * Time setter
+     *
+     * @param timePicker time picker view
+     * @param i          hour of day
+     * @param i1         minute
+     */
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         // i = hourOfDay
@@ -384,18 +395,22 @@ public class SettingsFragment extends AppFragment
         final String FORMAT = "yyyy-MM-dd ";
         calendar.set(Calendar.HOUR_OF_DAY, i);
         calendar.set(Calendar.MINUTE, i1);
-        etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
-        //String myFormat = FORMAT;
-        //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-        //etCalendar.setText(sdf.format(calendar.getTime()));
+
+        if (DateValidator.timeValidate(calendar)) {
+            etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
+        } else {
+            etCalendar.setText("");
+            updateErrorUi(etCalendar, getString(R.string.time_picker_error_invalid));
+        }
     }
 
     /**
-     * Convert date to timestamp IOS 8601
-     * @param date
-     * @return
+     * Convert date to timestamp ISO 8601
+     *
+     * @param date date to convert.
+     * @return String Timestamp ISO 8601 date
      */
-    public static String getDateFormatIso8601(Date date){
+    public static String getDateFormatIso8601(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRANCE);
         return simpleDateFormat.format(date);
     }
