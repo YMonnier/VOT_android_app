@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.springframework.web.client.RestClientException;
+
 /**
  * Project android.
  * Package pm12016g3.tln.univ.fr.vot.utilities.network.
@@ -24,5 +26,13 @@ public class NetworkUtils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
+    }
+
+    public static boolean is5xxError(RestClientException e) {
+        return e.getLocalizedMessage().contains("500");
+    }
+
+    public static boolean is403Error(RestClientException e) {
+        return e.getLocalizedMessage().contains("403");
     }
 }

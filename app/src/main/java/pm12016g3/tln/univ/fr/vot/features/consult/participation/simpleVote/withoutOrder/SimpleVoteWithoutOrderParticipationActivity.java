@@ -37,6 +37,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
+import pm12016g3.tln.univ.fr.vot.utilities.network.NetworkUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
@@ -162,18 +163,20 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
-            if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
-                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.snack_error_http_400_500),
-                        Snackbar.LENGTH_LONG);
-            } else {
+            Log.d(TAG, response.toString());
+            if (response.getStatusCode().is2xxSuccessful()) {
                 Log.d(TAG, "Vote anwser: " + vote);
                 backDone();
             }
-
-            Log.d(TAG, response.toString());
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
+            if (NetworkUtils.is403Error(e)) {
+
+            } else {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_sending),
+                        Snackbar.LENGTH_LONG);
+            }
         }
     }
 

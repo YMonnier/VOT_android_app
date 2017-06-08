@@ -192,14 +192,14 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
                     intent = SMResultActivity_
                             .intent(getActivity())
                             .get();
-                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
                     startActivity(intent);
                     break;
                 default:
                     intent = OtherAlgoResultActivity_
                             .intent(getActivity())
                             .get();
-                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
                     startActivity(intent);
             }
         } else {
@@ -207,26 +207,23 @@ public class ConsultFragment extends Fragment implements ClickListener, SwipeRef
                 case STV:
 
                     intent = STVParticipationActivity_
-                           .intent(getActivity())
-                           .get();
-                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE,gson.toJson(socialChoice));
+                            .intent(getActivity())
+                            .get();
+                    intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
                     startActivity(intent);
-                   break;
+                    break;
                 case JM:
-
-                    Gson gsonJM = GsonSingleton.getInstance();
                     Intent intentJM = JMParticipationActivity_
                             .intent(getActivity())
                             .get();
-                    intentJM.putExtra(ExtraKeys.SOCIAL_CHOICE, gsonJM.toJson(socialChoice));
+                    intentJM.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));
                     startActivity(intentJM);
-
                     break;
                 case SM:
                     System.out.println(" data : " + ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered());
                     boolean ordered = ((SCSMajorityBallot) adapter.getItems().get(position).getData()).isOrdered();
                     if (ordered) {
-                         intent = SimpleVoteWithOrderParticipationActivity_
+                        intent = SimpleVoteWithOrderParticipationActivity_
                                 .intent(getActivity())
                                 .get();
                         intent.putExtra(ExtraKeys.SOCIAL_CHOICE, gson.toJson(socialChoice));

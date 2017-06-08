@@ -1,7 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.result;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
@@ -21,14 +16,12 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
@@ -80,6 +73,7 @@ public class OtherAlgoResultActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
+        // Action bar settings
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -116,7 +110,6 @@ public class OtherAlgoResultActivity extends AppCompatActivity {
         startActivity(new Intent(this, ResultDetailActivity_.class));
     }
 
-
     @Background
     void getResult() {
         try {
@@ -124,14 +117,16 @@ public class OtherAlgoResultActivity extends AppCompatActivity {
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.snack_error_http_400_500),
+                        getString(R.string.snack_error_http_get_error),
                         Snackbar.LENGTH_LONG);
             }
-            result_tv.setText("Resultat: "+responseEntity.getBody().getData().getValue().toString());
-            Log.d(TAG,"Resultat: "+responseEntity.getBody().getData().getValue().toString());
+            result_tv.setText("Resultat: " + responseEntity.getBody().getData().getValue().toString());
+            Log.d(TAG, "Resultat: " + responseEntity.getBody().getData().getValue().toString());
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
+            Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.snack_error_http_get_error),
+                    Snackbar.LENGTH_LONG);
         }
     }
-
 }

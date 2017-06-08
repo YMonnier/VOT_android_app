@@ -232,7 +232,7 @@ public class RecapFragment extends AppFragment {
             dismissProgress();
             updateLockUi(false);
             Snack.showFailureMessage(getView(),
-                    getString(R.string.snack_error_http_400_500),
+                    getString(R.string.snack_error_http_sending),
                     Snackbar.LENGTH_LONG);
         } else {
             dismissProgress();

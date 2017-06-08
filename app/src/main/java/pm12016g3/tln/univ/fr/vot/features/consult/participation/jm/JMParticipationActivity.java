@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.jm;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -16,6 +17,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,10 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
+import pm12016g3.tln.univ.fr.vot.utilities.network.NetworkUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
+import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
  * Created by damienlemenager on 06/06/2017.
@@ -72,6 +77,10 @@ public class JMParticipationActivity extends AppCompatActivity {
 
         System.out.println(" obj : " + socialChoice);
 
+        // Action bar settings
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         this.setTitle(socialChoice.getTitle());
 
         tv_reference.setText(TV_STRING);
@@ -85,12 +94,12 @@ public class JMParticipationActivity extends AppCompatActivity {
         lv_jm_candidats.setAdapter(adapter);
     }
     // TODO: COMMENT
+
     /**
-     *
+     * Confirm the vote and send it via HTTP Request
      */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark() {
-        System.out.println("jclique ici");
         Vote vote = new Vote(socialChoice.getId());
 
         Log.d(TAG, String.valueOf(socialChoice.getCandidats()));
@@ -99,14 +108,22 @@ public class JMParticipationActivity extends AppCompatActivity {
         Log.d(TAG, String.valueOf(vote));
 
         sendVote(vote);
+    }
 
-        finish();
+    /**
+     * Go back when click go back button
+     */
+    @OptionsItem(android.R.id.home)
+    public void onClickUpArrow() {
+        backDone();
     }
 
     // TODO: COMMENT
+
     /**
+     * Send vote to VOT System.
      *
-     * @param vote
+     * @param vote vote values
      */
     @Background
     void sendVote(Vote vote) {
@@ -114,8 +131,23 @@ public class JMParticipationActivity extends AppCompatActivity {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
             Log.d(TAG, response.toString());
+            if (response.getStatusCode().is2xxSuccessful())
+                backDone();
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
+            if (NetworkUtils.is403Error(e)) {
+
+            } else {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_sending),
+                        Snackbar.LENGTH_LONG);
+            }
         }
+    }
+
+    @UiThread
+    void backDone() {
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
+        finish();
     }
 }

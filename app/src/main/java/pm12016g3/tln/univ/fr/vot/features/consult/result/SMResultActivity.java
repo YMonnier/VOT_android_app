@@ -8,12 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-
 import com.annimon.stream.Stream;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -35,13 +31,11 @@ import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity_;
-import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.result.Result;
@@ -173,7 +167,7 @@ public class SMResultActivity extends AppCompatActivity {
             Log.d(TAG, "socialChoice ID : " + socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
-                        getString(R.string.snack_error_http_400_500),
+                        getString(R.string.snack_error_http_get_error),
                         Snackbar.LENGTH_LONG);
             }
             System.out.println("stats _1 : " + responseEntity.getBody().getData().getStatistics());
@@ -195,6 +189,9 @@ public class SMResultActivity extends AppCompatActivity {
 
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
+            Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.snack_error_http_get_error),
+                    Snackbar.LENGTH_LONG);
         }
 
     }

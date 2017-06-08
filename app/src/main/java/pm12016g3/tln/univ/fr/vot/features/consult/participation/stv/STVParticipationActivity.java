@@ -1,6 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.stv;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.method.ScrollingMovementMethod;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.woxthebox.draglistview.DragItem;
@@ -18,6 +20,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +39,9 @@ import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
+import pm12016g3.tln.univ.fr.vot.utilities.network.NetworkUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -118,15 +123,20 @@ public class STVParticipationActivity extends AppCompatActivity {
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark() {
         candidats = listAdapter.getItemList();
+        Log.d(TAG, candidats.toString());
         Vote vote = new Vote(socialChoice.getId());
 
-        candidats
-                .forEach(candidat -> vote.put(String.valueOf(candidats.indexOf(candidat) + 1), candidat.getName()));
+
+        Log.d(TAG, candidats.toString());
+
+        Stream.of(candidats)
+                .forEach(candidat -> {
+                    vote.put(String.valueOf(candidats.indexOf(candidat) + 1), candidat.getName());
+                });
+
         String voteJson = gson.toJson(vote);
         Log.d(TAG, "voteJson " + voteJson);
         sendVote(vote);
-        ViewUtils.closeKeyboard(this, getCurrentFocus());
-        finish();
     }
 
     /**
@@ -134,8 +144,7 @@ public class STVParticipationActivity extends AppCompatActivity {
      */
     @OptionsItem(android.R.id.home)
     public void onClickUpArrow() {
-        ViewUtils.closeKeyboard(this, getCurrentFocus());
-        finish();
+        backDone();
     }
 
     /**
@@ -167,10 +176,26 @@ public class STVParticipationActivity extends AppCompatActivity {
             Log.d(TAG, Settings.currentUser.getAccessToken());
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
-            Log.d(TAG, response.getHeaders().toString());
             Log.d(TAG, response.toString());
+            if (response.getStatusCode().is2xxSuccessful()) {
+                backDone();
+            }
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
+            if (NetworkUtils.is403Error(e)) {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        "403! déà voté",
+                        Snackbar.LENGTH_LONG);
+            } else
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_sending),
+                        Snackbar.LENGTH_LONG);
         }
+    }
+
+    @UiThread
+    void backDone() {
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
+        finish();
     }
 }
