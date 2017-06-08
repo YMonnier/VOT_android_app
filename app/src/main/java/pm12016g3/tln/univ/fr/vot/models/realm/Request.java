@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models.realm;
 
+import com.google.gson.annotations.Expose;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import lombok.Data;
@@ -19,9 +21,15 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 @EqualsAndHashCode(callSuper = false)
 public class Request extends RealmObject {
     @PrimaryKey
+    @Expose
     private Long id;
+
+    @Expose
     private boolean confirm;
+
+    @Expose
     private User sender;
+    @Expose
     private User receiver;
 
     public Request() {}

@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models.notification.shared;
 
+import com.google.gson.annotations.Expose;
+
 import lombok.Data;
 import pm12016g3.tln.univ.fr.vot.models.User;
 
@@ -14,8 +16,12 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 
 @Data
 public class RNotifRelation {
+    @Expose
     private Long id;
+    @Expose
     private boolean confirm;
+    @Expose
     private User receiver;
+    @Expose
     private User sender;
 }

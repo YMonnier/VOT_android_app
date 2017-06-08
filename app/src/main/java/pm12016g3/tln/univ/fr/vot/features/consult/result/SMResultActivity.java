@@ -52,7 +52,7 @@ public class SMResultActivity extends AppCompatActivity {
      * Vote is secret or not
      * If the vote is secret not show the details
      */
-    boolean confidentiality ;
+    boolean confidentiality;
 
     /**
      * The pie chart
@@ -90,7 +90,7 @@ public class SMResultActivity extends AppCompatActivity {
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
         confidentiality = socialChoice.isConfidentiality();
-        if(confidentiality){
+        if (confidentiality) {
             fabDetails.setVisibility(View.INVISIBLE);
         }
 
@@ -101,7 +101,7 @@ public class SMResultActivity extends AppCompatActivity {
     /**
      * To display PieChart
      */
-    void showPieChart(){
+    void showPieChart() {
         // general configuration
         pieChart.setUsePercentValues(true);
         pieChart.setDescription(null);
@@ -130,7 +130,7 @@ public class SMResultActivity extends AppCompatActivity {
      * Go back when you click the go back button
      */
     @OptionsItem(android.R.id.home)
-    public void onClickUpArrow(){
+    public void onClickUpArrow() {
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
@@ -139,13 +139,13 @@ public class SMResultActivity extends AppCompatActivity {
      * Click floating action button to show details of the result
      */
     @Click(R.id.fab_details)
-    public void onClickFabDetails(){
+    public void onClickFabDetails() {
         startActivity(new Intent(this, ResultDetailActivity_.class));
     }
 
     @Background
-    void getResult(){
-        try{
+    void getResult() {
+        try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
             jsonObject = responseEntity.getBody().getData();
