@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.participation.simpleVote.withoutOrder;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.method.ScrollingMovementMethod;
@@ -16,17 +17,17 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
@@ -37,6 +38,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -45,7 +47,8 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 @EActivity(R.layout.consult_participation_simple_vote_without_order_participation_activity)
 @OptionsMenu(R.menu.consult_participation_participation_bar)
-public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivity {
+public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivity
+        implements Validable {
 
     final String TAG = SimpleVoteWithoutOrderParticipationActivity.class.getSimpleName();
     private final String TV_STRING1 = "Vous pouvez selectionner jusqu'à ";
@@ -118,30 +121,26 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
      */
     @OptionsItem(R.id.participation_action_check)
     public void onClickCheckmark() {
+        if (validate()) {
+            List<Candidat> candidatsSelected = Stream.of(listAdapter.getItemList())
+                    .filter(Candidat::isSelected)
+                    .toList();
 
-        Map<String, Object> hashMap = new HashMap<>();
-        hashMap.put("1", "a");
-        Gson gson = new Gson();
+            int count = 0;
+            Vote vote = new Vote(socialChoice.getId());
 
+            for (Candidat candidat : candidatsSelected) {
+                count += 1;
+                vote.put(String.valueOf(count), candidat.getName());
+            }
 
-        List<Candidat> candidatsSelected = Stream.of(listAdapter.getItemList())
-                .filter(Candidat::isSelected)
-                .toList();
-
-        int count = 0;
-        Vote vote = new Vote(socialChoice.getId());
-
-        for (Candidat candidat : candidatsSelected) {
-            count += 1;
-            vote.put(String.valueOf(count), candidat.getName());
+            sendVote(vote);
+        } else {
+            final String ERROR_MESSAGE = "Veuillez selectionner/lister " + socialChoice.getData().getNbChoice() + " gagnants";
+            Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                    ERROR_MESSAGE,
+                    Snackbar.LENGTH_LONG);
         }
-
-        sendVote(vote);
-
-        Log.d(TAG, "Vote anwser: " + vote);
-        ViewUtils.closeKeyboard(this, getCurrentFocus());
-        Log.d(TAG, listAdapter.getItemList().toString());
-        finish();
     }
 
     /**
@@ -155,17 +154,51 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
 
     /**
      * Send a vote to the database
-     * @param vote
+     *
+     * @param vote vote Object
      */
     @Background
     void sendVote(Vote vote) {
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
+            if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                        getString(R.string.snack_error_http_400_500),
+                        Snackbar.LENGTH_LONG);
+            } else {
+                Log.d(TAG, "Vote anwser: " + vote);
+                backDone();
+            }
+
             Log.d(TAG, response.toString());
         } catch (RestClientException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
     }
 
+    @UiThread
+    void backDone() {
+        ViewUtils.closeKeyboard(this, getCurrentFocus());
+        finish();
+    }
+
+    /**
+     * Validate the current form.
+     *
+     * @return true if the form is valid, otherwise false.
+     */
+    @Override
+    public boolean validate() {
+        return Stream.of(listAdapter.getItemList())
+                .filter(Candidat::isSelected)
+                .toList().size() == socialChoice.getData().getNbChoice();
+    }
+
+    /**
+     * Set data to the parent model.
+     */
+    @Override
+    public void setData() {
+    }
 }

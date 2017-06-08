@@ -117,10 +117,13 @@ public class SimpleVoteFragment extends AppFragment
             if (checkListNumberOfChoices()) {
                 setData();
                 parent.nextStep(this, new InvitationFragment_());
-            } else
+            } else {
+                int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
+                final String MESSAGE_ERROR = "Veuillez ajouter au moins " + (nbChoice + 1) + " choix.";
                 Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_no_algo_selected),
+                        MESSAGE_ERROR,
                         Snackbar.LENGTH_LONG);
+            }
         }
     }
 

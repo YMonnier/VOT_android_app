@@ -17,8 +17,6 @@ import com.annimon.stream.Stream;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.TextChange;
@@ -41,7 +39,8 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
 
 /**
  * Project android.
@@ -97,7 +96,7 @@ public class JMFragment extends AppFragment
      */
     CreateFragment parent;
 
-    String [] labels = new String []{"TB","B","AB","SA","P","I","AR"};
+    String[] labels = new String[]{"Très Bien", "Bien", "Assez-Bien", "Sans-Avis", "Passable", "Inssufisant", "À Rejeter"};
     List<Label> labelList = new ArrayList<>();
 
     private int labelNb;
@@ -111,26 +110,22 @@ public class JMFragment extends AppFragment
     @AfterViews
     void init() {
         Log.d(TAG, "Init");
-
+        parent = (CreateFragment) getParentFragment();
+        fragmentTitle = getString(R.string.fragment_title_sm);
+        getActivity().getWindow().setSoftInputMode(SOFT_INPUT_ADJUST_PAN);
         initData();
 
         sLabels.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 initData();
-                Log.e("klkl", "klkl");
-
             }
 
-            public void onNothingSelected(AdapterView<?> arg0) {
-                Log.e("klkl", "klkl");
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
-
-        fragmentTitle = getString(R.string.fragment_title_sm);
-        parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
     }
 
@@ -143,10 +138,9 @@ public class JMFragment extends AppFragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
-        if(validate())
+        if (validate())
             setData();
         parent.nextStep(this, new InvitationFragment_());
-
     }
 
     @OptionsItem(R.id.menu_item_back_arrow)
@@ -169,22 +163,6 @@ public class JMFragment extends AppFragment
         } else if (text.length() == 0) {
             removePlusButton();
         }
-    }
-
-    @ItemClick(R.id.listView)
-    void listViewOnClick(BasicItem item) {
-        Log.d(TAG, "Item clicked... " + String.valueOf(item));
-    }
-
-    /**
-     * Handle when user does a long tap on the list view.
-     * Delete the item selected.
-     *
-     * @param item item selected.
-     */
-    @ItemLongClick(R.id.listView)
-    void listViewOnLongClick(BasicItem item) {
-
     }
 
     /**
@@ -350,9 +328,9 @@ public class JMFragment extends AppFragment
         labelNb = Integer.parseInt(sLabels.getSelectedItem().toString());
         JMadapter.clear();
         Label label = null;
-        for (int i = 0; i< labelNb; i++) {
+        for (int i = 0; i < labelNb; i++) {
             label = new Label();
-            label.setNumber(i+1);
+            label.setNumber(i + 1);
             label.setName(labels[i]);
             JMadapter.add(label);
         }
@@ -367,7 +345,7 @@ public class JMFragment extends AppFragment
     public void setData() {
 
         SCMajorityJudgment data = new SCMajorityJudgment();
-        for (int i = 0; i<JMadapter.getItems().size(); i++) {
+        for (int i = 0; i < JMadapter.getItems().size(); i++) {
             data.add(JMadapter.getItem(i).getName());
         }
         parent.getSocialChoice().setData(data);
