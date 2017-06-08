@@ -3,12 +3,18 @@ package pm12016g3.tln.univ.fr.vot.features.consult.result;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
 
+import com.annimon.stream.Stream;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -21,16 +27,21 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity_;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.models.result.Result;
@@ -40,6 +51,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -73,10 +85,18 @@ public class SMResultActivity extends AppCompatActivity {
 
     SocialChoice<SCSMajorityBallot> socialChoice;
 
+    Map<String,String> stats;
+
+    Map<String,Float> data = new HashMap<>();
+
+    int sum = 0;
+
     /**
      * List of data for pie chart
      */
     ArrayList<PieEntry> entries = new ArrayList<>();
+
+    ArrayList<BarEntry> barEntries = new ArrayList<>();
 
     /**
      * Initialisation after the views binding has happened
@@ -91,13 +111,13 @@ public class SMResultActivity extends AppCompatActivity {
         gson = GsonSingleton.getInstance();
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
+        Log.d(TAG,"socialChoice  "+socialChoice);
         confidentiality = socialChoice.isConfidentiality();
         if (confidentiality) {
             fabDetails.setVisibility(View.INVISIBLE);
         }
-
-
-        showPieChart();
+        getResult();
+        updatePieChart();;
     }
 
     /**
@@ -110,11 +130,15 @@ public class SMResultActivity extends AppCompatActivity {
         pieChart.setTransparentCircleRadius(30f);
         pieChart.setHoleRadius(35f);
 
-        /*--- Setting data ---*/
-        entries.add(new PieEntry(18.5f, "John"));
-        entries.add(new PieEntry(26.7f, "Mark"));
-        entries.add(new PieEntry(24.0f, "Dark"));
-        entries.add(new PieEntry(30.8f, "Bil"));
+
+        for(Map.Entry<String,Float> entry : data.entrySet()){
+            Log.d(TAG,"data :" +entry.toString());
+            if(entry.getValue()!=0){
+                entries.add(new PieEntry(entry.getValue(), entry.getKey()));
+            }
+        }
+
+
         PieDataSet set = new PieDataSet(entries, "");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(set);
@@ -145,22 +169,44 @@ public class SMResultActivity extends AppCompatActivity {
         startActivity(new Intent(this, ResultDetailActivity_.class));
     }
 
+
     @Background
     void getResult() {
         Log.d(TAG, "llalallal");
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
-            Log.d(TAG, "Response : " + responseEntity.toString());
-
+            Log.d(TAG, "socialChoice ID : " + socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 /*Snack.showFailureMessage(getView(),
                         getString(R.string.snack_error_http_400_500),
                         Snackbar.LENGTH_LONG);*/
             }
+            System.out.println("stats _1 : " + responseEntity.getBody().getData().getStatistics());
+            stats = responseEntity.getBody().getData().getStatistics();
+            System.out.println("stat := " + stats.get("b"));
+
+
+            int sum = Stream.of(stats.values())
+                    .mapToInt(Integer::parseInt)
+                    .sum();
+            System.out.println("SUM: " + sum);
+
+            for (Map.Entry<String, String> e : stats.entrySet()) {
+
+                data.put(e.getKey(), (Float.parseFloat(e.getValue())) / sum);
+
+            }
+            updatePieChart();
+
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
 
+    }
+
+    @UiThread
+    void updatePieChart() {
+        showPieChart();
     }
 }

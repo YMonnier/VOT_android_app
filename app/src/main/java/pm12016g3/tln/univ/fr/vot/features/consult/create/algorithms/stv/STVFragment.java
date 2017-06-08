@@ -189,7 +189,7 @@ public class STVFragment extends AppFragment
         AnimatedButton button = (AnimatedButton) view;
         if (button != null) {
             if (button.getTag().equals(ADD_BUTTON_TAG)) {
-                /*if (validate()) {
+                /*if (dateValidate()) {
                     String candidat = inputCandidat.getText().toString();
                     updateList(candidat);
                 }*/

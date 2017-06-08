@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             //super.onBackPressed();
             moveTaskToBack(true);
-
         }
     }
 
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity
      * @param fragment fragment to replace.
      * @param title    fragment title.
      */
-    private void setFragment(Fragment fragment, String title) {
+    public void setFragment(Fragment fragment, String title) {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mainContent, fragment)

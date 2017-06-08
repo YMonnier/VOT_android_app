@@ -88,6 +88,8 @@ public class LoginActivity extends AppCompatActivity
      */
     public static GoogleApiClient googleApiClient;
 
+    SignInButton signInButton;
+
     /**
      * Rest service to get
      * information from server.
@@ -152,7 +154,7 @@ public class LoginActivity extends AppCompatActivity
         googleApiClient.connect();
         Settings.googleApiClient = googleApiClient;
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.login_google_button);
+        signInButton = (SignInButton) findViewById(R.id.login_google_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
     }
@@ -200,8 +202,9 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
+            showProgress();
+            updateLockUi(true);
             googleSignIn();
-
         } else {
             Log.e(TAG, "No connection!....");
             Snack.showSuccessfulMessage(getWindow().getDecorView().findViewById(android.R.id.content),
@@ -302,7 +305,8 @@ public class LoginActivity extends AppCompatActivity
 
                     ResponseEntity<Response<User>> response = apiService.login(user);
                     Log.i(TAG, "resposne "+response.toString());
-
+                    dismissProgress();
+                    updateLockUi(true);
                     if (response.getStatusCode().is2xxSuccessful()) {
                         Settings.currentUser = response.getBody().getData();
                         Settings.currentUser.setAccessToken(accessToken);
@@ -316,10 +320,16 @@ public class LoginActivity extends AppCompatActivity
                 }
             }
         } catch (IOException e) {
+            dismissProgress();
+            updateLockUi(true);
             Log.e(TAG, "IO Exception: " + e.getMessage());
         } catch (UserRecoverableAuthException e) {
+            dismissProgress();
+            updateLockUi(true);
             startActivityForResult(e.getIntent(), 987);
         } catch (GoogleAuthException e) {
+            dismissProgress();
+            updateLockUi(true);
             Log.e(TAG, "GoogleAuthException: " + e.getMessage());
         }
 
@@ -344,7 +354,11 @@ public class LoginActivity extends AppCompatActivity
                 Settings.currentUser = user;
                 goToHomeView();
             }
+            dismissProgress();
+            updateLockUi(true);
         } catch (RestClientException e) {
+            dismissProgress();
+            updateLockUi(true);
             Log.e(TAG, String.valueOf(e.getStackTrace()));
             Snack.showSuccessfulMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.snack_error_registration_failed),
@@ -372,7 +386,7 @@ public class LoginActivity extends AppCompatActivity
         builder.setPositiveButton(R.string.login_ok, (dialog, which) -> {
             String nickname = input.getText().toString();
             Log.d(TAG, nickname);
-
+            showProgress();
             user.setPseudo(nickname);
 
             Uri picture = googleSignInAccount.getPhotoUrl();
@@ -398,5 +412,28 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public void onConnectionSuspended(int i) {
 
+    }
+
+    /**
+     * Show the progress view.
+     * This task is done on UI Thread.
+     */
+    @UiThread
+    void showProgress() {
+        progressView.show();
+    }
+
+    /**
+     * Dismiss the progress view.
+     * This task is done on UI Thread.
+     */
+    @UiThread
+    void dismissProgress() {
+        progressView.dismiss();
+    }
+
+    @UiThread
+    void updateLockUi(final boolean status) {
+        signInButton.setEnabled(!status);
     }
 }

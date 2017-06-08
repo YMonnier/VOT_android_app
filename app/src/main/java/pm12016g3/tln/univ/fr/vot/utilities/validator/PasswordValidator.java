@@ -15,7 +15,7 @@ public class PasswordValidator {
     /**
      * Validate password with its length
      *
-     * @param password password to validate
+     * @param password password to dateValidate
      * @return true if valid length password, otherwise, false
      */
     public static boolean validate(final String password) {

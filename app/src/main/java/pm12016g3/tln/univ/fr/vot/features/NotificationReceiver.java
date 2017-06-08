@@ -93,8 +93,12 @@ public class NotificationReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String json = intent.getStringExtra(NotificationBroadcastManager.EXTRA_SOCIAL_CHOICE_CLOSED_RECEIVER);
+            Log.d(TAG, "socialChoiceClosed BROADCAST");
+            Log.d(TAG, json);
             final JsonObject content = gson.fromJson(json, JsonObject.class);
+            Log.d(TAG, content.toString());
             final SocialChoice socialChoice = gson.fromJson(content.get(JsonKeys.SOCIAL_CHOICE), SocialChoice.class);
+            Log.d(TAG, socialChoice.toString());
             final String title = socialChoice.getTitle();
             push("Choix Social", "Choix Social " + title + " est clos");
         }
