@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models.network;
 
+import com.google.gson.annotations.Expose;
+
 import lombok.Data;
 
 /**
@@ -12,8 +14,12 @@ import lombok.Data;
  */
 @Data
 public class Response<T>  {
+    @Expose
     private int httpErrorCode;
+    @Expose
     private String errorMessage;
+    @Expose
     private boolean success;
+    @Expose
     private T data;
 }

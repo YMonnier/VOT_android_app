@@ -1,5 +1,8 @@
 package pm12016g3.tln.univ.fr.vot.models.shared;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Data;
 
 /**
@@ -42,8 +45,16 @@ public class SCSimpleTransfarableVote implements SCData {
         }
     }
 
+    @Expose
+    @SerializedName("winner_nb")
     private int nbWinner;
+
+    @Expose
+    @SerializedName("looser_choice")
     private Elimination elimination;
+
+    @Expose
+    @SerializedName("quota_choice")
     private Quota quota;
 
 

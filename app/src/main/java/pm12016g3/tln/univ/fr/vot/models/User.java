@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
@@ -21,22 +22,30 @@ import pm12016g3.tln.univ.fr.vot.models.network.Requestable;
 @EqualsAndHashCode(callSuper = false)
 public class User extends RealmObject implements Requestable {
     @PrimaryKey
+    @Expose
     private Long id;
 
+    @Expose
     private String email;
 
+    @Expose
     private String pseudo;
 
+    @Expose
     private String picture;
 
+    @Expose
     private double longitude;
 
+    @Expose
     private double latitude;
 
     @SerializedName(value = "access_token")
+    @Expose(serialize = true, deserialize = false)
     private String accessToken;
 
     @SerializedName(value = "device_token")
+    @Expose(serialize = true, deserialize = false)
     private String deviceToken;
 
     private boolean selected;

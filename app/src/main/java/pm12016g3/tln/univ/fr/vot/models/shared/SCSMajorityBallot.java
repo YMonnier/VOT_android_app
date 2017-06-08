@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.models.shared;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
@@ -15,8 +16,10 @@ import lombok.Data;
 
 @Data
 public class SCSMajorityBallot implements SCData {
+    @Expose
     private boolean ordered;
 
+    @Expose
     @SerializedName(value = "choice_nb")
     private int nbChoice;
 

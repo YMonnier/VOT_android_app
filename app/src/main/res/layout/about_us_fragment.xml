@@ -116,7 +116,7 @@
                             android:textSize="15dp"
                             android:textColor="@color/vot_gray"
                             android:textStyle="italic"
-                            android:text="Aka Mr.Refractoring"/>
+                            android:text="Aka Mr.Refactoring"/>
 
 
 

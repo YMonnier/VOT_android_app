@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,15 @@ import lombok.Data;
 
 @Data
 public class Candidat {
+    @Expose
     private Long id;
+
+    @Expose
     private String name;
-    private boolean selected;
+
     private List<String> labels = new ArrayList<>();
     private String labelSelected = "";
+    private boolean selected;
 
     public Candidat(String name) {
         this.name = name;
