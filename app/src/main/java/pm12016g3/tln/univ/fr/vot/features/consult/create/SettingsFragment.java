@@ -124,7 +124,7 @@ public class SettingsFragment extends AppFragment
                 getActivity().getCurrentFocus());
 
         // Setup date picker with a minimum date.
-        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), R.style.AppTheme, this, calendar
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, calendar
                 .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -370,10 +370,11 @@ public class SettingsFragment extends AppFragment
         calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         if (DateValidator.dateValidate(calendar)) {
+            updateErrorUi(etCalendar, null);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
             TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
-                    R.style.AppTheme, this, hour, minute, false);
+                    this, hour, minute, false);
             timePickerDialog.show();
         } else {
             etCalendar.setText("");
@@ -397,6 +398,7 @@ public class SettingsFragment extends AppFragment
         calendar.set(Calendar.MINUTE, i1);
 
         if (DateValidator.timeValidate(calendar)) {
+            updateErrorUi(etCalendar, null);
             etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
         } else {
             etCalendar.setText("");
