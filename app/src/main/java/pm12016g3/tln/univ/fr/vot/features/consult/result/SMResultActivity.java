@@ -94,6 +94,7 @@ public class SMResultActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
+        Log.d(TAG, "je suis la dedans");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Get SocialChoice from Intent
@@ -161,7 +162,7 @@ public class SMResultActivity extends AppCompatActivity {
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
-
+            Log.d(TAG,"socialChoice ID : "+socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
                 /*Snack.showFailureMessage(getView(),
                         getString(R.string.snack_error_http_400_500),
@@ -169,7 +170,6 @@ public class SMResultActivity extends AppCompatActivity {
             }
             stats =  responseEntity.getBody().getData().getStatistics();
             stats.values().forEach(v->sum=sum+Integer.parseInt(v));
-            //stats.entrySet().forEach((k,v)-> data.put());
 
             for (Map.Entry<String, String> e : stats.entrySet()) {
                 data.put(e.getKey(),(Float.parseFloat(e.getValue()))/sum);
