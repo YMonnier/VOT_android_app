@@ -3,48 +3,38 @@ package pm12016g3.tln.univ.fr.vot.features.consult.create;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.annimon.stream.Stream;
-import com.google.android.gms.games.multiplayer.Participant;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
-
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
-
-import pm12016g3.tln.univ.fr.vot.features.consult.create.recap.RecapListViewAdapter;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
-
-import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
-
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -90,7 +80,11 @@ public class RecapFragment extends AppFragment {
     @RestService
     VOTSocialChoiceAPI serviceAPI;
 
+    @RestService
+    VOTFriendsAPI friendsAPI;
+
     SocialChoice socialChoice;
+
 
     /**
      * Parent fragment.
@@ -106,10 +100,27 @@ public class RecapFragment extends AppFragment {
         socialChoice = parent.getSocialChoice();
         //setAdapters(parent.getSocialChoice());
         recapTitle.setText(socialChoice.getTitle());
-        recapType.setText(socialChoice.getType().toString());
-        recapDescription.setText(socialChoice.getDescription());
+        recapDescription.setText("Description : " + socialChoice.getDescription());
+        long time = Long.valueOf(socialChoice.getEndDate()).longValue();
+        Date dateend = new Date(time);
+        Timestamp endtime = new Timestamp(dateend.getTime());
+        recapDate.setText("Clos le : " + endtime.toString());
 
-        String confidentiality;
+        switch (socialChoice.getType()){
+            case JM :
+                recapType.setText("Jugement Majoritaire");
+                break;
+            case STV :
+                recapType.setText("Single Transferable Vote");
+                break;
+            case KY:
+                recapType.setText("Kemeny-Young");
+                break;
+            case SM:
+                recapType.setText("Scrutin Majoritaire");
+        }
+
+
         if (parent.getSocialChoice().isConfidentiality()) {
             recapConfidentiality.setText("Anonyme");
         } else {
@@ -120,33 +131,29 @@ public class RecapFragment extends AppFragment {
         for ( Object candidat : socialChoice.getCandidats()) {
             candidats.add(((Candidat)candidat).getName());
         }
-        candidatAdapter = new ArrayAdapter<String>(
+        candidatAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 candidats);
         candidatListView.setAdapter(candidatAdapter);
 
 
+
+
         List<String> participants = new ArrayList<>();
-
-        //just for test
-        participants.add("fff");
-        participants.add("ddd");
-        participants.add("hhh");
-
-        //Todo: invite the friends
-        /*for ( Object user : socialChoice.getParticipants()) {
+        for ( Object user : socialChoice.getParticipants()) {
             participants.add(((User)user).getPseudo());
-        }*/
-        participantAdapter = new ArrayAdapter<String>(
+        }
+        participantAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 participants);
         participantListView.setAdapter(participantAdapter);
 
+
     }
 
-/*    @UiThread
+    /*@UiThread
     void setAdapters(SocialChoice socialChoice) {
         for ( Object candidat : socialChoice.getCandidats()) {
             candidatAdapter.add(new BasicItem(((Candidat)candidat).getName()));
@@ -168,16 +175,26 @@ public class RecapFragment extends AppFragment {
     @Click(R.id.send_bt)
     void sendAction() {
         try {
-            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
-            ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
-            Log.d(TAG, response.toString());
-            if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
-                Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_http_400_500),
-                        Snackbar.LENGTH_LONG);
-            }
+            sendSocialChoice();
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
+    }
+
+    // TODO: Comments
+    /**
+     *
+     */
+    @Background
+    void sendSocialChoice(){
+        serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+        ResponseEntity<Response<JsonObject>> response = serviceAPI.createSociaChoice(parent.getSocialChoice());
+        Log.d(TAG, response.toString());
+        if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
+            Snack.showFailureMessage(getView(),
+                    getString(R.string.snack_error_http_400_500),
+                    Snackbar.LENGTH_LONG);
+        }
+
     }
 }

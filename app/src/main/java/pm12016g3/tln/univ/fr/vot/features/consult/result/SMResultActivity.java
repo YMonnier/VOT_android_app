@@ -14,21 +14,29 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.result.detail.ResultDetailActivity_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.models.result.Result;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.ExtraKeys;
+import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
@@ -45,7 +53,7 @@ public class SMResultActivity extends AppCompatActivity {
      * Vote is secret or not
      * If the vote is secret not show the details
      */
-    boolean confidentiality ;
+    boolean confidentiality;
 
     /**
      * The pie chart
@@ -60,6 +68,8 @@ public class SMResultActivity extends AppCompatActivity {
     VOTSocialChoiceAPI serviceAPI;
 
     Gson gson;
+
+    JsonObject jsonObject;
 
     SocialChoice<SCSMajorityBallot> socialChoice;
 
@@ -81,7 +91,7 @@ public class SMResultActivity extends AppCompatActivity {
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
         confidentiality = socialChoice.isConfidentiality();
-        if(confidentiality){
+        if (confidentiality) {
             fabDetails.setVisibility(View.INVISIBLE);
         }
 
@@ -92,7 +102,7 @@ public class SMResultActivity extends AppCompatActivity {
     /**
      * To display PieChart
      */
-    void showPieChart(){
+    void showPieChart() {
         // general configuration
         pieChart.setUsePercentValues(true);
         pieChart.setDescription(null);
@@ -121,7 +131,7 @@ public class SMResultActivity extends AppCompatActivity {
      * Go back when you click the go back button
      */
     @OptionsItem(android.R.id.home)
-    public void onClickUpArrow(){
+    public void onClickUpArrow() {
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
     }
@@ -130,7 +140,25 @@ public class SMResultActivity extends AppCompatActivity {
      * Click floating action button to show details of the result
      */
     @Click(R.id.fab_details)
-    public void onClickFabDetails(){
+    public void onClickFabDetails() {
         startActivity(new Intent(this, ResultDetailActivity_.class));
+    }
+
+    @Background
+    void getResult() {
+        try {
+            serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
+            ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
+            Log.d(TAG, "Response : " + responseEntity.toString());
+
+            if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
+                /*Snack.showFailureMessage(getView(),
+                        getString(R.string.snack_error_http_400_500),
+                        Snackbar.LENGTH_LONG);*/
+            }
+        } catch (RestClientException e) {
+            Log.d(TAG, e.getLocalizedMessage());
+        }
+
     }
 }

@@ -44,6 +44,7 @@ import io.realm.RealmConfiguration;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
@@ -113,6 +114,13 @@ public class LoginActivity extends AppCompatActivity
 
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.i(TAG, "Device token: " + deviceToken);
+
+
+        Candidat c1 = new Candidat("Paul");
+        c1.setSelected(true);
+        c1.setLabelSelected("OKOK");
+
+        Log.d(TAG, "Candidat toJSON: " + GsonSingleton.getInstance().toJson(c1));
     }
 
     /**

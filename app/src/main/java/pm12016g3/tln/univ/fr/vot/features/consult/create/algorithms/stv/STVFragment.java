@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
@@ -26,7 +25,6 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.lang.annotation.ElementType;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
@@ -37,12 +35,12 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFr
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.models.shared.SCSimpleTransfarableVote;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
+
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
 
 /**
  * Project android.
@@ -110,6 +108,7 @@ public class STVFragment extends AppFragment
         fragmentTitle = getString(R.string.fragment_title_sm);
         parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
+        getActivity().getWindow().setSoftInputMode(SOFT_INPUT_ADJUST_PAN);
     }
 
     /**
@@ -121,18 +120,15 @@ public class STVFragment extends AppFragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
-        if(validate())
-            setData();
-        parent.nextStep(this, new InvitationFragment_());
-        /*if (validate()) {
+        if (validate()) {
             if (checkListNumberOfChoices()) {
                 setData();
                 parent.nextStep(this, new InvitationFragment_());
             } else
                 Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_no_algo_selected),
+                        getString(R.string.snack_error_no_stv_bad_number_choices),
                         Snackbar.LENGTH_LONG);
-        }*/
+        }
     }
 
     @OptionsItem(R.id.menu_item_back_arrow)
@@ -158,16 +154,16 @@ public class STVFragment extends AppFragment
     }
 
     @ItemClick(R.id.listView)
-    void listViewOnClick(BasicItem item) {
+    void listViewOnClick(Candidat item) {
         Log.d(TAG, "Item clicked... " + String.valueOf(item));
-        /*item.setSelected(!item.isSelected());
+        item.setSelected(!item.isSelected());
         adapter.notifyDataSetChanged();
         if (shouldShowTrashButton()) {
             if (trashButton == null)
                 addTrashButton();
         } else {
             removeTrashButton();
-        }*/
+        }
     }
 
     /**
@@ -177,9 +173,9 @@ public class STVFragment extends AppFragment
      * @param item item selected.
      */
     @ItemLongClick(R.id.listView)
-    void listViewOnLongClick(BasicItem item) {
-        /*adapter.getItems().remove(item);
-        adapter.notifyDataSetChanged();*/
+    void listViewOnLongClick(Candidat item) {
+        adapter.getItems().remove(item);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -336,23 +332,17 @@ public class STVFragment extends AppFragment
      */
     @Override
     public boolean validate() {
-        int nbWin = Integer.valueOf(etWinenrNb.getText().toString());
-        System.out.println("nb win "+nbWin);
-
-        if (nbWin > adapter.getItems().size())
-            return false;
-
-        return true;
-        /*String nbChoice = inputNbChoice.getText().toString();
         resetErrorUi();
+
+        String nbWin = this.etWinenrNb.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(nbChoice)) {
+        if (TextUtils.isEmpty(nbWin)) {
             if (focusView == null)
-                focusView = inputNbChoice;
-            updateErrorUi(inputNbChoice, getString(R.string.error_field_required));
+                focusView = this.etWinenrNb;
+            updateErrorUi(this.etWinenrNb, getString(R.string.error_field_required));
             cancel = true;
         }
         Log.d(TAG, "Add On List View ? " + cancel);
@@ -364,7 +354,7 @@ public class STVFragment extends AppFragment
                 focusView.requestFocus();
         }
 
-        return !cancel;*/
+        return !cancel;
     }
 
     /**
@@ -374,11 +364,11 @@ public class STVFragment extends AppFragment
      * @return true if the size of lise is lower than the
      * number of choice otherwise false.
      */
-    /*private boolean checkListNumberOfChoices() {
-        int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
+    private boolean checkListNumberOfChoices() {
+        int nbChoice = Integer.parseInt(etWinenrNb.getText().toString());
         Log.d(TAG, "nbChoice: " + nbChoice + " listSize: " + adapter.getItems().size());
         return adapter.getItems().size() > nbChoice;
-    }*/
+    }
 
     /**
      * Set data to the parent model.
@@ -386,20 +376,25 @@ public class STVFragment extends AppFragment
     @Override
     public void setData() {
         int winnerNb = Integer.parseInt(etWinenrNb.getText().toString());
-        String eliminationChoice = sElimination.getSelectedItem().toString();
-        String quotaChocie = sQuota.getSelectedItem().toString();
-        SCSimpleTransfarableVote.Elimination elimination = null;
+        String eliminationChoosen = sElimination.getSelectedItem().toString();
+        String quotaChoosen = sQuota.getSelectedItem().toString();
 
+        SCSimpleTransfarableVote.Elimination elimination = null;
         for (SCSimpleTransfarableVote.Elimination str : SCSimpleTransfarableVote.Elimination.values()) {
-            if ((str.toString()).equals(eliminationChoice))
+            if ((str.toString()).equals(eliminationChoosen))
                 elimination = str;
         }
 
-        SCSimpleTransfarableVote data = new SCSimpleTransfarableVote(winnerNb, elimination);
+        SCSimpleTransfarableVote.Quota quota = null;
+        for (SCSimpleTransfarableVote.Quota str : SCSimpleTransfarableVote.Quota.values()) {
+            if ((str.toString()).equals(quotaChoosen))
+                quota = str;
+        }
 
+        SCSimpleTransfarableVote data = new SCSimpleTransfarableVote(winnerNb, elimination, quota);
         parent.getSocialChoice().setData(data);
         parent.getSocialChoice().setCandidats(adapter.getItems());
-        Log.d(TAG, "Infos: " + data.getElimination() );
+        Log.d(TAG, "Data Info: " + data);
         Log.d(TAG, "Social Choice updated: " + parent.getSocialChoice());
     }
 }

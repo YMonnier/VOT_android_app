@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -7,10 +9,12 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -21,12 +25,17 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm.JMFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.stv.STVFragment_;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
+import pm12016g3.tln.univ.fr.vot.utilities.DateValidator;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
@@ -43,7 +52,9 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
 @EFragment(R.layout.consult_create_settings_fragment)
 @OptionsMenu(R.menu.consult_create_menu_next_arrow)
 public class SettingsFragment extends AppFragment
-        implements Validable {
+        implements Validable,
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
     /**
@@ -51,6 +62,9 @@ public class SettingsFragment extends AppFragment
      * That attribute should not be selected.
      */
     private static final String DEFAULT_ALGORITHM = "Type";
+
+    @ViewById(R.id.et_calendar)
+    EditText etCalendar;
 
     /**
      * Confidentiality boolean.
@@ -86,11 +100,35 @@ public class SettingsFragment extends AppFragment
      */
     CreateFragment parent;
 
+    /**
+     * Date selected
+     */
+    Calendar calendar;
+
     @AfterViews
     void init() {
         fragmentTitle = getString(R.string.fragment_title_settings);
         parent = (CreateFragment) getParentFragment();
         algorithms.setOnTouchListener(spinnerOnTouchHandler);
+    }
+
+    /**
+     * Display date picker when touch startDateField
+     */
+    @Click(R.id.et_calendar)
+    void onClickOnSelectStartDate() {
+        Calendar calendar = Calendar.getInstance();
+
+        // Hide keyboard before to show DatePickerDialog
+        ViewUtils.closeKeyboard(getActivity(),
+                getActivity().getCurrentFocus());
+
+        // Setup date picker with a minimum date.
+        DatePickerDialog pickerDialog = new DatePickerDialog(getActivity(), this, calendar
+                .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        pickerDialog.show();
     }
 
     @OptionsItem(R.id.menu_item_next_arrow)
@@ -124,6 +162,9 @@ public class SettingsFragment extends AppFragment
                         break;
                     case STV:
                         parent.nextStep(this, new STVFragment_());
+                        break;
+                    case JM:
+                        parent.nextStep(this, new JMFragment_());
                         break;
                 }
             } else // Go the existing next view.
@@ -160,9 +201,16 @@ public class SettingsFragment extends AppFragment
         Object selectedItem = algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();
+        String date = this.etCalendar.getText().toString();
 
         assert selectedItem != null;
-        if (TextUtils.isEmpty(title)) {
+
+        if (TextUtils.isEmpty(date)) {
+            updateErrorUi(this.etCalendar, getString(R.string.error_field_required));
+            if (focusView == null)
+                focusView = this.etCalendar;
+            cancel = true;
+        } else if (TextUtils.isEmpty(title)) {
             updateErrorUi(this.title, getString(R.string.error_field_required));
             if (focusView == null)
                 focusView = this.title;
@@ -197,7 +245,7 @@ public class SettingsFragment extends AppFragment
                     getString(R.string.snack_error_no_algo_selected),
                     Snackbar.LENGTH_LONG);
 
-            return !cancel;
+        return !cancel;
     }
 
     @Override
@@ -205,6 +253,7 @@ public class SettingsFragment extends AppFragment
         String typeStr = (String) algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();
+
         SocialChoice.Type type = null;
         if (typeStr.equals(getString(R.string.algo_ms))) {
             type = SocialChoice.Type.SM;
@@ -216,11 +265,10 @@ public class SettingsFragment extends AppFragment
             type = SocialChoice.Type.STV;
         }
 
-        System.out.println(Arrays.toString(SocialChoice.Type.values()));
-
         parent.getSocialChoice().setTitle(title);
         parent.getSocialChoice().setDescription(description);
         parent.getSocialChoice().setConfidentiality(confidentiality.isChecked());
+        parent.getSocialChoice().setEndDate(String.valueOf(calendar.getTimeInMillis()));
         if (type != null)
             parent.getSocialChoice().setType(type);
     }
@@ -307,4 +355,48 @@ public class SettingsFragment extends AppFragment
         }
         return false; // Display the spinner
     };
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        ;
+        calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        if (DateValidator.validate(calendar)) {
+            //String myFormat = FORMAT;
+            //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+            //etCalendar.setText(sdf.format(calendar.getTime()));
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+                    this, hour, minute, false);
+            timePickerDialog.show();
+        } else {
+            etCalendar.setText("");
+            updateErrorUi(etCalendar, getString(R.string.date_picker_error_invalid));
+        }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        // i = hourOfDay
+        // i1 = minute
+        final String FORMAT = "yyyy-MM-dd ";
+        calendar.set(Calendar.HOUR_OF_DAY, i);
+        calendar.set(Calendar.MINUTE, i1);
+        etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
+        //String myFormat = FORMAT;
+        //SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
+        //etCalendar.setText(sdf.format(calendar.getTime()));
+    }
+
+    /**
+     * Convert date to timestamp IOS 8601
+     * @param date
+     * @return
+     */
+    public static String getDateFormatIso8601(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRANCE);
+        return simpleDateFormat.format(date);
+    }
 }

@@ -1,8 +1,10 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -39,28 +41,43 @@ public class SocialChoice<T>
         }
     }
 
+    @Expose
     private Long id;
 
+    @Expose
     private String title;
 
+    @Expose
     private String description;
 
+    @Expose
     private Type type;
 
+    @Expose
     private boolean confidentiality;
 
+    @Expose
     private boolean closed;
 
+    @Expose
     private List<User> voted;
 
+    @Expose
     private List<User> participants;
 
+    @Expose
+    @SerializedName(value = "end_date")
+    private String endDate;
+
+    @Expose
     @SerializedName(value = "value")
     private List<Candidat> candidats;
 
+    @Expose
     private T data;
 
     public SocialChoice() {
+        participants = new ArrayList<>();
     }
 
     public SocialChoice(String title, String description, Type type, boolean confidentiality, boolean closed) {
@@ -69,6 +86,7 @@ public class SocialChoice<T>
         this.type = type;
         this.confidentiality = confidentiality;
         this.closed = closed;
+        participants = new ArrayList<>();
     }
 
     /**

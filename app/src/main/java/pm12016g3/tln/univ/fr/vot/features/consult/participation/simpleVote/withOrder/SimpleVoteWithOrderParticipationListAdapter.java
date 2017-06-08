@@ -138,7 +138,7 @@ public class SimpleVoteWithOrderParticipationListAdapter
 
             System.out.println("je suis là");
 
-            SimpleVoteWithOrderParticipationItem clickedItem = mItemList.get(getAdapterPosition());
+            JMLabelItemView clickedItem = mItemList.get(getAdapterPosition());
 
             if (check.isChecked()) {
                 countTrue--;

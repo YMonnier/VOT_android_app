@@ -1,5 +1,7 @@
 package pm12016g3.tln.univ.fr.vot.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import lombok.Data;
 
 @Data
 public class FriendRequest {
+    @Expose
     List<Long> friends = new ArrayList<>();
 
     public void add(Long id) {

@@ -17,6 +17,7 @@ import java.util.List;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.Vote;
 import pm12016g3.tln.univ.fr.vot.models.network.Response;
+import pm12016g3.tln.univ.fr.vot.models.result.Result;
 
 /**
  * Project android.
@@ -52,6 +53,10 @@ public interface VOTSocialChoiceAPI {
     @Post("/social_choices/")
     @RequiresHeader("Authorization")
     ResponseEntity<Response<JsonObject>> createSociaChoice(@Body SocialChoice vote);
+
+    @Get("/social_choices/resultat/{id}")
+    @RequiresHeader("Authorization")
+    ResponseEntity<Response<Result>> getResultat(@Path("id") long id);
 
     /**
      * Set a specific header to the HTTP request.

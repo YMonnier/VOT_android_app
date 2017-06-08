@@ -1,5 +1,8 @@
 package pm12016g3.tln.univ.fr.vot.models.shared;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Data;
 
 /**
@@ -27,11 +30,37 @@ public class SCSimpleTransfarableVote implements SCData {
         }
     }
 
+    public enum Quota {
+        HAARE("haare"),
+        AUTRE("autre");
+        private String value;
+
+        Quota(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    @Expose
+    @SerializedName("winner_nb")
     private int nbWinner;
+
+    @Expose
+    @SerializedName("looser_choice")
     private Elimination elimination;
 
-    public SCSimpleTransfarableVote(int nbWinner, Elimination elimination) {
+    @Expose
+    @SerializedName("quota_choice")
+    private Quota quota;
+
+
+    public SCSimpleTransfarableVote(int nbWinner, Elimination elimination, Quota quota) {
         this.nbWinner = nbWinner;
         this.elimination = elimination;
+        this.quota = quota;
     }
 }

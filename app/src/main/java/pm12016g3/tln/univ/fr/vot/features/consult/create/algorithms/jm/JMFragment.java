@@ -1,15 +1,15 @@
-package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple;
+package pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Switch;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
@@ -25,19 +25,23 @@ import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
+import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragmentListAdapter;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.invitation.InvitationFragment_;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton;
 import pm12016g3.tln.univ.fr.vot.features.shared.AnimatedButton_;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
-import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
+import pm12016g3.tln.univ.fr.vot.models.Label;
+import pm12016g3.tln.univ.fr.vot.models.shared.SCMajorityJudgment;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
+import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -48,25 +52,19 @@ import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
  * https://github.com/YMonnier
  */
 
-@EFragment(R.layout.consult_create_algo_simple_vote_fragment)
+@EFragment(R.layout.consult_create_algo_jm_fragment)
 @OptionsMenu(R.menu.consult_create_menu_two_arrows)
-public class SimpleVoteFragment extends AppFragment
+public class JMFragment extends AppFragment
         implements View.OnClickListener, Validable {
-    private static final String TAG = SimpleVoteFragment.class.getSimpleName();
+    private static final String TAG = JMFragment.class.getSimpleName();
     private final int ADD_BUTTON_TAG = 143;
     private final int TRASH_BUTTON_TAG = 243;
 
     @ViewById(R.id.input_candidat)
     EditText inputCandidat;
 
-    @ViewById(R.id.input_nb_choices)
-    EditText inputNbChoice;
-
     @ViewById(R.id.listView)
     ListView listView;
-
-    @ViewById(R.id.tidy)
-    Switch tidyView;
 
     @ViewById(R.id.form)
     LinearLayout form;
@@ -89,6 +87,9 @@ public class SimpleVoteFragment extends AppFragment
     @Bean
     SimpleVoteFragmentListAdapter adapter;
 
+    @Bean
+    JMLabelListAdapter JMadapter;
+
     /**
      * Parent fragment.
      * This variable is used to send and
@@ -96,9 +97,38 @@ public class SimpleVoteFragment extends AppFragment
      */
     CreateFragment parent;
 
+    String [] labels = new String []{"TB","B","AB","SA","P","I","AR"};
+    List<Label> labelList = new ArrayList<>();
+
+    private int labelNb;
+
+    @ViewById(R.id.lv_labels)
+    ListView lvLabels;
+
+    @ViewById(R.id.s_labels)
+    Spinner sLabels;
+
     @AfterViews
     void init() {
         Log.d(TAG, "Init");
+
+        initData();
+
+        sLabels.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                initData();
+                Log.e("klkl", "klkl");
+
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                Log.e("klkl", "klkl");
+
+            }
+        });
+
         fragmentTitle = getString(R.string.fragment_title_sm);
         parent = (CreateFragment) getParentFragment();
         listView.setAdapter(adapter);
@@ -113,15 +143,10 @@ public class SimpleVoteFragment extends AppFragment
     @OptionsItem(R.id.menu_item_next_arrow)
     void next() {
         Log.d(TAG, "Next button");
-        if (validate()) {
-            if (checkListNumberOfChoices()) {
-                setData();
-                parent.nextStep(this, new InvitationFragment_());
-            } else
-                Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_no_algo_selected),
-                        Snackbar.LENGTH_LONG);
-        }
+        if(validate())
+            setData();
+        parent.nextStep(this, new InvitationFragment_());
+
     }
 
     @OptionsItem(R.id.menu_item_back_arrow)
@@ -147,16 +172,8 @@ public class SimpleVoteFragment extends AppFragment
     }
 
     @ItemClick(R.id.listView)
-    void listViewOnClick(Candidat item) {
+    void listViewOnClick(BasicItem item) {
         Log.d(TAG, "Item clicked... " + String.valueOf(item));
-        item.setSelected(!item.isSelected());
-        adapter.notifyDataSetChanged();
-        if (shouldShowTrashButton()) {
-            if (trashButton == null)
-                addTrashButton();
-        } else {
-            removeTrashButton();
-        }
     }
 
     /**
@@ -166,9 +183,8 @@ public class SimpleVoteFragment extends AppFragment
      * @param item item selected.
      */
     @ItemLongClick(R.id.listView)
-    void listViewOnLongClick(Candidat item) {
-        adapter.getItems().remove(item);
-        adapter.notifyDataSetChanged();
+    void listViewOnLongClick(BasicItem item) {
+
     }
 
     /**
@@ -182,10 +198,12 @@ public class SimpleVoteFragment extends AppFragment
         AnimatedButton button = (AnimatedButton) view;
         if (button != null) {
             if (button.getTag().equals(ADD_BUTTON_TAG)) {
-                if (validate()) {
+                /*if (validate()) {
                     String candidat = inputCandidat.getText().toString();
                     updateList(candidat);
-                }
+                }*/
+                String candidat = inputCandidat.getText().toString();
+                updateList(candidat);
             } else if (button.getTag().equals(TRASH_BUTTON_TAG)) {
 
                 adapter.getItems()
@@ -253,7 +271,6 @@ public class SimpleVoteFragment extends AppFragment
     @UiThread
     void resetErrorUi() {
         inputCandidat.setError(null);
-        inputNbChoice.setError(null);
     }
 
     /**
@@ -324,41 +341,23 @@ public class SimpleVoteFragment extends AppFragment
      */
     @Override
     public boolean validate() {
-        String nbChoice = inputNbChoice.getText().toString();
-        resetErrorUi();
 
-        boolean cancel = false;
-        View focusView = null;
+        return true;
 
-        if (TextUtils.isEmpty(nbChoice)) {
-            if (focusView == null)
-                focusView = inputNbChoice;
-            updateErrorUi(inputNbChoice, getString(R.string.error_field_required));
-            cancel = true;
-        }
-        Log.d(TAG, "Add On List View ? " + cancel);
-        if (cancel) {
-            // There was an error; don't attempt, focus on the first
-            // form field with an error.
-            assert focusView != null;
-            if (focusView != null)
-                focusView.requestFocus();
-        }
-
-        return !cancel;
     }
 
-    /**
-     * Check if the list size is lower
-     * than the number of choice.
-     *
-     * @return true if the size of lise is lower than the
-     * number of choice otherwise false.
-     */
-    private boolean checkListNumberOfChoices() {
-        int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
-        Log.d(TAG, "nbChoice: " + nbChoice + " listSize: " + adapter.getItems().size());
-        return adapter.getItems().size() > nbChoice;
+    public void initData() {
+        labelNb = Integer.parseInt(sLabels.getSelectedItem().toString());
+        JMadapter.clear();
+        Label label = null;
+        for (int i = 0; i< labelNb; i++) {
+            label = new Label();
+            label.setNumber(i+1);
+            label.setName(labels[i]);
+            JMadapter.add(label);
+        }
+
+        lvLabels.setAdapter(JMadapter);
     }
 
     /**
@@ -366,11 +365,14 @@ public class SimpleVoteFragment extends AppFragment
      */
     @Override
     public void setData() {
-        int nbChoice = Integer.parseInt(inputNbChoice.getText().toString());
-        boolean tidy = tidyView.isChecked();
-        SCSMajorityBallot data = new SCSMajorityBallot(tidy, nbChoice);
+
+        SCMajorityJudgment data = new SCMajorityJudgment();
+        for (int i = 0; i<JMadapter.getItems().size(); i++) {
+            data.add(JMadapter.getItem(i).getName());
+        }
         parent.getSocialChoice().setData(data);
         parent.getSocialChoice().setCandidats(adapter.getItems());
+
         Log.d(TAG, "Social Choice updated: " + parent.getSocialChoice());
     }
 }

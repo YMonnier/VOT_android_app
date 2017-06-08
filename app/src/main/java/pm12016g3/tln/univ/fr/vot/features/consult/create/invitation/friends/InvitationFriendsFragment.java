@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.annimon.stream.Stream;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -26,7 +28,6 @@ import pm12016g3.tln.univ.fr.vot.models.network.Response;
 import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.loader.LoaderDialog;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTFriendsAPI;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -73,9 +74,19 @@ public class InvitationFriendsFragment extends Fragment {
     }
 
     @ItemClick(R.id.listView)
-    void clickOnListView(BasicItem item) {
+    void clickOnListView(User item) {
         item.setSelected(!item.isSelected());
         adapter.notifyDataSetChanged();
+
+        List<User> list = (List<User>)parent.getParent().getSocialChoice().getParticipants();
+
+        if (!list.contains(item)) {
+            list.add(item);
+        } else {
+            Stream.of(list)
+                    .filter(value -> value.getPseudo().equals(item.getPseudo()))
+                    .forEach(list::remove);
+        }
     }
 
     /**
