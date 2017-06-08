@@ -133,8 +133,7 @@ public class SMResultActivity extends AppCompatActivity {
             Log.d(TAG,"data :" +entry.toString());
             entries.add(new PieEntry(entry.getValue(), entry.getKey()));
         }
-
-
+        
         PieDataSet set = new PieDataSet(entries, "");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(set);
@@ -168,7 +167,6 @@ public class SMResultActivity extends AppCompatActivity {
 
     @Background
     void getResult() {
-        Log.d(TAG, "llalallal");
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
