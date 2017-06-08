@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_us">Vote is an application that enables you to create ranking, rating, and poll voting contests and view the results in real time. Your audience can participate live on their mobile phones.</string>
+    <string name="about_us">VO'T est une application qui vous permet de créer des choix sociaux selon divers critères de choix, de classement ou de notation pour ensuite visualiser les résultats en temps réel. Votre public peut participer en direct sur son téléphone portable.</string>
+    <string name="about_us_english">Vote is an application that enables you to create ranking, rating, and poll voting contests and view the results in real time. Your audience can participate live on their mobile phones.</string>
 </resources>

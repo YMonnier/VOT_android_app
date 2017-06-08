@@ -1,11 +1,13 @@
 package pm12016g3.tln.univ.fr.vot.features;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import io.realm.Realm;
 import pm12016g3.tln.univ.fr.vot.R;
 import pm12016g3.tln.univ.fr.vot.features.about.AboutUsFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
@@ -28,6 +31,7 @@ import pm12016g3.tln.univ.fr.vot.features.consult.create.CreateFragment_;
 import pm12016g3.tln.univ.fr.vot.features.network.NetworkFragment_;
 import pm12016g3.tln.univ.fr.vot.features.root.LoginActivity_;
 import pm12016g3.tln.univ.fr.vot.features.statistic.StatisticFragment_;
+import pm12016g3.tln.univ.fr.vot.models.realm.Request;
 
 @EActivity(R.layout.main_activity_main)
 public class MainActivity extends AppCompatActivity
@@ -153,4 +157,16 @@ public class MainActivity extends AppCompatActivity
                     //finish();
                 });
     }
+
+    public static void showParticipationDialog(Context context, String title, String content) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(content);
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            dialog.cancel();
+        });
+
+        builder.show();
+    }
+
 }

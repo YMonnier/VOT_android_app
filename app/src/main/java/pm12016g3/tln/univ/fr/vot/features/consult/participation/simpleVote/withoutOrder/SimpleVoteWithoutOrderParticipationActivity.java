@@ -26,6 +26,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.Validable;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
@@ -162,6 +163,7 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
+            showParticipationDialog(response);
             if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
                 Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
                         getString(R.string.snack_error_http_400_500),
@@ -181,6 +183,14 @@ public class SimpleVoteWithoutOrderParticipationActivity extends AppCompatActivi
     void backDone() {
         ViewUtils.closeKeyboard(this, getCurrentFocus());
         finish();
+    }
+
+    void showParticipationDialog(ResponseEntity response){
+        if(response.getStatusCode().is2xxSuccessful()) {
+            MainActivity_.showParticipationDialog(getApplicationContext(), "Envoie d'un vote", "A voté !");
+        }else{
+            MainActivity_.showParticipationDialog(getApplicationContext(), "Envoie d'un vote", "Vous avez déjà voté !");
+        }
     }
 
     /**

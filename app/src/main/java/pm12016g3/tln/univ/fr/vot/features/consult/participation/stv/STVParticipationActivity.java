@@ -26,6 +26,7 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity_;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
@@ -157,6 +158,14 @@ public class STVParticipationActivity extends AppCompatActivity {
         }
     }
 
+    void showParticipationDialog(ResponseEntity response){
+        if(response.getStatusCode().is2xxSuccessful()) {
+            MainActivity_.showParticipationDialog(getApplicationContext(), "Envoie d'un vote", "A voté !");
+        }else{
+            MainActivity_.showParticipationDialog(getApplicationContext(), "Envoie d'un vote", "Vous avez déjà voté !");
+        }
+    }
+
     /**
      * @param vote
      */
@@ -167,6 +176,7 @@ public class STVParticipationActivity extends AppCompatActivity {
             Log.d(TAG, Settings.currentUser.getAccessToken());
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<JsonObject>> response = serviceAPI.vote(vote);
+            showParticipationDialog(response);
             Log.d(TAG, response.getHeaders().toString());
             Log.d(TAG, response.toString());
         } catch (RestClientException e) {
