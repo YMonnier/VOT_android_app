@@ -83,6 +83,7 @@ public class SMResultActivity extends AppCompatActivity {
      */
     @AfterViews
     void init() {
+        Log.d(TAG, "je suis dans le result");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Get SocialChoice from Intent
@@ -146,6 +147,7 @@ public class SMResultActivity extends AppCompatActivity {
 
     @Background
     void getResult() {
+        Log.d(TAG, "llalallal");
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
