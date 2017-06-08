@@ -370,6 +370,7 @@ public class SettingsFragment extends AppFragment
         calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         if (DateValidator.dateValidate(calendar)) {
+            updateErrorUi(etCalendar, null);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
             TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
@@ -397,6 +398,7 @@ public class SettingsFragment extends AppFragment
         calendar.set(Calendar.MINUTE, i1);
 
         if (DateValidator.timeValidate(calendar)) {
+            updateErrorUi(etCalendar, null);
             etCalendar.setText(getDateFormatIso8601(calendar.getTime()));
         } else {
             etCalendar.setText("");

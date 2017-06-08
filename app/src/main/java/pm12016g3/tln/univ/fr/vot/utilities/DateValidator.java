@@ -43,7 +43,6 @@ public class DateValidator {
         if (currentCalendar == null)
             return false;
         currentCalendar.setTimeInMillis(System.currentTimeMillis());
-        return calendar.get(Calendar.HOUR_OF_DAY) > currentCalendar.get(Calendar.HOUR_OF_DAY)
-                && calendar.get(Calendar.MINUTE) > currentCalendar.get(Calendar.MINUTE);
+        return  calendar.getTime().compareTo(currentCalendar.getTime()) > 0;
     }
 }
