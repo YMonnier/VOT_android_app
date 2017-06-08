@@ -71,7 +71,7 @@ public class MapNavigation implements OnMapReadyCallback {
                 .findFragmentById(R.id.map_navigation);
         mapFragment.getMapAsync(this);*/
         MapFragment mapFragment = ((MapFragment)fragmentManager.findFragmentById(R.id.map_navigation));
-        //mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
 
         try {
             MapsInitializer.initialize(context.getApplicationContext());
@@ -85,7 +85,7 @@ public class MapNavigation implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        googleMap.setOnMapLongClickListener((GoogleMap.OnMapLongClickListener) this);
+        //googleMap.setOnMapLongClickListener((GoogleMap.OnMapLongClickListener) this);
         googleMap.getUiSettings().setAllGesturesEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -97,12 +97,12 @@ public class MapNavigation implements OnMapReadyCallback {
             @Override
             public void onLocationChanged(Location location) {
                 LatLng latLng = new LatLng(location.getLongitude(),location.getLatitude());
-                mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                mapView.addMarker(new MarkerOptions().title("Vous êtes ici").position(latLng).draggable(true));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                googleMap.addMarker(new MarkerOptions().title("Vous êtes ici").position(latLng).draggable(true));
 
             }
         };
-        LocationServices.FusedLocationApi.requestLocationUpdates(Settings.googleApiClient, locationRequest, locationListener);
+        //LocationServices.FusedLocationApi.requestLocationUpdates(Settings.googleApiClient, locationRequest, locationListener);
 
     }
 
