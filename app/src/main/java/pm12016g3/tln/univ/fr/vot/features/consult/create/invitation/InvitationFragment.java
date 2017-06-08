@@ -92,4 +92,8 @@ public class InvitationFragment extends AppFragment
                 .replace(R.id.mainCreateContent, fragment)
                 .commit();
     }
+
+    public CreateFragment getParent() {
+        return parent;
+    }
 }

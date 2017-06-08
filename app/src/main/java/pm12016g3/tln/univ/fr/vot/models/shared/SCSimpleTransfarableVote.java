@@ -27,11 +27,29 @@ public class SCSimpleTransfarableVote implements SCData {
         }
     }
 
+    public enum Quota {
+        HAARE("haare"),
+        AUTRE("autre");
+        private String value;
+
+        Quota(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     private int nbWinner;
     private Elimination elimination;
+    private Quota quota;
 
-    public SCSimpleTransfarableVote(int nbWinner, Elimination elimination) {
+
+    public SCSimpleTransfarableVote(int nbWinner, Elimination elimination, Quota quota) {
         this.nbWinner = nbWinner;
         this.elimination = elimination;
+        this.quota = quota;
     }
 }

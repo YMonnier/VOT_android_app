@@ -23,18 +23,11 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import pm12016g3.tln.univ.fr.vot.R;
-import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm.JMFragment;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.jm.JMFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.simple.SimpleVoteFragment_;
 import pm12016g3.tln.univ.fr.vot.features.consult.create.algorithms.stv.STVFragment_;
@@ -200,9 +193,16 @@ public class SettingsFragment extends AppFragment
         Object selectedItem = algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();
+        String date = this.etCalendar.getText().toString();
 
         assert selectedItem != null;
-        if (TextUtils.isEmpty(title)) {
+
+        if (TextUtils.isEmpty(date)) {
+            updateErrorUi(this.etCalendar, getString(R.string.error_field_required));
+            if (focusView == null)
+                focusView = this.etCalendar;
+            cancel = true;
+        } else if (TextUtils.isEmpty(title)) {
             updateErrorUi(this.title, getString(R.string.error_field_required));
             if (focusView == null)
                 focusView = this.title;
@@ -245,6 +245,7 @@ public class SettingsFragment extends AppFragment
         String typeStr = (String) algorithms.getSelectedItem();
         String title = this.title.getText().toString();
         String description = this.description.getText().toString();
+
         SocialChoice.Type type = null;
         if (typeStr.equals(getString(R.string.algo_ms))) {
             type = SocialChoice.Type.SM;
@@ -255,8 +256,6 @@ public class SettingsFragment extends AppFragment
         } else if (typeStr.equals(getString(R.string.algo_stv))) {
             type = SocialChoice.Type.STV;
         }
-
-        System.out.println(Arrays.toString(SocialChoice.Type.values()));
 
         parent.getSocialChoice().setTitle(title);
         parent.getSocialChoice().setDescription(description);
@@ -351,15 +350,16 @@ public class SettingsFragment extends AppFragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
+        final String FORMAT = "yyyy-MM-dd";
         calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         if (DateValidator.validate(calendar)) {
-            String myFormat = "yyyy-MM-dd";
+            String myFormat = FORMAT;
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
             etCalendar.setText(sdf.format(calendar.getTime()));
         } else {
             etCalendar.setText("");
-            updateErrorUi(etCalendar, "Invalid selected date");
+            updateErrorUi(etCalendar, getString(R.string.date_picker_error_invalid));
         }
     }
 }

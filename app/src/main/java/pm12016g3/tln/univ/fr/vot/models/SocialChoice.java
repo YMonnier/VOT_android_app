@@ -3,6 +3,7 @@ package pm12016g3.tln.univ.fr.vot.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -64,6 +65,7 @@ public class SocialChoice<T>
     private T data;
 
     public SocialChoice() {
+        participants = new ArrayList<>();
     }
 
     public SocialChoice(String title, String description, Type type, boolean confidentiality, boolean closed) {
@@ -72,6 +74,7 @@ public class SocialChoice<T>
         this.type = type;
         this.confidentiality = confidentiality;
         this.closed = closed;
+        participants = new ArrayList<>();
     }
 
     /**
