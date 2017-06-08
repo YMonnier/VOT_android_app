@@ -115,7 +115,7 @@ public class RecapFragment extends AppFragment {
         } else {
             recapConfidentiality.setText("Non Anonyme");
         }
-        
+
         List<String> candidats = new ArrayList<>();
         for ( Object candidat : socialChoice.getCandidats()) {
             candidats.add(((Candidat)candidat).getName());
@@ -134,7 +134,7 @@ public class RecapFragment extends AppFragment {
         participants.add("ddd");
         participants.add("hhh");
 
-        //Todo: invite the frieds
+        //Todo: invite the friends
         /*for ( Object user : socialChoice.getParticipants()) {
             participants.add(((User)user).getPseudo());
         }*/
