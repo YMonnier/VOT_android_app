@@ -143,10 +143,7 @@
             android:name=".features.consult.result.OtherAlgoResultActivity_"
             android:label="@string/consult_result">
         </activity>
-        <activity
-            android:name=".features.network.notification.NetworkNotificationActivity_"
-            android:label="@string/consult_result">
-        </activity>
+
 
         <activity
             android:name=".features.consult.result.detail.ResultDetailActivity_"

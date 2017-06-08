@@ -94,6 +94,7 @@ public class OtherAlgoResultActivity extends AppCompatActivity {
         if (confidentiality) {
             fabDetails.setVisibility(View.INVISIBLE);
         }
+        getResult();
 
     }
 
@@ -126,7 +127,8 @@ public class OtherAlgoResultActivity extends AppCompatActivity {
                         getString(R.string.snack_error_http_400_500),
                         Snackbar.LENGTH_LONG);
             }
-            result_tv.setText(responseEntity.getBody().getData().getValue().toString());
+            result_tv.setText("Resultat: "+responseEntity.getBody().getData().getValue().toString());
+            Log.d(TAG,"Resultat: "+responseEntity.getBody().getData().getValue().toString());
         } catch (RestClientException e) {
             Log.d(TAG, e.getLocalizedMessage());
         }
