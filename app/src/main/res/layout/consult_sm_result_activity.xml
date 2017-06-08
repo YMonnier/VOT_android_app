@@ -12,6 +12,7 @@
             android:id="@+id/pie_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -20,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_search"
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/vot_purple"
         android:clickable="true"
         app:fabSize="normal" />
 </android.support.design.widget.CoordinatorLayout>

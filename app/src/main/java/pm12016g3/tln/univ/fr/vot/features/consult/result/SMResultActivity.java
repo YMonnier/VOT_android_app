@@ -3,12 +3,17 @@ package pm12016g3.tln.univ.fr.vot.features.consult.result;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -45,6 +50,7 @@ import pm12016g3.tln.univ.fr.vot.utilities.JsonKeys;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonDeserializer;
 import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 import pm12016g3.tln.univ.fr.vot.utilities.network.VOTSocialChoiceAPI;
+import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 
 /**
@@ -89,6 +95,8 @@ public class SMResultActivity extends AppCompatActivity {
      */
     ArrayList<PieEntry> entries = new ArrayList<>();
 
+    ArrayList<BarEntry> barEntries = new ArrayList<>();
+
     /**
      * Initialisation after the views binding has happened
      */
@@ -102,12 +110,13 @@ public class SMResultActivity extends AppCompatActivity {
         gson = GsonSingleton.getInstance();
         GsonDeserializer gsonDeserializer = new GsonDeserializer();
         socialChoice = gsonDeserializer.deserialize(strObj, SCSMajorityBallot.class);
-
+        Log.d(TAG,"socialChoice  "+socialChoice);
         confidentiality = socialChoice.isConfidentiality();
         if (confidentiality) {
             fabDetails.setVisibility(View.INVISIBLE);
         }
         getResult();
+        updatePieChart();;
     }
 
     /**
@@ -123,9 +132,11 @@ public class SMResultActivity extends AppCompatActivity {
 
         for(Map.Entry<String,Float> entry : data.entrySet()){
             Log.d(TAG,"data :" +entry.toString());
-            entries.add(new PieEntry(entry.getValue(), entry.getKey()));
-
+            if(entry.getValue()!=0){
+                entries.add(new PieEntry(entry.getValue(), entry.getKey()));
+            }
         }
+
 
         PieDataSet set = new PieDataSet(entries, "");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -157,18 +168,19 @@ public class SMResultActivity extends AppCompatActivity {
         startActivity(new Intent(this, ResultDetailActivity_.class));
     }
 
+
     @Background
     void getResult() {
         try {
             serviceAPI.setHeader(JsonKeys.AUTHORIZATION, Settings.currentUser.getAccessToken());
             ResponseEntity<Response<Result>> responseEntity = serviceAPI.getResultat(socialChoice.getId());
-            Log.d(TAG,"socialChoice ID : "+socialChoice.getId());
             if (responseEntity.getStatusCode().is4xxClientError() || responseEntity.getStatusCode().is5xxServerError()) {
-                /*Snack.showFailureMessage(getView(),
-                        getString(R.string.snack_error_http_400_500),
-                        Snackbar.LENGTH_LONG);*/
+                Snack.showFailureMessage(getWindow().getDecorView().findViewById(android.R.id.content),
+                                        getString(R.string.snack_error_http_400_500),
+                                        Snackbar.LENGTH_LONG);
             }
             stats =  responseEntity.getBody().getData().getStatistics();
+            Log.d(TAG,"stats "+stats.toString());
             stats.values().forEach(v->sum=sum+Integer.parseInt(v));
 
             for (Map.Entry<String, String> e : stats.entrySet()) {
