@@ -6,6 +6,7 @@
     <string name="fragment_title_sm">Vote Simple</string>
     <string name="fragment_title_algorithms">Algorithmes</string>
     <string name="fragment_title_invitation">Invitation</string>
+    <string name="fragment_title_consult">Invitation</string>
     <string name="fragment_title_recap">Récapitulatif</string>
     <string name="fragment_title_confirm">Confirmation</string>
     <string name="confidentiality">Confidentialité</string>

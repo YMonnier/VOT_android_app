@@ -1,5 +1,6 @@
 package pm12016g3.tln.univ.fr.vot.features.consult.create;
 
+import android.app.Fragment;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,9 @@ import java.util.Date;
 import java.util.List;
 
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.MainActivity;
 import pm12016g3.tln.univ.fr.vot.features.Settings;
+import pm12016g3.tln.univ.fr.vot.features.consult.consult.ConsultFragment_;
 import pm12016g3.tln.univ.fr.vot.models.Candidat;
 import pm12016g3.tln.univ.fr.vot.models.SocialChoice;
 import pm12016g3.tln.univ.fr.vot.models.User;
@@ -196,7 +200,15 @@ public class RecapFragment extends AppFragment {
             Snack.showFailureMessage(getView(),
                     getString(R.string.snack_error_http_400_500),
                     Snackbar.LENGTH_LONG);
+        } else {
+            goToConsultView();
         }
+    }
 
+    @UiThread
+    void goToConsultView() {
+        MainActivity mainActivity = (MainActivity) parent.getActivity();
+        Fragment c = new ConsultFragment_();
+        mainActivity.setFragment(c, getString(R.string.fragment_title_consult));
     }
 }
