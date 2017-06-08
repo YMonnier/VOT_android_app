@@ -38,7 +38,6 @@ import pm12016g3.tln.univ.fr.vot.models.shared.SCSMajorityBallot;
 import pm12016g3.tln.univ.fr.vot.utilities.views.Snack;
 import pm12016g3.tln.univ.fr.vot.utilities.views.ViewUtils;
 import pm12016g3.tln.univ.fr.vot.utilities.views.fragment.AppFragment;
-import pm12016g3.tln.univ.fr.vot.utilities.views.list.BasicItem;
 
 /**
  * Project android.
@@ -148,7 +147,7 @@ public class SimpleVoteFragment extends AppFragment
     }
 
     @ItemClick(R.id.listView)
-    void listViewOnClick(BasicItem item) {
+    void listViewOnClick(Candidat item) {
         Log.d(TAG, "Item clicked... " + String.valueOf(item));
         item.setSelected(!item.isSelected());
         adapter.notifyDataSetChanged();
@@ -167,7 +166,7 @@ public class SimpleVoteFragment extends AppFragment
      * @param item item selected.
      */
     @ItemLongClick(R.id.listView)
-    void listViewOnLongClick(BasicItem item) {
+    void listViewOnLongClick(Candidat item) {
         adapter.getItems().remove(item);
         adapter.notifyDataSetChanged();
     }

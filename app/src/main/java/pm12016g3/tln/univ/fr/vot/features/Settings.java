@@ -16,4 +16,5 @@ import pm12016g3.tln.univ.fr.vot.models.User;
 public class Settings {
     public static User currentUser = null;
     public static GoogleApiClient googleApiClient = null;
+    public static int notificationID = 0;
 }

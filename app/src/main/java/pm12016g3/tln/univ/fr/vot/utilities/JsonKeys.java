@@ -20,7 +20,9 @@ public class JsonKeys {
     public final static String CANDIDATS = "candidats";
 
     // Social choices
+    public final static String SOCIAL_CHOICE = "social_choice";
     public final static String TYPE = "type";
+    public final static String TITLE = "title";
     public final static String DESCRIPTION = "description";
 
     // RNotification Keys.

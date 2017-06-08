@@ -17,6 +17,7 @@ import org.androidannotations.annotations.SystemService;
 
 import io.realm.Realm;
 import pm12016g3.tln.univ.fr.vot.R;
+import pm12016g3.tln.univ.fr.vot.features.Settings;
 import pm12016g3.tln.univ.fr.vot.models.User;
 import pm12016g3.tln.univ.fr.vot.models.notification.shared.RNotifFriendRequest;
 import pm12016g3.tln.univ.fr.vot.models.realm.Request;
@@ -36,7 +37,6 @@ import pm12016g3.tln.univ.fr.vot.utilities.json.GsonSingleton;
 @EService
 public class NotificationReceiverService extends FirebaseMessagingService {
     private static final String TAG = NotificationReceiverService.class.getSimpleName();
-    public long id = 0;
 
     /**
      * RNotification Manager.
@@ -54,6 +54,11 @@ public class NotificationReceiverService extends FirebaseMessagingService {
      * Gson Generic Deserialiser;
      */
     GsonDeserializer gsonDeserializer;
+
+    /**
+     * Gson Object.
+     */
+    Gson gson = GsonSingleton.getInstance();
 
     @Override
     public void onCreate() {
@@ -88,16 +93,16 @@ public class NotificationReceiverService extends FirebaseMessagingService {
                 long messageID = json.get(JsonKeys.MESSAGE_ID).getAsLong();
                 JsonObject content = gson.fromJson(json.get(JsonKeys.CONTENT).getAsString(), JsonObject.class);
 
-                if (messageID == 1) {
+                if (messageID == 1) { // Social Choice Invit
 
-                } else if (messageID == 2) {
+                } else if (messageID == 2) { // Friend Request
                     treatsFriendRequest(content);
-                } else if (messageID == 3) {
-
-                } else if (messageID == 4) {
-
-                } else if (messageID == 5) {
-
+                } else if (messageID == 3) { // Response Request
+                    treatFriendRequestAnswer(content);
+                } else if (messageID == 4) { // Closing Alert Social Choice
+                    treatsAlertClosingSocialChoice(content);
+                } else if (messageID == 5) { // Social Choice Closed
+                    treatSocialChoiceClosed(content);
                 }
             }
         }
@@ -149,6 +154,30 @@ public class NotificationReceiverService extends FirebaseMessagingService {
                 String.valueOf(request.getId()));
     }
 
+    private void treatsAlertClosingSocialChoice(JsonObject value) {
+        String json = gson.toJson(value);
+
+        notificationBroadcastManager.send(this,
+                NotificationBroadcastManager.Type.SOCIAL_CHOICE_IMMINENT_CLOSE,
+                json);
+    }
+
+    private void treatSocialChoiceClosed(JsonObject value) {
+        String json = gson.toJson(value);
+
+        notificationBroadcastManager.send(this,
+                NotificationBroadcastManager.Type.SOCIAL_CHOICE_CLOSED,
+                json);
+    }
+
+    private void treatFriendRequestAnswer(JsonObject value) {
+        String json = gson.toJson(value);
+
+        notificationBroadcastManager.send(this,
+                NotificationBroadcastManager.Type.FRIEND_REQUEST_ANSWER,
+                json);
+    }
+
     /**
      * Displays RNotification depending on the message received.
      *
@@ -156,12 +185,12 @@ public class NotificationReceiverService extends FirebaseMessagingService {
      * @param body  notification content.
      */
     private void push(String title, String body) {
-        id += 1;
+        Settings.notificationID += 1;
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSmallIcon(R.drawable.type_two)
                 .build();
-        this.notificationManager.notify(1, notification);
+        this.notificationManager.notify(Settings.notificationID, notification);
     }
 }
